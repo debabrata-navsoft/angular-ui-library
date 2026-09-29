@@ -2,21 +2,8 @@ import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-search-input',
-  template: `
-    <input
-      type="search"
-      class="ui-control"
-      [placeholder]="placeholder()"
-      [value]="value()"
-      [disabled]="disabled()"
-      (input)="search.emit($any($event.target).value)"
-    />
-  `,
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  templateUrl: './search-input.html',
+  styleUrl: './search-input.css',
 })
 export class SearchInputComponent {
   /** Text shown when the input is empty */

@@ -4,16 +4,7 @@ import type { Size } from '../types';
 
 @Component({
   selector: 'app-spinner',
-  template: `
-    <span class="spinner-wrapper" role="status">
-      <span class="spinner" [class]="'spinner--' + size()"></span>
-      @if (label()) {
-        <span class="spinner-label">{{ label() }}</span>
-      } @else {
-        <span class="ui-visually-hidden">Loading</span>
-      }
-    </span>
-  `,
+  templateUrl: './spinner.html',
   styleUrl: './spinner.css',
 })
 export class SpinnerComponent {

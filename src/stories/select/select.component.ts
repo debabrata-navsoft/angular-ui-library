@@ -7,32 +7,8 @@ export interface SelectOption {
 
 @Component({
   selector: 'app-select',
-  template: `
-    <label class="ui-field">
-      @if (label()) {
-        <span class="ui-label">{{ label() }}</span>
-      }
-      <select
-        class="ui-control"
-        [value]="value()"
-        [disabled]="disabled()"
-        (change)="value.set($any($event.target).value)"
-      >
-        @if (placeholder()) {
-          <option value="" disabled [selected]="!value()">{{ placeholder() }}</option>
-        }
-        @for (option of options(); track option.value) {
-          <option [value]="option.value" [selected]="option.value === value()">{{ option.label }}</option>
-        }
-      </select>
-    </label>
-  `,
-  styles: `
-    :host {
-      display: inline-block;
-      min-width: 200px;
-    }
-  `,
+  templateUrl: './select.html',
+  styleUrl: './select.css',
 })
 export class SelectComponent {
   /** Text shown above the dropdown */

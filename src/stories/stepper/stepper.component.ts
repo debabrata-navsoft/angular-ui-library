@@ -2,21 +2,7 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-stepper',
-  template: `
-    <ol class="stepper">
-      @for (step of steps(); track $index; let i = $index) {
-        <li
-          class="step"
-          [class.step--done]="i < activeStep()"
-          [class.step--active]="i === activeStep()"
-          [attr.aria-current]="i === activeStep() ? 'step' : null"
-        >
-          <span class="step-circle">{{ i < activeStep() ? '✓' : i + 1 }}</span>
-          <span class="step-label">{{ step }}</span>
-        </li>
-      }
-    </ol>
-  `,
+  templateUrl: './stepper.html',
   styleUrl: './stepper.css',
 })
 export class StepperComponent {

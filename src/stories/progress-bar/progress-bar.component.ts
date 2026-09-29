@@ -4,16 +4,7 @@ import type { Tone } from '../types';
 
 @Component({
   selector: 'app-progress-bar',
-  template: `
-    <div class="progress" [class]="'tone-' + variant()">
-      <div class="track" role="progressbar" [attr.aria-valuenow]="percent()" aria-valuemin="0" aria-valuemax="100">
-        <div class="fill" [style.width.%]="percent()"></div>
-      </div>
-      @if (showLabel()) {
-        <span class="label">{{ percent() }}%</span>
-      }
-    </div>
-  `,
+  templateUrl: './progress-bar.html',
   styleUrl: './progress-bar.css',
 })
 export class ProgressBarComponent {

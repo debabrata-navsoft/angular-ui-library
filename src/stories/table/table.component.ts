@@ -16,49 +16,7 @@ export type TableRow = Record<string, unknown>;
 @Component({
   selector: 'app-table',
   imports: [SearchInputComponent],
-  template: `
-    @if (filterable()) {
-      <div class="table-filter">
-        <app-search-input
-          [placeholder]="filterPlaceholder()"
-          (search)="filterText.set($event)"
-        />
-      </div>
-    }
-    <table class="table" [class.table--striped]="striped()" [class.table--bordered]="bordered()">
-      <thead>
-        <tr>
-          @for (column of columns(); track column.key) {
-            <th
-              [class.sortable]="column.sortable"
-              [attr.aria-sort]="ariaSort(column.key)"
-              (click)="column.sortable && sortBy(column.key)"
-            >
-              {{ column.label }}
-              @if (sortKey() === column.key) {
-                <span class="sort-icon">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
-              }
-            </th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (row of sortedData(); track $index) {
-          <tr (click)="rowClick.emit(row)">
-            @for (column of columns(); track column.key) {
-              <td>{{ row[column.key] }}</td>
-            }
-          </tr>
-        } @empty {
-          <tr>
-            <td class="empty" [attr.colspan]="columns().length">
-              {{ filterText() && data().length ? noResultsMessage() : emptyMessage() }}
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  `,
+  templateUrl: './table.html',
   styleUrl: './table.css',
 })
 export class TableComponent {

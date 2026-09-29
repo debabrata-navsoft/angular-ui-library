@@ -4,14 +4,7 @@ let nextId = 0;
 
 @Component({
   selector: 'app-tooltip',
-  template: `
-    <span class="tooltip-wrapper" [attr.aria-describedby]="id">
-      <ng-content />
-      <span class="tooltip" [class]="'tooltip--' + position()" role="tooltip" [id]="id">
-        {{ text() }}
-      </span>
-    </span>
-  `,
+  templateUrl: './tooltip.html',
   styleUrl: './tooltip.css',
 })
 export class TooltipComponent {

@@ -1,7 +1,7 @@
 .radio-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   border: none;
@@ -10,46 +10,48 @@
 
 .radio-group--horizontal {
   flex-direction: row;
-  gap: 20px;
+  gap: 24px;
 }
 
 .radio-group legend {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   padding: 0;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .radio {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
+  user-select: none;
 }
 
 .radio input {
   appearance: none;
   display: grid;
   place-content: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin: 0;
-  border: 2px solid #bbb;
+  border: 2px solid var(--ui-border-strong);
   border-radius: 50%;
-  background: #fff;
+  background: var(--ui-surface);
   cursor: inherit;
   transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
+    border-color var(--ui-ease),
+    box-shadow var(--ui-ease);
 }
 
 .radio input::before {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--ui-primary);
+  background: var(--ui-gradient);
   transform: scale(0);
-  transition: transform 0.15s;
+  transition: transform var(--ui-ease);
 }
 
 .radio:hover input:not(:disabled) {
@@ -58,6 +60,7 @@
 
 .radio input:checked {
   border-color: var(--ui-primary);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
 }
 
 .radio input:checked::before {
@@ -65,20 +68,20 @@
 }
 
 .radio input:focus-visible {
-  box-shadow: 0 0 0 3px var(--ui-primary-ring);
   outline: none;
+  box-shadow: var(--ui-ring);
 }
 
 .radio--disabled {
-  color: #aaa;
+  color: var(--ui-text-subtle);
   cursor: not-allowed;
 }
 
 .radio--disabled input {
-  border-color: #ddd;
-  background: var(--ui-surface-muted);
+  border-color: var(--ui-border);
+  background: var(--ui-surface-sunken);
 }
 
 .radio--disabled input::before {
-  background: #bbb;
+  background: var(--ui-text-subtle);
 }

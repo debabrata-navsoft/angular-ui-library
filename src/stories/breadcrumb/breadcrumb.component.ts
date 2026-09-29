@@ -7,22 +7,7 @@ export interface BreadcrumbItem {
 
 @Component({
   selector: 'app-breadcrumb',
-  template: `
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <ol>
-        @for (item of items(); track $index; let last = $last) {
-          <li>
-            @if (last) {
-              <span aria-current="page">{{ item.label }}</span>
-            } @else {
-              <a [href]="item.url || '#'" (click)="onClick($event, item)">{{ item.label }}</a>
-              <span class="separator" aria-hidden="true">{{ separator() }}</span>
-            }
-          </li>
-        }
-      </ol>
-    </nav>
-  `,
+  templateUrl: './breadcrumb.html',
   styleUrl: './breadcrumb.css',
 })
 export class BreadcrumbComponent {

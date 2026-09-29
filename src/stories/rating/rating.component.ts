@@ -2,31 +2,7 @@ import { Component, computed, input, model, signal } from '@angular/core';
 
 @Component({
   selector: 'app-rating',
-  template: `
-    <div
-      class="rating"
-      [class.rating--readonly]="readonly()"
-      role="radiogroup"
-      aria-label="Rating"
-      (mouseleave)="hover.set(0)"
-    >
-      @for (star of stars(); track star) {
-        <button
-          type="button"
-          class="star"
-          [class.star--filled]="star <= (hover() || value())"
-          [disabled]="readonly()"
-          role="radio"
-          [attr.aria-checked]="star === value()"
-          [attr.aria-label]="star + ' star' + (star > 1 ? 's' : '')"
-          (mouseenter)="!readonly() && hover.set(star)"
-          (click)="value.set(star)"
-        >
-          ★
-        </button>
-      }
-    </div>
-  `,
+  templateUrl: './rating.html',
   styleUrl: './rating.css',
 })
 export class RatingComponent {

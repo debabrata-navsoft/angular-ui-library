@@ -4,17 +4,7 @@ import type { Size } from '../types';
 
 @Component({
   selector: 'storybook-button',
-  template: `
-    <button
-      type="button"
-      class="storybook-button"
-      [class]="['storybook-button--' + size(), primary() ? 'storybook-button--primary' : 'storybook-button--secondary']"
-      [style.background-color]="backgroundColor()"
-      (click)="onClick.emit($event)"
-    >
-      {{ label() }}
-    </button>
-  `,
+  templateUrl: './button.html',
   styleUrl: './button.css',
 })
 export class ButtonComponent {

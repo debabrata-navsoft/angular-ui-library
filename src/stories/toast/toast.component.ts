@@ -1,17 +1,10 @@
 import { Component, effect, input, model } from '@angular/core';
 
-import type { Tone } from '../types';
+import { TONE_ICONS, type Tone } from '../types';
 
 @Component({
   selector: 'app-toast',
-  template: `
-    @if (open()) {
-      <div class="toast" [class]="['tone-' + type(), 'toast--' + position()]" role="status">
-        <span class="toast-message">{{ message() }}</span>
-        <button type="button" class="ui-close" aria-label="Close" (click)="open.set(false)">×</button>
-      </div>
-    }
-  `,
+  templateUrl: './toast.html',
   styleUrl: './toast.css',
 })
 export class ToastComponent {
@@ -29,6 +22,8 @@ export class ToastComponent {
 
   /** Milliseconds before the toast hides itself. 0 keeps it open */
   readonly duration = input(3000);
+
+  protected readonly icons = TONE_ICONS;
 
   constructor() {
     effect((onCleanup) => {

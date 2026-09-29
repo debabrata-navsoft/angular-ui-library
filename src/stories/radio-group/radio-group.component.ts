@@ -9,26 +9,7 @@ let nextId = 0;
 
 @Component({
   selector: 'app-radio-group',
-  template: `
-    <fieldset class="radio-group" [class.radio-group--horizontal]="horizontal()">
-      @if (label()) {
-        <legend>{{ label() }}</legend>
-      }
-      @for (option of options(); track option.value) {
-        <label class="radio" [class.radio--disabled]="disabled()">
-          <input
-            type="radio"
-            [name]="name"
-            [value]="option.value"
-            [checked]="option.value === value()"
-            [disabled]="disabled()"
-            (change)="value.set(option.value)"
-          />
-          <span>{{ option.label }}</span>
-        </label>
-      }
-    </fieldset>
-  `,
+  templateUrl: './radio-group.html',
   styleUrl: './radio-group.css',
 })
 export class RadioGroupComponent {

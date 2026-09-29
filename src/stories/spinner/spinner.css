@@ -1,39 +1,41 @@
 .spinner-wrapper {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* Gradient ring: conic gradient masked down to a donut */
 .spinner {
+  --thickness: 4px;
   display: inline-block;
-  border: 3px solid var(--ui-border);
-  border-top-color: var(--ui-primary);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  background: conic-gradient(from 0deg, transparent 10%, var(--ui-primary), var(--ui-accent));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 0);
+  animation: spin 0.9s linear infinite;
 }
 
 .spinner--small {
-  width: 16px;
-  height: 16px;
-  border-width: 2px;
+  --thickness: 3px;
+  width: 18px;
+  height: 18px;
 }
 
 .spinner--medium {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 }
 
 .spinner--large {
-  width: 48px;
-  height: 48px;
-  border-width: 4px;
+  --thickness: 5px;
+  width: 52px;
+  height: 52px;
 }
 
 .spinner-label {
-  color: #555;
+  color: var(--ui-text-muted);
   font-size: 14px;
+  font-weight: 500;
 }
-
 
 @keyframes spin {
   to {

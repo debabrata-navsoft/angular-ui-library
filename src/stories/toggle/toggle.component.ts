@@ -2,21 +2,7 @@ import { Component, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-toggle',
-  template: `
-    <label class="toggle" [class.toggle--disabled]="disabled()">
-      <input
-        type="checkbox"
-        role="switch"
-        [checked]="checked()"
-        [disabled]="disabled()"
-        (change)="checked.set($any($event.target).checked)"
-      />
-      <span class="toggle-track"><span class="toggle-thumb"></span></span>
-      @if (label()) {
-        <span>{{ label() }}</span>
-      }
-    </label>
-  `,
+  templateUrl: './toggle.html',
   styleUrl: './toggle.css',
 })
 export class ToggleComponent {

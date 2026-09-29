@@ -2,17 +2,7 @@ import { Component, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-checkbox',
-  template: `
-    <label class="checkbox" [class.checkbox--disabled]="disabled()">
-      <input
-        type="checkbox"
-        [checked]="checked()"
-        [disabled]="disabled()"
-        (change)="checked.set($any($event.target).checked)"
-      />
-      <span>{{ label() }}</span>
-    </label>
-  `,
+  templateUrl: './checkbox.html',
   styleUrl: './checkbox.css',
 })
 export class CheckboxComponent {

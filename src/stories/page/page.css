@@ -8,8 +8,18 @@
 
 .storybook-page h2 {
   margin: 0 0 4px;
-  font-size: 32px;
-  line-height: 1;
+  background: var(--ui-gradient);
+  background-clip: text;
+  color: transparent;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.storybook-page p,
+.storybook-page li {
+  color: var(--ui-text-muted);
 }
 
 .storybook-page p,
@@ -40,8 +50,8 @@
   margin-right: 10px;
   padding: 4px 12px;
   border-radius: 1em;
-  background: #e7fdd8;
-  color: #357a14;
+  background: var(--ui-primary-soft);
+  color: var(--ui-primary);
   font-size: 11px;
   font-weight: 700;
   line-height: 12px;

@@ -2,39 +2,8 @@ import { Component, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-text-input',
-  template: `
-    <label class="ui-field">
-      @if (label()) {
-        <span class="ui-label">
-          {{ label() }}
-          @if (required()) {
-            <span class="ui-error">*</span>
-          }
-        </span>
-      }
-      <input
-        class="ui-control"
-        [type]="type()"
-        [placeholder]="placeholder()"
-        [value]="value()"
-        [disabled]="disabled()"
-        [required]="required()"
-        [attr.aria-invalid]="!!error()"
-        (input)="value.set($any($event.target).value)"
-      />
-      @if (error()) {
-        <span class="ui-error">{{ error() }}</span>
-      } @else if (hint()) {
-        <span class="ui-hint">{{ hint() }}</span>
-      }
-    </label>
-  `,
-  styles: `
-    :host {
-      display: block;
-      max-width: 320px;
-    }
-  `,
+  templateUrl: './text-input.html',
+  styleUrl: './text-input.css',
 })
 export class TextInputComponent {
   /** Text shown above the input */

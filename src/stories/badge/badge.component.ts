@@ -4,7 +4,7 @@ import type { Tone } from '../types';
 
 @Component({
   selector: 'app-badge',
-  template: `<span class="badge" [class]="'tone-' + variant()" [class.badge--pill]="pill()">{{ label() }}</span>`,
+  templateUrl: './badge.html',
   styleUrl: './badge.css',
 })
 export class BadgeComponent {

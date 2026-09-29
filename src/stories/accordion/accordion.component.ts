@@ -7,26 +7,7 @@ export interface AccordionItem {
 
 @Component({
   selector: 'app-accordion',
-  template: `
-    <div class="accordion">
-      @for (item of items(); track $index) {
-        <div class="accordion-item">
-          <button
-            type="button"
-            class="accordion-header"
-            [attr.aria-expanded]="isOpen($index)"
-            (click)="toggle($index)"
-          >
-            <span>{{ item.title }}</span>
-            <span class="accordion-icon" [class.accordion-icon--open]="isOpen($index)">▾</span>
-          </button>
-          @if (isOpen($index)) {
-            <div class="accordion-body">{{ item.content }}</div>
-          }
-        </div>
-      }
-    </div>
-  `,
+  templateUrl: './accordion.html',
   styleUrl: './accordion.css',
 })
 export class AccordionComponent {
