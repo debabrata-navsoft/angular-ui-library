@@ -21,6 +21,8 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 src/stories/
   theme.css          Global design tokens (--ui-*), .tone-* color classes, shared .ui-* classes
   types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User
+  icons/             Drop-in .svg files for <app-icon name="file-name" />: full Lucide set + user icons (see icons/README.md)
+  icon-gallery/      "Icons" docs page (top of sidebar): search, customize, copy code. Not a library component
   components/
     <name>/
       <name>.component.ts   Class only: inputs/outputs/logic
@@ -58,6 +60,14 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Form fields: wrap in `.ui-field`, with `.ui-label`, `.ui-control` (on input/select/textarea), `.ui-hint` and `.ui-error`. `aria-invalid="true"` on a `.ui-control` gives it a red border.
 - Close buttons use `.ui-close`. Screen-reader-only text uses `.ui-visually-hidden`.
 - The theme is global, so component CSS can use these classes despite view encapsulation.
+
+## Icons
+
+- Users add their own `.svg` files to `src/stories/icons/`. `<app-icon name="x" />` (`components/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
+- The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
+- The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icon-gallery/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Configure your project, Icons, Components.
+- `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.app-icon`.
 
 ## Stories
 

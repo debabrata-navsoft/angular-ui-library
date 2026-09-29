@@ -3,6 +3,10 @@ import '../src/stories/theme.css';
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: { order: ['Configure your project', 'Icons', 'Components'] },
+    },
+
     controls: {
       matchers: {
         color: /(background|color)$/i,

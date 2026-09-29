@@ -12,6 +12,8 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-onboarding"
   ],
-  "framework": "@storybook/angular-vite"
+  "framework": "@storybook/angular-vite",
+  // Serve the drop-in SVG icons at /icons for <app-icon>
+  "staticDirs": [{ "from": "../src/stories/icons", "to": "/icons" }]
 };
 export default config;

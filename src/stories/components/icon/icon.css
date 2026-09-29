@@ -1,0 +1,18 @@
+/* Not encapsulated (see icon.component.ts), so every selector is scoped under .app-icon */
+.app-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 0;
+
+  & > span,
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Only when strokeWidth is set; otherwise the SVG file's own stroke-width is kept */
+  &[style*='--icon-stroke'] svg {
+    stroke-width: var(--icon-stroke);
+  }
+}

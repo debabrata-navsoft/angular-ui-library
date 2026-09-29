@@ -23,6 +23,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "src/stories/icons",
+                "output": "icons"
               }
             ],
             "styles": [
