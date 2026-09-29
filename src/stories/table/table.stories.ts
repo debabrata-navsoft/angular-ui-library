@@ -29,17 +29,9 @@ type Story = StoryObj<TableComponent>;
 
 export const Default: Story = {};
 
-export const Striped: Story = {
-  args: {
-    striped: true,
-  },
-};
+export const Striped: Story = { args: { striped: true } };
 
-export const Bordered: Story = {
-  args: {
-    bordered: true,
-  },
-};
+export const Bordered: Story = { args: { bordered: true } };
 
 export const WithFilter: Story = {
   args: {

@@ -15,20 +15,8 @@ const meta: Meta<SearchInputComponent> = {
 export default meta;
 type Story = StoryObj<SearchInputComponent>;
 
-export const Default: Story = {
-  args: {
-    placeholder: 'Search...',
-  },
-};
+export const Default: Story = { args: { placeholder: 'Search...' } };
 
-export const WithValue: Story = {
-  args: {
-    value: 'Angular',
-  },
-};
+export const WithValue: Story = { args: { value: 'Angular' } };
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-};
+export const Disabled: Story = { args: { disabled: true } };

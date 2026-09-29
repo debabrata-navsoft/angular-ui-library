@@ -1,0 +1,14 @@
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.badge--pill {
+  border-radius: 999px;
+}

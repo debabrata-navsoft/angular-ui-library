@@ -1,0 +1,37 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled):not(.active) {
+  background: var(--ui-surface-muted);
+}
+
+.pagination button.active {
+  border-color: var(--ui-primary);
+  background: var(--ui-primary);
+  color: #fff;
+}
+
+.pagination button:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+}
+
+.ellipsis {
+  padding: 0 6px;
+  color: #999;
+}

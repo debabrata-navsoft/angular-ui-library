@@ -1,0 +1,27 @@
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: var(--ui-primary);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb [aria-current='page'] {
+  color: #555;
+}
+
+.separator {
+  margin: 0 8px;
+  color: #aaa;
+}

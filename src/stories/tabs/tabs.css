@@ -1,0 +1,31 @@
+.tab-list {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.tab {
+  margin-bottom: -1px;
+  padding: 10px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ui-text);
+}
+
+.tab--active {
+  border-bottom-color: var(--ui-primary);
+  color: var(--ui-primary);
+  font-weight: 600;
+}
+
+.tab-panel {
+  padding: 16px 4px;
+  font-size: 14px;
+}

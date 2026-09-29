@@ -19,15 +19,6 @@ const meta: Meta<CardComponent> = {
 export default meta;
 type Story = StoryObj<CardComponent>;
 
-export const Default: Story = {
-  args: {
-    title: 'Card Title',
-    subtitle: 'Card subtitle',
-  },
-};
+export const Default: Story = { args: { title: 'Card Title', subtitle: 'Card subtitle' } };
 
-export const TitleOnly: Story = {
-  args: {
-    title: 'Card Title',
-  },
-};
+export const TitleOnly: Story = { args: { title: 'Card Title' } };

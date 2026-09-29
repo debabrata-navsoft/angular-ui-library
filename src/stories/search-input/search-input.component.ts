@@ -5,14 +5,18 @@ import { Component, input, output } from '@angular/core';
   template: `
     <input
       type="search"
-      class="search-input"
+      class="ui-control"
       [placeholder]="placeholder()"
       [value]="value()"
       [disabled]="disabled()"
-      (input)="onInput($event)"
+      (input)="search.emit($any($event.target).value)"
     />
   `,
-  styleUrl: './search-input.css',
+  styles: `
+    :host {
+      display: block;
+    }
+  `,
 })
 export class SearchInputComponent {
   /** Text shown when the input is empty */
@@ -26,8 +30,4 @@ export class SearchInputComponent {
 
   /** Emits the current text on every keystroke */
   readonly search = output<string>();
-
-  onInput(event: Event) {
-    this.search.emit((event.target as HTMLInputElement).value);
-  }
 }
