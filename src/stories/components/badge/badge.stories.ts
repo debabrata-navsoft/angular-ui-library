@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { TONES } from '../types';
+import { TONES } from '../../types';
 import { BadgeComponent } from './badge.component';
 
 const meta: Meta<BadgeComponent> = {

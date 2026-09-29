@@ -21,11 +21,12 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 src/stories/
   theme.css          Global design tokens (--ui-*), .tone-* color classes, shared .ui-* classes
   types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User
-  <name>/
-    <name>.component.ts   Class only: inputs/outputs/logic
-    <name>.html           Template (templateUrl)
-    <name>.css            Styles (styleUrl)
-    <name>.stories.ts
+  components/
+    <name>/
+      <name>.component.ts   Class only: inputs/outputs/logic
+      <name>.html           Template (templateUrl)
+      <name>.css            Styles (styleUrl)
+      <name>.stories.ts
   Configure.mdx, assets/   Storybook welcome page (boilerplate)
 src/app/             Demo Angular app (not used by Storybook)
 src/styles.css       Imports stories/theme.css for the app
@@ -33,7 +34,7 @@ src/styles.css       Imports stories/theme.css for the app
                      manager-head.html styles the Storybook sidebar (restart Storybook after editing)
 ```
 
-All components live in `src/stories/<name>/`, one folder per component, with no nested folders.
+All components live in `src/stories/components/<name>/`, one folder per component. Import shared types with `from '../../types'` and other components with `from '../<other>/<other>.component'`.
 Every story title is `Components/<Name>`. Do not use an `Example/` group.
 
 ## Component conventions
@@ -79,5 +80,5 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 
 ## Adding a component
 
-1. Create `src/stories/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
+1. Create `src/stories/components/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
 2. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook`.

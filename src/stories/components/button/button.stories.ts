@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
-import { SIZES } from '../types';
+import { SIZES } from '../../types';
 import { ButtonComponent } from './button.component';
 
 const meta: Meta<ButtonComponent> = {

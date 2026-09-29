@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 
 import { ButtonComponent } from '../button/button.component';
-import type { User } from '../types';
+import type { User } from '../../types';
 
 @Component({
   selector: 'storybook-header',

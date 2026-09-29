@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 
-import { TONE_ICONS, type Tone } from '../types';
+import { TONE_ICONS, type Tone } from '../../types';
 
 @Component({
   selector: 'app-alert',

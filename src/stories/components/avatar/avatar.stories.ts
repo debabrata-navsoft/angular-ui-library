@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { SIZES } from '../types';
+import { SIZES } from '../../types';
 import { AvatarComponent } from './avatar.component';
 
 const meta: Meta<AvatarComponent> = {

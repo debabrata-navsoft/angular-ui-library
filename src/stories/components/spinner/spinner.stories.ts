@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { SIZES } from '../types';
+import { SIZES } from '../../types';
 import { SpinnerComponent } from './spinner.component';
 
 const meta: Meta<SpinnerComponent> = {

@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 
-import type { Size } from '../types';
+import type { Size } from '../../types';
 
 @Component({
   selector: 'storybook-button',

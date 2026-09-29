@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 
 import { HeaderComponent } from '../header/header.component';
-import type { User } from '../types';
+import type { User } from '../../types';
 
 @Component({
   selector: 'storybook-page',

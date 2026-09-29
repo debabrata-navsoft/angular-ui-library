@@ -1,6 +1,6 @@
 import { Component, effect, input, model } from '@angular/core';
 
-import { TONE_ICONS, type Tone } from '../types';
+import { TONE_ICONS, type Tone } from '../../types';
 
 @Component({
   selector: 'app-toast',

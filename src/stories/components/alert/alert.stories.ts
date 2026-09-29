@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
-import { TONES } from '../types';
+import { TONES } from '../../types';
 import { AlertComponent } from './alert.component';
 
 const meta: Meta<AlertComponent> = {

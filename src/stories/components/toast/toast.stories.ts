@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { moduleMetadata } from '@storybook/angular-vite';
 
 import { ButtonComponent } from '../button/button.component';
-import { TONES } from '../types';
+import { TONES } from '../../types';
 import { ToastComponent } from './toast.component';
 
 const meta: Meta<ToastComponent> = {

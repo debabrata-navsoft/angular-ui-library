@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-import type { Tone } from '../types';
+import type { Tone } from '../../types';
 
 @Component({
   selector: 'app-badge',

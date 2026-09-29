@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { TONES } from '../types';
+import { TONES } from '../../types';
 import { ProgressBarComponent } from './progress-bar.component';
 
 const meta: Meta<ProgressBarComponent> = {
