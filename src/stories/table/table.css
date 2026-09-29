@@ -1,0 +1,55 @@
+.table-filter {
+  margin-bottom: 12px;
+  max-width: 300px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table th {
+  border-top: 1px solid #e0e0e0;
+  background: #f7f7f7;
+  font-weight: 600;
+  user-select: none;
+}
+
+.table th.sortable {
+  cursor: pointer;
+}
+
+.table th.sortable:hover {
+  background: #eee;
+}
+
+.sort-icon {
+  margin-left: 4px;
+  font-size: 10px;
+}
+
+.table tbody tr:hover {
+  background: #f0f8ff;
+}
+
+.table--striped tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.table--bordered th,
+.table--bordered td {
+  border: 1px solid #e0e0e0;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+}
