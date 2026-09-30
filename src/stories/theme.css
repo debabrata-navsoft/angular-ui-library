@@ -220,6 +220,11 @@ select.ui-control {
   opacity: 1;
 }
 
+/* Dialog footer slot: the wrapper steps aside so its buttons are laid out (with gap) by the dialog footer */
+[dialogFooter] {
+  display: contents;
+}
+
 /* Buttons: .ui-btn (outline) + --primary (gradient) | --danger (red) | --text (no box), with --sm / --icon sizes.
    Combine --text --danger for a red text button. */
 .ui-btn {
