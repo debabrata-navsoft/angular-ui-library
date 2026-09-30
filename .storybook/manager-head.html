@@ -61,7 +61,8 @@
   }
 
   /* Icon box: Storybook's own icon wrapper, with its icon hidden and ours drawn inside */
-  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a) > :first-child {
+  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a)
+    > :first-child {
     display: grid;
     flex: none;
     place-items: center;
@@ -72,10 +73,13 @@
     background: #fff;
     transform: none;
   }
-  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a) > :first-child > svg {
+  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a)
+    > :first-child
+    > svg {
     display: none;
   }
-  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a) > :first-child::before,
+  :is(.sidebar-subheading [data-action='collapse-root'], .sidebar-item:not([data-parent-id]) > a)
+    > :first-child::before,
   .sidebar-subheading [data-action='collapse-root']::after {
     content: '';
     width: 16px;
