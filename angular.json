@@ -28,6 +28,11 @@
                 "glob": "**/*.svg",
                 "input": "src/stories/icons",
                 "output": "icons"
+              },
+              {
+                "glob": "**/*.json",
+                "input": "src/stories/lottie",
+                "output": "lottie"
               }
             ],
             "styles": [
@@ -115,6 +120,11 @@
                 "glob": "**/*.svg",
                 "input": "src/stories/icons",
                 "output": "icons"
+              },
+              {
+                "glob": "**/*.json",
+                "input": "src/stories/lottie",
+                "output": "lottie"
               }
             ],
             "outputHashing": "none",

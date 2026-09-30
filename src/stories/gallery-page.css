@@ -71,6 +71,19 @@
     }
   }
 
+  /* Checkbox control (e.g. "Loop all", "Play on hover") */
+  .control--check {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+
+    input {
+      width: auto;
+    }
+  }
+
   .grid {
     display: grid;
   }

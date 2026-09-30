@@ -13,7 +13,11 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding"
   ],
   "framework": "@storybook/angular-vite",
-  // public/ gives the NexUI favicon.svg; the drop-in SVG icons are served at /icons for <nex-icon>
-  "staticDirs": ["../public", { "from": "../src/stories/icons", "to": "/icons" }]
+  // public/ gives the NexUI favicon.svg; drop-in SVG icons are served at /icons, Lottie files at /lottie
+  "staticDirs": [
+    "../public",
+    { "from": "../src/stories/icons", "to": "/icons" },
+    { "from": "../src/stories/lottie", "to": "/lottie" }
+  ]
 };
 export default config;

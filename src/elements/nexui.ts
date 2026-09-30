@@ -38,6 +38,7 @@ import { ImageUploadComponent } from '../stories/components/image-upload/image-u
 import { InplaceComponent } from '../stories/components/inplace/inplace.component';
 import { InputNumberComponent } from '../stories/components/input-number/input-number.component';
 import { InputOtpComponent } from '../stories/components/input-otp/input-otp.component';
+import { LottieComponent } from '../stories/components/lottie/lottie.component';
 import { MegaMenuComponent } from '../stories/components/mega-menu/mega-menu.component';
 import { MenuComponent } from '../stories/components/menu/menu.component';
 import { MenubarComponent } from '../stories/components/menubar/menubar.component';
@@ -100,6 +101,7 @@ const components: Type<unknown>[] = [
   InplaceComponent,
   InputNumberComponent,
   InputOtpComponent,
+  LottieComponent,
   MegaMenuComponent,
   MenuComponent,
   MenubarComponent,

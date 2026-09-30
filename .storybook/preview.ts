@@ -6,7 +6,7 @@ import '../src/stories/gallery-page.css';
 const preview: Preview = {
   parameters: {
     options: {
-      storySort: { order: ['Getting Started', 'Components', 'Icons', 'Animations', 'Onboarding', ['Tour', 'Checklist']] },
+      storySort: { order: ['Getting Started', 'Components', 'Icons', 'Animations', 'Onboarding', ['Tour', 'Checklist'], 'NexLottie'] },
     },
 
     controls: {

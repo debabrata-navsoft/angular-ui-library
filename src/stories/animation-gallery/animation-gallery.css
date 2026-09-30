@@ -1,15 +1,4 @@
 /* Shared page layout comes from src/stories/gallery-page.css */
-.control--check {
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.control--check input {
-  width: auto;
-}
 
 .grid {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
