@@ -13,6 +13,7 @@ import {
   markClosedShapes,
 } from '../components/icon/icon.component';
 import { SearchInputComponent } from '../components/search-input/search-input.component';
+import { copyToClipboard } from '../clipboard';
 
 export interface GalleryIcon {
   name: string;
@@ -169,17 +170,4 @@ function toSvgFile(source: string, { size, strokeWidth, variant }: Settings, col
     `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">\n` +
     `${background}\n${svg.replace('<svg', '<svg x="5" y="5"')}\n</svg>`
   );
-}
-
-/** Clipboard API with a fallback for browsers/iframes where it is blocked */
-async function copyToClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch {
-    const textarea = Object.assign(document.createElement('textarea'), { value: text });
-    document.body.append(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    textarea.remove();
-  }
 }

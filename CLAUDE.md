@@ -19,12 +19,16 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 
 ```
 src/stories/
-  theme.css          Global design tokens (--ui-*), .tone-* color classes, shared .ui-* classes
+  theme.css          Global design tokens (--ui-*), .tone-* color classes, shared .ui-* classes; imports animations.css
+  animations.css     nex-anim-* animation classes (see Animations below)
+  clipboard.ts       copyToClipboard() shared by the Icons and Animations pages
+  gallery-page.css   Shared layout of the Icons and Animations pages (.gallery-page wrapper), loaded by preview.ts
   types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
   anchor-position.ts Shared fixed-position helper for popovers and popup menus
   menu-utils.ts      Shared menu logic: runItem, MenuPath, DismissableMenu, PopupMenu
   icons/             Drop-in .svg files for <nex-icon name="file-name" />: full Lucide set + user icons (see icons/README.md)
-  icon-gallery/      "Icons" docs page (top of sidebar): search, customize, copy code. Not a library component
+  icon-gallery/      "Icons" docs page: search, customize, copy code. Not a library component
+  animation-gallery/ "Animations" docs page: filter, preview, replay, copy code. Not a library component
   components/
     <name>/
       <name>.component.ts   Class only: inputs/outputs/logic
@@ -76,9 +80,14 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icon-gallery/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
 - `http://localhost:6006/` opens Configure your project (a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
-- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started (Configure.mdx), Components, Icons (moved below Components by CSS in manager-head.html).
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started (Configure.mdx), Components, Icons, Animations (root pages are moved below Components with CSS `order` in manager-head.html).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.
+
+## Animations
+
+- `src/stories/animations.css` (imported by theme.css, so global) defines `nex-anim-<name>` classes for any element, tuned with `--nex-anim-duration`, `--nex-anim-delay`, `--nex-anim-ease`, `--nex-anim-repeat`. A shared `[class*='nex-anim-']` rule sets the defaults; each class sets `animation-name` (loop classes use the full shorthand with `infinite`). `prefers-reduced-motion` turns them off.
+- Categories are the `/* === Name === */` comments (Entrance, Attention, Loop, Exit). The **Animations** page (`animation-gallery/animations.stories.ts`) imports the file with `?raw` and `parseAnimations()` builds the list and each card's standalone CSS, so a new class plus its `@keyframes nex-<name>` needs no other changes.
 
 ## Shared patterns
 

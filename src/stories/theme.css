@@ -1,5 +1,8 @@
 /* Shared design tokens and utility classes used by every component in src/stories. */
 
+/* nex-anim-* animation classes (Animations page) */
+@import './animations.css';
+
 :root {
   --ui-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
