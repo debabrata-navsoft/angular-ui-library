@@ -33,7 +33,8 @@ src/stories/
 src/app/             Demo Angular app (not used by Storybook)
 src/styles.css       Imports stories/theme.css for the app
 .storybook/          Storybook config; preview.ts imports src/stories/theme.css
-                     manager-head.html styles the Storybook sidebar (restart Storybook after editing)
+                     manager.ts sets the Storybook UI theme and brand name "Angular UI Library"
+                     manager-head.html styles the Storybook sidebar (restart Storybook after editing either)
 ```
 
 All components live in `src/stories/components/<name>/`, one folder per component. Import shared types with `from '../../types'` and other components with `from '../<other>/<other>.component'`.
