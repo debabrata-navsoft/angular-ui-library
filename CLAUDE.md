@@ -20,7 +20,9 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 ```
 src/stories/
   theme.css          Global design tokens (--ui-*), .tone-* color classes, shared .ui-* classes
-  types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User
+  types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
+  anchor-position.ts Shared fixed-position helper for popovers and popup menus
+  menu-utils.ts      Shared menu logic: runItem, MenuPath, DismissableMenu, PopupMenu
   icons/             Drop-in .svg files for <app-icon name="file-name" />: full Lucide set + user icons (see icons/README.md)
   icon-gallery/      "Icons" docs page (top of sidebar): search, customize, copy code. Not a library component
   components/
@@ -55,10 +57,11 @@ Every story title is `Components/<Name>`. Do not use an `Example/` group.
 The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neutrals, with soft layered shadows, rounded corners, a glowing focus ring on every interactive element, and short entrance/hover animations. Keep new components consistent with this:
 
 - Use theme variables, not hex values. Colors: `--ui-primary`, `--ui-primary-hover`, `--ui-accent`, `--ui-gradient`, `--ui-primary-soft`, `--ui-text`, `--ui-text-muted`, `--ui-text-subtle`, `--ui-border`, `--ui-border-strong`, `--ui-surface`, `--ui-surface-muted`, `--ui-surface-sunken`, `--ui-success`, `--ui-warning`, `--ui-danger`. Shape and motion: `--ui-radius-sm`, `--ui-radius`, `--ui-radius-lg`, `--ui-shadow-sm`, `--ui-shadow`, `--ui-shadow-lg`, `--ui-ring`, `--ui-ease`, `--ui-font`.
-- Selected/active states use `background: var(--ui-gradient)` with white text. Hover uses `--ui-primary-soft` or a small `translateY(-1px)` lift. `:focus-visible` uses `box-shadow: var(--ui-ring)`.
+- Selected/active states use `background: var(--ui-gradient)` with white text. Hover changes color, background, border or shadow only (e.g. `--ui-primary-soft`). Never move elements on hover (no `translateY` lift). `:focus-visible` uses `box-shadow: var(--ui-ring)`.
 - Alert and Toast show a round tone icon: `<span class="ui-tone-icon">{{ icons[type()] }}</span>` with `TONE_ICONS`.
 - Color variants: add the class `tone-<tone>` and read `--tone-bg`, `--tone-fg`, `--tone-border`, `--tone-solid`. Type the input as `Tone` from `types.ts` (`info | success | warning | danger | neutral`).
 - Form fields: wrap in `.ui-field`, with `.ui-label`, `.ui-control` (on input/select/textarea), `.ui-hint` and `.ui-error`. `aria-invalid="true"` on a `.ui-control` gives it a red border.
+- Buttons inside components use the shared `.ui-btn` classes: `.ui-btn--primary` (gradient), `--danger`, `--text` (combine with `--danger` for red text), `--sm`, `--icon`. Don't write component-local button CSS.
 - Close buttons use `.ui-close`. Screen-reader-only text uses `.ui-visually-hidden`.
 - The theme is global, so component CSS can use these classes despite view encapsulation.
 
@@ -69,6 +72,18 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icon-gallery/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
 - Sidebar order is set in `.storybook/preview.ts` (`storySort`): Configure your project, Icons, Components.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.app-icon`.
+
+## Shared patterns
+
+- Menus (Menu, Menubar, MegaMenu, PanelMenu, TieredMenu) take `[model]="MenuItem[]"` from `types.ts`: `icon` is an icon file name, `command` runs on click, plus `url`, `items`, `separator`, `disabled`, `badge`. Popup menus expose `toggle(event)`, `show(event)`, `hide()`.
+- Drag and drop uses `@angular/cdk/drag-drop` (PickList). Style CDK states (`.cdk-drag-preview`, `.cdk-drag-placeholder`, `.cdk-drop-list-dragging`) in the component CSS. The preview is a clone of the item, so component styles still apply.
+- Tree and TreeTable take `TreeNode[]` from `types.ts` (`key` is required and must be unique).
+- ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
+- Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/anchor-position.ts`.
+- All menus render rows with the internal `app-menu-item` (`components/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.
+- ConfirmDialog renders `<app-dialog>` internally; its No/Yes are `.ui-btn--text` (Yes turns red with `acceptTone: 'danger'`).
+- `*-demo.component.ts` files (confirm-dialog, overlay-panel) are story-only helpers for examples that need injected services or icon buttons. They are not part of the library.
+- AnimateOnScroll is a wrapper component (`<app-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 
 ## Stories
 

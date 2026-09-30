@@ -110,7 +110,6 @@
     &:hover {
       border-color: var(--ui-primary);
       box-shadow: var(--ui-shadow);
-      transform: translateY(-2px);
     }
 
     &:focus-visible {
@@ -178,7 +177,8 @@
     width: 120px;
     height: 120px;
     border-radius: var(--ui-radius);
-    background: repeating-conic-gradient(var(--ui-surface-sunken) 0 25%, var(--ui-surface) 0 50%) 0 0 / 16px 16px;
+    background: repeating-conic-gradient(var(--ui-surface-sunken) 0 25%, var(--ui-surface) 0 50%) 0
+      0 / 16px 16px;
 
     svg {
       width: 72px;

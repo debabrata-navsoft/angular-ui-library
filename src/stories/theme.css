@@ -41,6 +41,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Slim scrollbars for every scrolling area (lists, menus, dialogs) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--ui-border-strong) padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ui-gradient) border-box;
+}
+
 /* Color tones. Set a tone-* class, then read --tone-bg / --tone-fg / --tone-border / --tone-solid. */
 .tone-info {
   --tone-bg: #eef2ff;
@@ -193,6 +218,106 @@ select.ui-control {
 .ui-close:hover {
   background: rgba(15, 23, 42, 0.08);
   opacity: 1;
+}
+
+/* Buttons: .ui-btn (outline) + --primary (gradient) | --danger (red) | --text (no box), with --sm / --icon sizes.
+   Combine --text --danger for a red text button. */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--ui-surface);
+  box-shadow:
+    inset 0 0 0 1px var(--ui-border-strong),
+    var(--ui-shadow-sm);
+  color: var(--ui-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--ui-ease),
+    color var(--ui-ease),
+    box-shadow var(--ui-ease),
+    filter var(--ui-ease);
+}
+
+.ui-btn:hover:not(:disabled) {
+  box-shadow:
+    inset 0 0 0 1px var(--ui-primary),
+    var(--ui-shadow);
+  color: var(--ui-primary);
+}
+
+.ui-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ui-ring);
+}
+
+.ui-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ui-btn--primary,
+.ui-btn--danger,
+.ui-btn--primary:hover:not(:disabled),
+.ui-btn--danger:hover:not(:disabled) {
+  color: #fff;
+}
+
+.ui-btn--primary {
+  background: var(--ui-gradient);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+.ui-btn--danger {
+  background: var(--ui-danger);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+}
+
+.ui-btn--primary:hover:not(:disabled),
+.ui-btn--danger:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  filter: brightness(1.06);
+}
+
+.ui-btn--text,
+.ui-btn--text:hover:not(:disabled) {
+  background: none;
+  box-shadow: none;
+  color: var(--ui-primary);
+  filter: none;
+}
+
+.ui-btn--text:hover:not(:disabled) {
+  background: var(--ui-primary-soft);
+}
+
+.ui-btn--text.ui-btn--danger,
+.ui-btn--text.ui-btn--danger:hover:not(:disabled) {
+  color: var(--ui-danger);
+}
+
+.ui-btn--text.ui-btn--danger:hover:not(:disabled) {
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.ui-btn--sm {
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.ui-btn--icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
 }
 
 .ui-visually-hidden {

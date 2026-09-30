@@ -15,12 +15,8 @@
     filter var(--ui-ease);
 }
 
-.storybook-button:hover {
-  transform: translateY(-1px);
-}
-
 .storybook-button:active {
-  transform: translateY(0) scale(0.97);
+  transform: scale(0.97);
 }
 
 .storybook-button:focus-visible {
