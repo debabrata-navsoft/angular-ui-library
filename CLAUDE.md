@@ -34,8 +34,10 @@ src/stories/
   Configure.mdx, assets/   Storybook welcome page (boilerplate)
 src/app/             Demo Angular app (not used by Storybook)
 src/styles.css       Imports stories/theme.css for the app
+public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook (staticDirs)
 .storybook/          Storybook config; preview.ts imports src/stories/theme.css
                      manager.ts sets the Storybook UI theme and brand name "NexUI — Next-generation UI"
+                     and renames the browser tab ("NexUI - Button - Primary") over Storybook's own title
                      manager-head.html styles the Storybook sidebar (restart Storybook after editing either)
 ```
 
