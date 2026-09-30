@@ -2,9 +2,11 @@ import {
   Component,
   ElementRef,
   afterNextRender,
+  booleanAttribute,
   input,
   linkedSignal,
   model,
+  numberAttribute,
   output,
   viewChildren,
 } from '@angular/core';
@@ -23,13 +25,13 @@ export class InputOtpComponent {
   readonly value = model('');
 
   /** Number of boxes (characters in the code) */
-  readonly length = input(4);
+  readonly length = input(4, { transform: numberAttribute });
 
   /** Accept digits only and show the numeric keyboard on mobile? */
-  readonly integerOnly = input(false);
+  readonly integerOnly = input(false, { transform: booleanAttribute });
 
   /** Hide the characters like a password field? */
-  readonly mask = input(false);
+  readonly mask = input(false, { transform: booleanAttribute });
 
   /** Box size */
   readonly size = input<Size>('medium');
@@ -38,13 +40,13 @@ export class InputOtpComponent {
   readonly variant = input<'box' | 'underline'>('box');
 
   /** Is the input disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Show a red border on every box? */
-  readonly invalid = input(false);
+  readonly invalid = input(false, { transform: booleanAttribute });
 
   /** Focus the first box when the component is rendered? */
-  readonly autofocus = input(false);
+  readonly autofocus = input(false, { transform: booleanAttribute });
 
   /** Zero-based box indexes after which a dash is shown, e.g. [2] for a 3-3 code */
   readonly separatorAfter = input<number[]>([]);

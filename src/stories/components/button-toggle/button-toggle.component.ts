@@ -1,4 +1,4 @@
-import { Component, computed, input, model } from '@angular/core';
+import { Component, booleanAttribute, computed, input, model } from '@angular/core';
 
 import type { Size } from '../../types';
 import { IconComponent } from '../icon/icon.component';
@@ -28,19 +28,19 @@ export class ButtonToggleComponent<T = unknown> {
   readonly value = model<T | T[] | null>(null);
 
   /** Allow selecting several buttons */
-  readonly multiple = input(false);
+  readonly multiple = input(false, { transform: booleanAttribute });
 
   /** Stack the buttons vertically */
-  readonly vertical = input(false);
+  readonly vertical = input(false, { transform: booleanAttribute });
 
   /** Show a check mark on selected buttons */
-  readonly showCheck = input(true);
+  readonly showCheck = input(true, { transform: booleanAttribute });
 
   /** Button size */
   readonly size = input<Size>('medium');
 
   /** Disable the whole group */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Accessible name for the group */
   readonly ariaLabel = input('');

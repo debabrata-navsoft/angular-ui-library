@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model } from '@angular/core';
 
 @Component({
   selector: 'nex-toggle',
@@ -13,5 +13,5 @@ export class ToggleComponent {
   readonly checked = model(false);
 
   /** Is the switch disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 }

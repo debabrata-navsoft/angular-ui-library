@@ -1,4 +1,4 @@
-import { Component, computed, input, model } from '@angular/core';
+import { Component, computed, input, model, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'nex-pagination',
@@ -10,10 +10,10 @@ export class PaginationComponent {
   readonly page = model(1);
 
   /** Total number of pages */
-  readonly totalPages = input(1);
+  readonly totalPages = input(1, { transform: numberAttribute });
 
   /** Page numbers shown on each side of the current page */
-  readonly siblings = input(1);
+  readonly siblings = input(1, { transform: numberAttribute });
 
   /** Page numbers to show, with null where pages are skipped */
   protected readonly pages = computed(() => {

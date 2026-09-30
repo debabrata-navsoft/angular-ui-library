@@ -5,6 +5,7 @@ import {
   effect,
   inject,
   input,
+  numberAttribute,
   signal,
 } from '@angular/core';
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
@@ -26,13 +27,19 @@ export function markClosedShapes(svg: string, attrs = 'class="nex-closed"') {
   );
 }
 
+/**
+ * Folder the icon files are loaded from (src/stories/icons is served at icons/). Apps using the Web Components
+ * can point it elsewhere, e.g. a CDN, with window.NEXUI_ICONS_URL = 'https://cdn.example.com/nexui/icons/'
+ */
+const iconsUrl = () => (globalThis as { NEXUI_ICONS_URL?: string }).NEXUI_ICONS_URL ?? 'icons/';
+
 /** Each SVG is downloaded once from /icons (served from src/stories/icons) and shared by every <nex-icon> */
 const cache = new Map<string, Promise<string>>();
 
 function loadSvg(name: string): Promise<string> {
   let svg = cache.get(name);
   if (!svg) {
-    svg = fetch(`icons/${name}.svg`).then((res) =>
+    svg = fetch(`${iconsUrl()}${name}.svg`).then((res) =>
       res.ok
         ? res.text().then(markClosedShapes)
         : Promise.reject(
@@ -80,7 +87,7 @@ export class IconComponent {
   readonly name = input.required<string>();
 
   /** Width and height in pixels */
-  readonly size = input(20);
+  readonly size = input(20, { transform: numberAttribute });
 
   /** Line thickness for outline icons. Leave empty to keep the value from the SVG file */
   readonly strokeWidth = input<number>();

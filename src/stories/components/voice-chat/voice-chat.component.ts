@@ -2,6 +2,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  booleanAttribute,
   computed,
   effect,
   inject,
@@ -62,7 +63,7 @@ export class VoiceChatComponent {
   readonly state = model<VoiceState>('idle');
 
   /** Read replies aloud with speech synthesis */
-  readonly speak = input(true);
+  readonly speak = input(true, { transform: booleanAttribute });
 
   /** Language for recognition and speech */
   readonly lang = input('en-US');

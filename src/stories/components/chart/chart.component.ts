@@ -3,9 +3,11 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  booleanAttribute,
   computed,
   inject,
   input,
+  numberAttribute,
   signal,
 } from '@angular/core';
 
@@ -76,19 +78,19 @@ export class ChartComponent {
   readonly datasets = input<ChartDataset[]>([]);
 
   /** Height in pixels. The width fills the container */
-  readonly height = input(260);
+  readonly height = input(260, { transform: numberAttribute });
 
   /** Stack bar series on top of each other */
-  readonly stacked = input(false);
+  readonly stacked = input(false, { transform: booleanAttribute });
 
   /** Curved lines (line and area) */
-  readonly smooth = input(false);
+  readonly smooth = input(false, { transform: booleanAttribute });
 
   /** Horizontal grid lines */
-  readonly showGrid = input(true);
+  readonly showGrid = input(true, { transform: booleanAttribute });
 
   /** Legend below the chart (shown for two or more series, and for pie/doughnut) */
-  readonly showLegend = input(true);
+  readonly showLegend = input(true, { transform: booleanAttribute });
 
   /** Accessible name, also the caption of the screen-reader data table */
   readonly ariaLabel = input('Chart');

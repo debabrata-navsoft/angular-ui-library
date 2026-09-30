@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, booleanAttribute, input, output } from '@angular/core';
 
 import { type MenuItemEvent, PopupMenu, runItem } from '../../menu-utils';
 import type { MenuItem } from '../../types';
@@ -15,7 +15,7 @@ export class MenuComponent extends PopupMenu {
   readonly model = input<MenuItem[]>([]);
 
   /** Hide the menu until toggle(event) / show(event) is called, then float it below the event target */
-  readonly popup = input(false);
+  readonly popup = input(false, { transform: booleanAttribute });
 
   /** Emits when an enabled item is clicked */
   readonly itemClick = output<MenuItemEvent>();

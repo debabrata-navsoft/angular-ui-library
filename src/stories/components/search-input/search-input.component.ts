@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, booleanAttribute, input, output } from '@angular/core';
 
 @Component({
   selector: 'nex-search-input',
@@ -13,7 +13,7 @@ export class SearchInputComponent {
   readonly value = input('');
 
   /** Is the input disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Emits the current text on every keystroke */
   readonly search = output<string>();

@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, booleanAttribute, input, output } from '@angular/core';
 
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ButtonComponent } from '../button/button.component';
@@ -14,10 +14,10 @@ import { OverlayPanelComponent } from './overlay-panel.component';
 })
 export class OverlayPanelDemoComponent {
   /** Passed to the panel's dismissable input */
-  readonly dismissable = input(true);
+  readonly dismissable = input(true, { transform: booleanAttribute });
 
   /** Passed to the panel's showCloseIcon input */
-  readonly showCloseIcon = input(false);
+  readonly showCloseIcon = input(false, { transform: booleanAttribute });
 
   /** Re-emits the panel's onShow */
   readonly onShow = output<void>();

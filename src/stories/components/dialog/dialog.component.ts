@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  booleanAttribute,
   effect,
   input,
   model,
@@ -33,16 +34,16 @@ export class DialogComponent {
   readonly header = input('');
 
   /** Dim and blur the page behind the dialog and block clicks on it */
-  readonly modal = input(true);
+  readonly modal = input(true, { transform: booleanAttribute });
 
   /** Show the × button and close on Escape */
-  readonly closable = input(true);
+  readonly closable = input(true, { transform: booleanAttribute });
 
   /** Close when the dimmed backdrop is clicked (modal only) */
-  readonly dismissableMask = input(false);
+  readonly dismissableMask = input(false, { transform: booleanAttribute });
 
   /** Show a button that toggles fullscreen */
-  readonly maximizable = input(false);
+  readonly maximizable = input(false, { transform: booleanAttribute });
 
   /** Where the dialog sits on the screen */
   readonly position = input<DialogPosition>('center');

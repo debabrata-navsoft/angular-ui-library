@@ -1,5 +1,15 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, DestroyRef, computed, inject, input, model, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  model,
+  numberAttribute,
+  signal,
+} from '@angular/core';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -22,10 +32,10 @@ export class InputNumberComponent {
   readonly max = input<number>();
 
   /** Amount added/removed by the buttons and ArrowUp/ArrowDown */
-  readonly step = input(1);
+  readonly step = input(1, { transform: numberAttribute });
 
   /** Show increment/decrement buttons? */
-  readonly showButtons = input(false);
+  readonly showButtons = input(false, { transform: booleanAttribute });
 
   /** Button placement: small arrows on the right, − input +, or + above and − below */
   readonly buttonLayout = input<'stacked' | 'horizontal' | 'vertical'>('stacked');
@@ -46,7 +56,7 @@ export class InputNumberComponent {
   readonly maxFractionDigits = input<number>();
 
   /** Show thousands separators? */
-  readonly useGrouping = input(true);
+  readonly useGrouping = input(true, { transform: booleanAttribute });
 
   /** Text shown before the formatted number, e.g. '$ ' */
   readonly prefix = input('');
@@ -64,13 +74,13 @@ export class InputNumberComponent {
   readonly hint = input('');
 
   /** Is the input disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Is the input read-only? */
-  readonly readonly = input(false);
+  readonly readonly = input(false, { transform: booleanAttribute });
 
   /** Show a red border? */
-  readonly invalid = input(false);
+  readonly invalid = input(false, { transform: booleanAttribute });
 
   protected readonly id = `input-number-${nextId++}`;
   protected readonly focused = signal(false);

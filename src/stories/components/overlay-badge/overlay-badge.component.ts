@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, booleanAttribute, computed, input, numberAttribute } from '@angular/core';
 
 import type { Size, Tone } from '../../types';
 
@@ -15,16 +15,16 @@ export class OverlayBadgeComponent {
   readonly value = input<number | string>('');
 
   /** Numbers above this show as "max+" (e.g. 99+) */
-  readonly max = input(99);
+  readonly max = input(99, { transform: numberAttribute });
 
   /** Show a small dot instead of the value */
-  readonly dot = input(false);
+  readonly dot = input(false, { transform: booleanAttribute });
 
   /** Keep the badge visible when the value is 0 */
-  readonly showZero = input(false);
+  readonly showZero = input(false, { transform: booleanAttribute });
 
   /** Hide the badge */
-  readonly hidden = input(false);
+  readonly hidden = input(false, { transform: booleanAttribute });
 
   /** Color tone of the badge */
   readonly severity = input<Tone>('danger');

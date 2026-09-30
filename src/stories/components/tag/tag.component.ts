@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, booleanAttribute, input } from '@angular/core';
 
 import { TONES, type Tone } from '../../types';
 import { IconComponent } from '../icon/icon.component';
@@ -21,5 +21,5 @@ export class TagComponent {
   /** Leading icon file name from src/stories/icons */
   readonly icon = input('');
   /** Fully rounded (pill) corners? */
-  readonly rounded = input(false);
+  readonly rounded = input(false, { transform: booleanAttribute });
 }

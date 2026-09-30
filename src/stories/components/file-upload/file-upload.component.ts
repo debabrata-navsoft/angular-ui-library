@@ -1,4 +1,14 @@
-import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+  output,
+  signal,
+} from '@angular/core';
 
 import type { Tone } from '../../types';
 import { BadgeComponent } from '../badge/badge.component';
@@ -58,17 +68,17 @@ export class FileUploadComponent {
   /** "advanced" shows a toolbar, drop zone and file list. "basic" is a single button */
   readonly mode = input<'advanced' | 'basic'>('advanced');
   /** Allow choosing more than one file? */
-  readonly multiple = input(false);
+  readonly multiple = input(false, { transform: booleanAttribute });
   /** Accepted file types, like the native accept attribute (".pdf,image/*") */
   readonly accept = input('');
   /** Maximum file size in bytes. 0 means no limit */
-  readonly maxFileSize = input(0);
+  readonly maxFileSize = input(0, { transform: numberAttribute });
   /** Maximum number of files. 0 means no limit */
-  readonly fileLimit = input(0);
+  readonly fileLimit = input(0, { transform: numberAttribute });
   /** Upload right after files are chosen? */
-  readonly auto = input(false);
+  readonly auto = input(false, { transform: booleanAttribute });
   /** Is the uploader disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
   /** Text of the choose button */
   readonly chooseLabel = input('Choose');
   /** Text of the upload button */

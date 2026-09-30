@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, booleanAttribute, computed, input, numberAttribute } from '@angular/core';
 
 import type { Tone } from '../../types';
 
@@ -9,13 +9,13 @@ import type { Tone } from '../../types';
 })
 export class ProgressBarComponent {
   /** Progress from 0 to 100 */
-  readonly value = input(0);
+  readonly value = input(0, { transform: numberAttribute });
 
   /** Color tone of the bar */
   readonly variant = input<Tone>('info');
 
   /** Show the percentage next to the bar? */
-  readonly showLabel = input(true);
+  readonly showLabel = input(true, { transform: booleanAttribute });
 
   protected readonly percent = computed(() => Math.round(Math.min(100, Math.max(0, this.value()))));
 }

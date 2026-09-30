@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, booleanAttribute, input, signal } from '@angular/core';
 
 export interface AccordionItem {
   title: string;
@@ -15,7 +15,7 @@ export class AccordionComponent {
   readonly items = input<AccordionItem[]>([]);
 
   /** Allow more than one section open at a time? */
-  readonly multiple = input(false);
+  readonly multiple = input(false, { transform: booleanAttribute });
 
   protected readonly openIndexes = signal<number[]>([]);
 

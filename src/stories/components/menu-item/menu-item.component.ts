@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, ViewEncapsulation, input } from '@angular/core';
+import { Component, ViewEncapsulation, booleanAttribute, input } from '@angular/core';
 
 import type { MenuItem } from '../../types';
 import { IconComponent } from '../icon/icon.component';
@@ -22,8 +22,8 @@ export class MenuItemComponent {
   readonly chevron = input('');
 
   /** Submenu open: highlights the row, rotates the chevron by --mi-turn and sets aria-expanded */
-  readonly open = input(false);
+  readonly open = input(false, { transform: booleanAttribute });
 
   /** Tree row (PanelMenu): no menuitem role and no highlight while open */
-  readonly tree = input(false);
+  readonly tree = input(false, { transform: booleanAttribute });
 }

@@ -1,4 +1,4 @@
-import { Component, effect, input, model } from '@angular/core';
+import { Component, effect, input, model, numberAttribute } from '@angular/core';
 
 import { TONE_ICONS, type Tone } from '../../types';
 
@@ -21,7 +21,7 @@ export class ToastComponent {
   readonly position = input<'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'>('top-right');
 
   /** Milliseconds before the toast hides itself. 0 keeps it open */
-  readonly duration = input(3000);
+  readonly duration = input(3000, { transform: numberAttribute });
 
   protected readonly icons = TONE_ICONS;
 

@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, booleanAttribute, inject, input, signal } from '@angular/core';
 
 import { ButtonComponent } from '../button/button.component';
 import { type Confirmation, ConfirmationService } from './confirmation.service';
@@ -25,7 +25,7 @@ export class ConfirmDialogDemoComponent {
   readonly actions = input<ConfirmDemoAction[]>([]);
 
   /** Anchor the confirmation to the clicked button (for <nex-confirm-popup>) */
-  readonly popup = input(false);
+  readonly popup = input(false, { transform: booleanAttribute });
 
   private readonly service = inject(ConfirmationService);
   protected readonly status = signal('');

@@ -1,11 +1,13 @@
 import {
   Component,
   ElementRef,
+  booleanAttribute,
   computed,
   effect,
   inject,
   input,
   model,
+  numberAttribute,
   signal,
   viewChild,
 } from '@angular/core';
@@ -82,19 +84,19 @@ export class TimePickerComponent {
   readonly hourFormat = input<'12' | '24'>('24');
 
   /** Show a seconds column? */
-  readonly showSeconds = input(false);
+  readonly showSeconds = input(false, { transform: booleanAttribute });
 
   /** Hours added or removed per step */
-  readonly stepHour = input(1);
+  readonly stepHour = input(1, { transform: numberAttribute });
 
   /** Minutes added or removed per step */
-  readonly stepMinute = input(1);
+  readonly stepMinute = input(1, { transform: numberAttribute });
 
   /** 'spinner': up/down columns. 'list': typeable input with a dropdown of times every `interval` minutes */
   readonly mode = input<'spinner' | 'list'>('spinner');
 
   /** Minutes between options in list mode */
-  readonly interval = input(30);
+  readonly interval = input(30, { transform: numberAttribute });
 
   /** Earliest option in list mode, "HH:mm" (24-hour) */
   readonly minTime = input('');
@@ -103,7 +105,7 @@ export class TimePickerComponent {
   readonly maxTime = input('');
 
   /** Show the spinner panel directly (true) or an input that opens it in a popup (false). List mode always uses a popup */
-  readonly inline = input(true);
+  readonly inline = input(true, { transform: booleanAttribute });
 
   /** Text shown above the picker */
   readonly label = input('');
@@ -112,7 +114,7 @@ export class TimePickerComponent {
   readonly placeholder = input('Select time');
 
   /** Is the picker disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   protected readonly id = `nex-time-picker-${nextId++}`;
   protected readonly opened = signal(false);

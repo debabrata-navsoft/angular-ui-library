@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, booleanAttribute, input, output } from '@angular/core';
 
 import type { Size } from '../../types';
 
@@ -9,7 +9,7 @@ import type { Size } from '../../types';
 })
 export class ButtonComponent {
   /** Is this the principal call to action on the page? */
-  readonly primary = input(false);
+  readonly primary = input(false, { transform: booleanAttribute });
 
   /** What background color to use */
   readonly backgroundColor = input<string>();

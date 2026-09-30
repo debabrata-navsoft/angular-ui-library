@@ -1,4 +1,12 @@
-import { Component, computed, input, model, signal } from '@angular/core';
+import {
+  Component,
+  booleanAttribute,
+  computed,
+  input,
+  model,
+  numberAttribute,
+  signal,
+} from '@angular/core';
 
 @Component({
   selector: 'nex-rating',
@@ -10,10 +18,10 @@ export class RatingComponent {
   readonly value = model(0);
 
   /** Number of stars */
-  readonly max = input(5);
+  readonly max = input(5, { transform: numberAttribute });
 
   /** Display only, no clicking? */
-  readonly readonly = input(false);
+  readonly readonly = input(false, { transform: booleanAttribute });
 
   protected readonly hover = signal(0);
 

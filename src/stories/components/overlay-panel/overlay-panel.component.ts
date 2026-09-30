@@ -1,4 +1,13 @@
-import { Component, ElementRef, effect, input, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  booleanAttribute,
+  effect,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 
 import { IconComponent } from '../icon/icon.component';
 import { type AnchorPosition, anchorPosition } from '../../anchor-position';
@@ -18,10 +27,10 @@ import { type AnchorPosition, anchorPosition } from '../../anchor-position';
 })
 export class OverlayPanelComponent {
   /** Close when clicking outside the panel */
-  readonly dismissable = input(true);
+  readonly dismissable = input(true, { transform: booleanAttribute });
 
   /** Show a × button in the corner */
-  readonly showCloseIcon = input(false);
+  readonly showCloseIcon = input(false, { transform: booleanAttribute });
 
   /** Accessible name for the panel */
   readonly ariaLabel = input('');

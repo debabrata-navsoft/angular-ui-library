@@ -1,10 +1,12 @@
 import {
   Component,
   DestroyRef,
+  booleanAttribute,
   computed,
   inject,
   input,
   model,
+  numberAttribute,
   output,
   signal,
 } from '@angular/core';
@@ -22,7 +24,7 @@ export class ImageUploadComponent {
   /** Image URL or data URL. Supports [(value)] two-way binding */
   readonly value = model('');
   /** Maximum file size in bytes. 0 means no limit */
-  readonly maxFileSize = input(0);
+  readonly maxFileSize = input(0, { transform: numberAttribute });
   /** "circle" makes an avatar uploader */
   readonly shape = input<'square' | 'circle'>('square');
   /** CSS width of the box */
@@ -34,7 +36,7 @@ export class ImageUploadComponent {
   /** Helper text under the label. Defaults to the size limit */
   readonly hint = input('');
   /** Is the uploader disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Emits the chosen image file */
   readonly fileSelect = output<File>();

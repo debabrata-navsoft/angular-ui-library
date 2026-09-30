@@ -26,23 +26,30 @@
       (pointercancel)="onPointerUp($event)"
     >
       <div
+        #track
         class="carousel__track"
         aria-live="polite"
         [style.--visible]="numVisible()"
         [style.--gap]="gap()"
         [style.transform]="'translateX(calc(' + -first() + ' * (100% + var(--gap)) / var(--visible)))'"
       >
-        @for (item of items(); track $index) {
-          <div
-            class="carousel__item"
-            role="group"
-            aria-roledescription="slide"
-            [attr.aria-label]="$index + 1 + ' of ' + items().length"
-            [attr.aria-hidden]="!isVisible($index)"
-            [attr.inert]="isVisible($index) ? null : ''"
-          >
-            <ng-container *ngTemplateOutlet="template(); context: { $implicit: item, index: $index }" />
-          </div>
+        @if (template(); as template) {
+          @for (item of items(); track $index) {
+            <div
+              class="carousel__item"
+              role="group"
+              aria-roledescription="slide"
+              [attr.aria-label]="$index + 1 + ' of ' + items().length"
+              [attr.aria-hidden]="!isVisible($index)"
+              [attr.inert]="isVisible($index) ? null : ''"
+            >
+              <ng-container
+                *ngTemplateOutlet="template; context: { $implicit: item, index: $index }"
+              />
+            </div>
+          }
+        } @else {
+          <ng-content />
         }
       </div>
     </div>

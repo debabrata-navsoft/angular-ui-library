@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, booleanAttribute, input, model, output } from '@angular/core';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -13,9 +13,9 @@ export class InplaceComponent {
   /** Is the content shown? Supports [(active)] two-way binding */
   readonly active = model(false);
   /** Show a close button to go back to the display? */
-  readonly closable = input(false);
+  readonly closable = input(false, { transform: booleanAttribute });
   /** Prevent activating? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
   /** Emits when the content is shown */
   readonly activate = output<void>();
   /** Emits when the display is shown again */

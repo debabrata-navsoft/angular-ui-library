@@ -1,4 +1,4 @@
-import { Component, computed, input, model, output } from '@angular/core';
+import { Component, computed, input, model, numberAttribute, output } from '@angular/core';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -22,10 +22,10 @@ export class HelpfulComponent {
   readonly noLabel = input('Not really');
 
   /** Earlier yes votes (the user's vote is added on top) */
-  readonly yesCount = input(0);
+  readonly yesCount = input(0, { transform: numberAttribute });
 
   /** Earlier no votes */
-  readonly noCount = input(0);
+  readonly noCount = input(0, { transform: numberAttribute });
 
   /** The user's vote. Supports [(vote)] two-way binding */
   readonly vote = model<HelpfulVote | null>(null);

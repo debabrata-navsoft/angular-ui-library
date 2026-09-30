@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model } from '@angular/core';
 
 export interface SelectOption {
   value: string;
@@ -24,5 +24,5 @@ export class SelectComponent {
   readonly placeholder = input('Select an option');
 
   /** Is the dropdown disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 }

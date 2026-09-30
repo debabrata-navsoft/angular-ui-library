@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model } from '@angular/core';
 
 export interface RadioOption {
   value: string;
@@ -23,10 +23,10 @@ export class RadioGroupComponent {
   readonly value = model('');
 
   /** Lay options out in a row instead of a column? */
-  readonly horizontal = input(false);
+  readonly horizontal = input(false, { transform: booleanAttribute });
 
   /** Are all options disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   protected readonly name = `radio-group-${nextId++}`;
 }

@@ -9,6 +9,7 @@ npm run storybook         # Storybook dev server on http://localhost:6006
 npm run build-storybook   # Static Storybook build -> storybook-static/
 npm start                 # Angular app (src/app) on http://localhost:4200
 npm run build             # Production app build -> dist/
+npm run build:elements    # Web Components for React/Vue/HTML -> dist/nexui-elements/browser/ (nexui.js, styles.css, icons/)
 npm test                  # Vitest unit tests (*.spec.ts)
 npx ngc -p .storybook/tsconfig.json --noEmit   # Type-check all components + stories (incl. templates)
 ```
@@ -37,6 +38,7 @@ src/stories/
       <name>.stories.ts
   Configure.mdx, assets/   Storybook welcome page (boilerplate)
 src/app/             Demo Angular app (not used by Storybook)
+src/elements/nexui.ts  Web Components entry: registers every component as <nexui-*> (Angular Elements), window.NexUI.confirm()
 src/styles.css       Imports stories/theme.css for the app
 public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook (staticDirs)
 .storybook/          Storybook config; preview.ts imports src/stories/theme.css
@@ -60,6 +62,7 @@ Every story title is `Components/<Name>`. Do not use an `Example/` group.
 - Selector prefix `nex-` (the Button/Header/Page examples keep `storybook-`).
 - Every public input/output gets a one-line `/** doc comment */`. Storybook autodocs shows these.
 - Static `class="x"` plus `[class]="'x--' + variant()"` merge in Angular. Don't repeat the base class inside the binding.
+- Boolean inputs use `input(false, { transform: booleanAttribute })` and number inputs `input(0, { transform: numberAttribute })`, so HTML attributes (`card`, `num-visible="3"`) work in the Web Components and in Angular templates.
 
 ## Styling ("Aurora" design)
 
@@ -89,6 +92,13 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - `src/stories/animations.css` (imported by theme.css, so global) defines `nex-anim-<name>` classes for any element, tuned with `--nex-anim-duration`, `--nex-anim-delay`, `--nex-anim-ease`, `--nex-anim-repeat`. A shared `[class*='nex-anim-']` rule sets the defaults; each class sets `animation-name` (loop classes use the full shorthand with `infinite`). `prefers-reduced-motion` turns them off.
 - Categories are the `/* === Name === */` comments (Entrance, Attention, Loop, Exit). The **Animations** page (`animation-gallery/animations.stories.ts`) imports the file with `?raw` and `parseAnimations()` builds the list and each card's standalone CSS, so a new class plus its `@keyframes nex-<name>` needs no other changes.
 
+## Web Components (React, Vue, plain HTML)
+
+- `npm run build:elements` builds `src/elements/nexui.ts` with Angular Elements. Every component is registered as `nexui-<name>`, not `nex-<name>`: the components render `nex-*` tags internally, and registering those names would make the browser start a second copy of each nested component.
+- Outputs are DOM events (`event.detail`). camelCase outputs are also dispatched in kebab-case (`valueChange` and `value-change`) for Vue. Arrays, objects and functions must be set as properties.
+- Features that need `<ng-template>` or services have Web Component alternatives: Carousel uses its child elements as slides when there's no template, and `window.NexUI.confirm()` wraps ConfirmationService. Icons load from `window.NEXUI_ICONS_URL` (default `icons/`).
+- The docs page is `src/stories/Frameworks.mdx` (Getting Started). Storybook MDX has no GitHub table syntax, so write tables as HTML.
+
 ## Shared patterns
 
 - Menus (Menu, Menubar, MegaMenu, PanelMenu, TieredMenu) take `[model]="MenuItem[]"` from `types.ts`: `icon` is an icon file name, `command` runs on click, plus `url`, `items`, `separator`, `disabled`, `badge`. Popup menus expose `toggle(event)`, `show(event)`, `hide()`.
@@ -106,6 +116,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Form (`nex-form`) builds a validated form from `fields: FormField[]` (or multi-step `steps: FormStep[]`) and reuses the input components. Extra field types (rating, chips, multichips, cards, segmented, choice, color) render as `.option` buttons. It has an optional header (`title`, `subtitle`, `icon`, `tone`), `card`, `layout="inline"`, `loading`, and a success view (`successTitle`). Extra content goes in `[formBeforeActions]` (above the buttons) or the default slot (below the form). The Form stories double as ready-made templates (Login, Contact, Feedback, Survey, Newsletter, Bug report, Feature request, Onboarding).
 - Chat (`nex-chat`) appends what the user sends to `[(messages)]` (`ChatMessage[]`) and emits `send`; the consumer appends the replies. Voice Chat (`nex-voice-chat`) reuses `ChatMessage`: its mic goes idle → listening → processing → speaking with the Web Speech API (a text box when recognition isn't available), emits `utterance`, and speaks the next `them` message.
 - Helpful (`nex-helpful`) is the "Was this helpful?" vote widget.
+- Scroll Top (`nex-scroll-top`) is fixed to the page corner by default. With `[target]` set to a scrolling element, place it as that element's last child: it sticks to the element's bottom edge.
 - AnimateOnScroll is a wrapper component (`<nex-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 
 ## Stories
@@ -130,4 +141,5 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 ## Adding a component
 
 1. Create `src/stories/components/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
-2. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook`.
+2. Add it to the `components` list in `src/elements/nexui.ts` (and the element list in `Frameworks.mdx`).
+3. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook` and `npm run build:elements`.

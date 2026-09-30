@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'nex-stepper',
@@ -10,5 +10,5 @@ export class StepperComponent {
   readonly steps = input<string[]>([]);
 
   /** Index of the current step, starting at 0 */
-  readonly activeStep = input(0);
+  readonly activeStep = input(0, { transform: numberAttribute });
 }

@@ -1,5 +1,12 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, type WritableSignal, input, output, signal } from '@angular/core';
+import {
+  Component,
+  booleanAttribute,
+  input,
+  output,
+  signal,
+  type WritableSignal,
+} from '@angular/core';
 
 import { type MenuItemEvent, runItem } from '../../menu-utils';
 import type { MenuItem } from '../../types';
@@ -16,7 +23,7 @@ export class PanelMenuComponent {
   readonly model = input<MenuItem[]>([]);
 
   /** Allow more than one panel open at a time? */
-  readonly multiple = input(false);
+  readonly multiple = input(false, { transform: booleanAttribute });
 
   /** Emits when an enabled item or panel header is clicked */
   readonly itemClick = output<MenuItemEvent>();

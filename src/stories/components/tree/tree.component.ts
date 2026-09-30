@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  booleanAttribute,
   computed,
   inject,
   input,
@@ -46,7 +47,7 @@ export class TreeComponent {
   readonly selection = model<TreeNode | TreeNode[] | null>(null);
 
   /** Show a search box that filters nodes by label? */
-  readonly filter = input(false);
+  readonly filter = input(false, { transform: booleanAttribute });
 
   /** Placeholder text for the search box */
   readonly filterPlaceholder = input('Search...');

@@ -2,16 +2,18 @@ import {
   Component,
   ElementRef,
   Injector,
-  type OnInit,
   afterNextRender,
+  booleanAttribute,
   computed,
   effect,
   inject,
   input,
   linkedSignal,
   model,
+  numberAttribute,
   output,
   signal,
+  type OnInit,
   viewChild,
 } from '@angular/core';
 
@@ -109,7 +111,7 @@ export class CalendarComponent implements OnInit {
   readonly selectionMode = input<CalendarSelectionMode>('single');
 
   /** Show the calendar panel directly instead of an input with a popup */
-  readonly inline = input(false);
+  readonly inline = input(false, { transform: booleanAttribute });
 
   /** Earliest selectable date */
   readonly minDate = input<Date | null>(null);
@@ -124,16 +126,16 @@ export class CalendarComponent implements OnInit {
   readonly disabledDays = input<number[]>([]);
 
   /** First column of the week (0 = Sunday, 1 = Monday) */
-  readonly firstDayOfWeek = input(0);
+  readonly firstDayOfWeek = input(0, { transform: numberAttribute });
 
   /** Show a time picker under the grid (single selection only) */
-  readonly showTime = input(false);
+  readonly showTime = input(false, { transform: booleanAttribute });
 
   /** Clock used by the time picker and the input text */
   readonly hourFormat = input<'12' | '24'>('24');
 
   /** Show Today and Clear buttons under the grid */
-  readonly showButtonBar = input(false);
+  readonly showButtonBar = input(false, { transform: booleanAttribute });
 
   /** What is picked: a day, a month (month picker) or a year (year picker) */
   readonly view = input<CalendarView>('date');
@@ -148,13 +150,13 @@ export class CalendarComponent implements OnInit {
   readonly label = input('');
 
   /** Is the calendar disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Show a calendar button inside the input */
-  readonly showIcon = input(false);
+  readonly showIcon = input(false, { transform: booleanAttribute });
 
   /** Months shown side by side */
-  readonly numberOfMonths = input(1);
+  readonly numberOfMonths = input(1, { transform: numberAttribute });
 
   /** Emits the clicked date */
   readonly select = output<Date>();

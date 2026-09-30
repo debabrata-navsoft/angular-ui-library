@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'nex-textarea',
@@ -16,11 +16,11 @@ export class TextareaComponent {
   readonly value = model('');
 
   /** Visible number of lines */
-  readonly rows = input(4);
+  readonly rows = input(4, { transform: numberAttribute });
 
   /** Maximum number of characters. Shows a counter when set */
-  readonly maxLength = input(0);
+  readonly maxLength = input(0, { transform: numberAttribute });
 
   /** Is the textarea disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 }

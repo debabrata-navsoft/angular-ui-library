@@ -1,6 +1,7 @@
 import {
   Component,
   TemplateRef,
+  booleanAttribute,
   computed,
   contentChild,
   input,
@@ -52,13 +53,13 @@ export class PickListComponent<T = unknown> {
   readonly optionLabel = input('label');
 
   /** Show a search box above each list? */
-  readonly filter = input(false);
+  readonly filter = input(false, { transform: booleanAttribute });
 
   /** Placeholder text for the search boxes */
   readonly filterPlaceholder = input('Filter...');
 
   /** Drag items between the lists and reorder them within a list? */
-  readonly dragdrop = input(true);
+  readonly dragdrop = input(true, { transform: booleanAttribute });
 
   /** Emits the items moved from source to target */
   readonly moveToTarget = output<T[]>();

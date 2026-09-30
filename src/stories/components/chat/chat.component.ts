@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  booleanAttribute,
   computed,
   effect,
   input,
@@ -47,7 +48,7 @@ export class ChatComponent {
   readonly avatar = input('');
 
   /** Show the "typing…" bubble */
-  readonly typing = input(false);
+  readonly typing = input(false, { transform: booleanAttribute });
 
   /** Composer placeholder */
   readonly placeholder = input('Type a message…');
@@ -56,7 +57,7 @@ export class ChatComponent {
   readonly height = input('480px');
 
   /** Disable the composer */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Emits the text of each message the user sends */
   readonly send = output<string>();

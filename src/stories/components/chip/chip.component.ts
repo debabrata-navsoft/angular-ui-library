@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, booleanAttribute, input, output, signal } from '@angular/core';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -16,9 +16,9 @@ export class ChipComponent {
   /** Leading image URL, shown as a circle. Takes precedence over icon */
   readonly image = input('');
   /** Show a remove (×) button that hides the chip */
-  readonly removable = input(false);
+  readonly removable = input(false, { transform: booleanAttribute });
   /** Dim the chip and disable the remove button */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
   /** Emitted when the remove button is clicked */
   readonly remove = output<Event>();
 

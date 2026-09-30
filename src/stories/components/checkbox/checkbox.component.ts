@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model } from '@angular/core';
 
 @Component({
   selector: 'nex-checkbox',
@@ -13,5 +13,5 @@ export class CheckboxComponent {
   readonly checked = model(false);
 
   /** Is the checkbox disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 }

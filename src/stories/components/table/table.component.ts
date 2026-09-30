@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, booleanAttribute, computed, input, output, signal } from '@angular/core';
 
 import { SearchInputComponent } from '../search-input/search-input.component';
 
@@ -27,16 +27,16 @@ export class TableComponent {
   readonly data = input<TableRow[]>([]);
 
   /** Alternate row background colors? */
-  readonly striped = input(false);
+  readonly striped = input(false, { transform: booleanAttribute });
 
   /** Show borders around every cell? */
-  readonly bordered = input(false);
+  readonly bordered = input(false, { transform: booleanAttribute });
 
   /** Text shown when there are no rows */
   readonly emptyMessage = input('No data available');
 
   /** Show a search box that filters rows? */
-  readonly filterable = input(false);
+  readonly filterable = input(false, { transform: booleanAttribute });
 
   /** Placeholder text for the search box */
   readonly filterPlaceholder = input('Filter rows...');
@@ -59,7 +59,11 @@ export class TableComponent {
     }
     const keys = this.columns().map((column) => column.key);
     return rows.filter((row) =>
-      keys.some((key) => String(row[key] ?? '').toLowerCase().includes(query)),
+      keys.some((key) =>
+        String(row[key] ?? '')
+          .toLowerCase()
+          .includes(query),
+      ),
     );
   });
 

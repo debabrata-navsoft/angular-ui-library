@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, booleanAttribute, input } from '@angular/core';
 
 import type { Tone } from '../../types';
 
@@ -15,5 +15,5 @@ export class BadgeComponent {
   readonly variant = input<Tone>('info');
 
   /** Fully rounded corners? */
-  readonly pill = input(false);
+  readonly pill = input(false, { transform: booleanAttribute });
 }

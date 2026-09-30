@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, booleanAttribute, input, model } from '@angular/core';
 
 @Component({
   selector: 'nex-text-input',
@@ -25,10 +25,10 @@ export class TextInputComponent {
   readonly error = input('');
 
   /** Mark the field as required? */
-  readonly required = input(false);
+  readonly required = input(false, { transform: booleanAttribute });
 
   /** Is the input disabled? */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Accessible name when there is no visible label */
   readonly ariaLabel = input('');

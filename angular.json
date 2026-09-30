@@ -88,6 +88,33 @@
             "browserTarget": "angular-ui-library:build",
             "outputDir": "storybook-static"
           }
+        },
+        "build-elements": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/nexui-elements",
+            "browser": "src/elements/nexui.ts",
+            "index": false,
+            "tsConfig": "tsconfig.elements.json",
+            "styles": [
+              "src/stories/theme.css"
+            ],
+            "assets": [
+              {
+                "glob": "**/*.svg",
+                "input": "src/stories/icons",
+                "output": "icons"
+              }
+            ],
+            "outputHashing": "none",
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "1mb",
+                "maximumError": "2mb"
+              }
+            ]
+          }
         }
       }
     }

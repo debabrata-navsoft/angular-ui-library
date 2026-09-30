@@ -3,8 +3,10 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  booleanAttribute,
   inject,
   input,
+  numberAttribute,
   output,
   signal,
 } from '@angular/core';
@@ -36,13 +38,13 @@ export class AnimateOnScrollComponent {
   /** Entrance animation played when the content scrolls into view */
   readonly animation = input<ScrollAnimation>('fade-up');
   /** Wait before the animation starts, in milliseconds */
-  readonly delay = input(0);
+  readonly delay = input(0, { transform: numberAttribute });
   /** Animation length, in milliseconds */
-  readonly duration = input(600);
+  readonly duration = input(600, { transform: numberAttribute });
   /** Animate only the first time? When false, it replays every time it re-enters the view */
-  readonly once = input(true);
+  readonly once = input(true, { transform: booleanAttribute });
   /** How much of the element (0 to 1) must be visible to trigger */
-  readonly threshold = input(0.15);
+  readonly threshold = input(0.15, { transform: numberAttribute });
   /** Scroll container to observe. Leave empty to use the browser viewport */
   readonly root = input<HTMLElement | null>(null);
   /** Emitted when the content enters the view */

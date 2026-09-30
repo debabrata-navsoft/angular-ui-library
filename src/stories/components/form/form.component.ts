@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  booleanAttribute,
   computed,
   inject,
   input,
@@ -120,7 +121,7 @@ export class FormComponent {
   readonly tone = input<Tone | ''>('');
 
   /** Draw the form as a bordered card */
-  readonly card = input(false);
+  readonly card = input(false, { transform: booleanAttribute });
 
   /** 'inline': fields and the button on one row with a centered heading (newsletter style) */
   readonly layout = input<'stacked' | 'inline'>('stacked');
@@ -135,7 +136,7 @@ export class FormComponent {
   readonly submitIcon = input('');
 
   /** Full-width submit button */
-  readonly block = input(false);
+  readonly block = input(false, { transform: booleanAttribute });
 
   /** Text of the reset button. Leave empty to hide it */
   readonly resetLabel = input('');
@@ -144,7 +145,7 @@ export class FormComponent {
   readonly note = input('');
 
   /** Show a spinner on the submit button and block input (e.g. while saving) */
-  readonly loading = input(false);
+  readonly loading = input(false, { transform: booleanAttribute });
 
   /** After a valid submit, replace the form with this confirmation heading. Leave empty to keep the form */
   readonly successTitle = input('');
@@ -153,7 +154,7 @@ export class FormComponent {
   readonly successMessage = input('');
 
   /** Disable every field and button */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Emits the values when the form is submitted with no errors */
   readonly submitted = output<FormValue>();

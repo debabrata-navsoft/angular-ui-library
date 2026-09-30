@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, booleanAttribute, input, output } from '@angular/core';
 
 import { TONE_ICONS, type Tone } from '../../types';
 
@@ -18,7 +18,7 @@ export class AlertComponent {
   readonly message = input('');
 
   /** Show a close button? */
-  readonly dismissible = input(false);
+  readonly dismissible = input(false, { transform: booleanAttribute });
 
   /** Emits when the close button is clicked */
   readonly dismiss = output<void>();

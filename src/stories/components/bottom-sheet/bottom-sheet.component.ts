@@ -1,4 +1,4 @@
-import { Component, effect, input, model, output, signal } from '@angular/core';
+import { Component, booleanAttribute, effect, input, model, output, signal } from '@angular/core';
 
 let nextId = 0;
 
@@ -17,10 +17,10 @@ export class BottomSheetComponent {
   readonly header = input('');
 
   /** Close on backdrop click, Escape and drag-down? */
-  readonly dismissable = input(true);
+  readonly dismissable = input(true, { transform: booleanAttribute });
 
   /** Show the drag handle bar */
-  readonly showHandle = input(true);
+  readonly showHandle = input(true, { transform: booleanAttribute });
 
   /** Maximum height (any CSS length); content scrolls beyond it */
   readonly maxHeight = input('80vh');
