@@ -8,7 +8,10 @@ const meta: Meta<InputOtpComponent> = {
   title: 'Components/Input OTP',
   component: InputOtpComponent,
   tags: ['autodocs'],
-  argTypes: { size: { control: 'select', options: SIZES } },
+  argTypes: {
+    size: { control: 'select', options: SIZES },
+    variant: { control: 'inline-radio', options: ['box', 'underline'] },
+  },
   args: { label: 'Verification code', valueChange: fn(), complete: fn() },
 };
 
@@ -19,6 +22,13 @@ export const Default: Story = {};
 
 export const SixDigits: Story = {
   args: { length: 6, integerOnly: true, hint: 'Enter the 6-digit code we sent to your phone.' },
+};
+
+/** A line under each digit instead of a box */
+export const Underline: Story = { args: { variant: 'underline', integerOnly: true } };
+
+export const UnderlineSixDigits: Story = {
+  args: { variant: 'underline', length: 6, integerOnly: true, hint: 'Enter the 6-digit code.' },
 };
 
 export const Masked: Story = { args: { label: 'PIN', mask: true, integerOnly: true } };

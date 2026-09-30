@@ -4,7 +4,7 @@
   }
   <div
     class="otp"
-    [class]="'otp--' + size()"
+    [class]="['otp--' + size(), 'otp--' + variant()]"
     role="group"
     [attr.aria-labelledby]="label() ? id + '-label' : null"
     [attr.aria-describedby]="hint() ? id + '-hint' : null"

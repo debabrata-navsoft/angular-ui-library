@@ -32,6 +32,32 @@
   }
 }
 
+/* Underline variant: no box, just a line under each character that turns primary on focus */
+.otp--underline {
+  gap: 14px;
+
+  .otp__box {
+    border-width: 0 0 2px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+
+    &:focus {
+      border-color: var(--ui-primary);
+      box-shadow: 0 1px 0 0 var(--ui-primary);
+    }
+
+    &.otp__box--filled:not([aria-invalid='true'], :focus, :disabled) {
+      background: transparent;
+    }
+
+    &:disabled {
+      background: transparent;
+      opacity: 0.6;
+    }
+  }
+}
+
 .otp__separator {
   width: 12px;
   height: 2px;

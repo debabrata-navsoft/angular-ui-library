@@ -34,6 +34,9 @@ export class InputOtpComponent {
   /** Box size */
   readonly size = input<Size>('medium');
 
+  /** 'box': bordered squares. 'underline': a line under each character */
+  readonly variant = input<'box' | 'underline'>('box');
+
   /** Is the input disabled? */
   readonly disabled = input(false);
 
