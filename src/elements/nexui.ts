@@ -42,6 +42,8 @@ import { MegaMenuComponent } from '../stories/components/mega-menu/mega-menu.com
 import { MenuComponent } from '../stories/components/menu/menu.component';
 import { MenubarComponent } from '../stories/components/menubar/menubar.component';
 import { ModalComponent } from '../stories/components/modal/modal.component';
+import { OnboardingChecklistComponent } from '../stories/components/onboarding-checklist/onboarding-checklist.component';
+import { OnboardingComponent } from '../stories/components/onboarding/onboarding.component';
 import { OverlayBadgeComponent } from '../stories/components/overlay-badge/overlay-badge.component';
 import { OverlayPanelComponent } from '../stories/components/overlay-panel/overlay-panel.component';
 import { PaginationComponent } from '../stories/components/pagination/pagination.component';
@@ -102,6 +104,8 @@ const components: Type<unknown>[] = [
   MenuComponent,
   MenubarComponent,
   ModalComponent,
+  OnboardingComponent,
+  OnboardingChecklistComponent,
   OverlayBadgeComponent,
   OverlayPanelComponent,
   PaginationComponent,
