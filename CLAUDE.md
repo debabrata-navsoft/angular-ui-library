@@ -38,7 +38,10 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
 .storybook/          Storybook config; preview.ts imports src/stories/theme.css
                      manager.ts sets the Storybook UI theme and brand name "NexUI — Next-generation UI"
                      and renames the browser tab ("NexUI - Button - Primary") over Storybook's own title
-                     manager-head.html styles the Storybook sidebar (restart Storybook after editing either)
+                     keeps one sidebar group open on load (the open page's group, else Getting Started), and makes
+                     groups and components accordions (opening one closes the other)
+                     manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
+                     icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
 ```
 
 All components live in `src/stories/components/<name>/`, one folder per component. Import shared types with `from '../../types'` and other components with `from '../<other>/<other>.component'`.
@@ -72,7 +75,8 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Users add their own `.svg` files to `src/stories/icons/`. `<nex-icon name="x" />` (`components/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icon-gallery/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
-- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Configure your project, Icons, Components.
+- `http://localhost:6006/` opens Configure your project (a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started (Configure.mdx), Components, Icons (moved below Components by CSS in manager-head.html).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.
 

@@ -4,7 +4,7 @@ import '../src/stories/theme.css';
 const preview: Preview = {
   parameters: {
     options: {
-      storySort: { order: ['Configure your project', 'Icons', 'Components'] },
+      storySort: { order: ['Getting Started', 'Components', 'Icons'] },
     },
 
     controls: {
