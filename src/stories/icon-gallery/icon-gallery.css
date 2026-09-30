@@ -99,11 +99,10 @@
     border: 1px solid var(--ui-border);
     border-radius: var(--ui-radius);
     background: var(--ui-surface);
-    color: inherit;
+    color: var(--ui-text);
     font: inherit;
     cursor: pointer;
     transition:
-      transform var(--ui-ease),
       box-shadow var(--ui-ease),
       border-color var(--ui-ease);
 
@@ -123,20 +122,6 @@
         0 0 0 2px var(--ui-primary),
         var(--ui-shadow);
     }
-  }
-
-  .svg {
-    line-height: 0;
-  }
-
-  .grid svg {
-    width: var(--size);
-    height: var(--size);
-  }
-
-  .grid svg,
-  .preview svg {
-    stroke-width: var(--stroke);
   }
 
   .name {
@@ -179,11 +164,6 @@
     border-radius: var(--ui-radius);
     background: repeating-conic-gradient(var(--ui-surface-sunken) 0 25%, var(--ui-surface) 0 50%) 0
       0 / 16px 16px;
-
-    svg {
-      width: 72px;
-      height: 72px;
-    }
   }
 
   .details {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { IconComponent } from './icon.component';
+import { ICON_VARIANTS, IconComponent } from './icon.component';
 
 /** Browse and copy every icon on the "Icons" page at the top of the sidebar */
 const meta: Meta<IconComponent> = {
@@ -10,6 +10,7 @@ const meta: Meta<IconComponent> = {
   argTypes: {
     size: { control: { type: 'range', min: 12, max: 64, step: 2 } },
     strokeWidth: { control: { type: 'range', min: 0.5, max: 3, step: 0.25 } },
+    variant: { control: 'inline-radio', options: ICON_VARIANTS },
   },
   args: { name: 'heart', size: 32 },
 };
@@ -31,6 +32,21 @@ export const Colored: Story = {
         <nex-icon [name]="name" [size]="size" style="color: var(--ui-success)" />
         <nex-icon [name]="name" [size]="size" style="color: var(--ui-warning)" />
         <nex-icon [name]="name" [size]="size" style="color: var(--ui-danger)" />
+      </div>
+    `,
+  }),
+};
+
+/** Every icon supports these styles; the soft and solid tiles fill the whole `size` */
+export const Variants: Story = {
+  args: { name: 'rocket', size: 40 },
+  render: (args) => ({
+    props: { ...args, variants: ICON_VARIANTS },
+    template: `
+      <div style="display: flex; gap: 24px; align-items: center">
+        @for (v of variants; track v) {
+          <nex-icon [name]="name" [size]="size" [variant]="v" [label]="v" />
+        }
       </div>
     `,
   }),

@@ -1,5 +1,30 @@
-import { Component, ViewEncapsulation, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  DOCUMENT,
+  ViewEncapsulation,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
+
+export const ICON_VARIANTS = ['outline', 'duotone', 'gradient', 'soft', 'solid'] as const;
+export type IconVariant = (typeof ICON_VARIANTS)[number];
+
+/** Shared <linearGradient> for the gradient variant, added to the page once */
+const GRADIENT_ID = 'nex-icon-gradient';
+
+/**
+ * Adds `attrs` to every closed shape (circle, rect, ellipse, polygon, path ending in "z") that has no fill of its
+ * own. The duotone variant fills these shapes with a tint.
+ */
+export function markClosedShapes(svg: string, attrs = 'class="nex-closed"') {
+  return svg.replace(
+    /<(?:circle|rect|ellipse|polygon|path(?=[^>]*\bd="[^"]*[zZ]\s*"))\b(?![^>]*\bfill=)/g,
+    `$& ${attrs}`,
+  );
+}
 
 /** Each SVG is downloaded once from /icons (served from src/stories/icons) and shared by every <nex-icon> */
 const cache = new Map<string, Promise<string>>();
@@ -8,12 +33,29 @@ function loadSvg(name: string): Promise<string> {
   let svg = cache.get(name);
   if (!svg) {
     svg = fetch(`icons/${name}.svg`).then((res) =>
-      res.ok ? res.text() : Promise.reject(new Error(`Icon "${name}" not found. Add ${name}.svg to src/stories/icons/`)),
+      res.ok
+        ? res.text().then(markClosedShapes)
+        : Promise.reject(
+            new Error(`Icon "${name}" not found. Add ${name}.svg to src/stories/icons/`),
+          ),
     );
     svg.catch(() => cache.delete(name));
     cache.set(name, svg);
   }
   return svg;
+}
+
+function addGradient(doc: Document) {
+  if (doc.getElementById(GRADIENT_ID)) return;
+  doc.body.insertAdjacentHTML(
+    'beforeend',
+    `<svg aria-hidden="true" width="0" height="0" style="position: absolute">
+      <linearGradient id="${GRADIENT_ID}" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="22" y2="22">
+        <stop offset="0" style="stop-color: var(--ui-primary)" />
+        <stop offset="1" style="stop-color: var(--ui-accent)" />
+      </linearGradient>
+    </svg>`,
+  );
 }
 
 @Component({
@@ -24,6 +66,7 @@ function loadSvg(name: string): Promise<string> {
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'nex-icon',
+    '[class]': "'nex-icon--' + variant()",
     '[style.width.px]': 'size()',
     '[style.height.px]': 'size()',
     '[style.--icon-stroke]': 'strokeWidth()',
@@ -42,21 +85,32 @@ export class IconComponent {
   /** Line thickness for outline icons. Leave empty to keep the value from the SVG file */
   readonly strokeWidth = input<number>();
 
+  /** Style: outline (as drawn), duotone (tinted fill), gradient stroke, soft tinted tile or solid gradient tile */
+  readonly variant = input<IconVariant>('outline');
+
+  /** Raw SVG markup to show instead of downloading `name` (used by the Icons page) */
+  readonly svg = input<string>();
+
   /** Accessible name. Leave empty for decorative icons next to text */
   readonly label = input('');
 
   private readonly sanitizer = inject(DomSanitizer);
-  protected readonly svg = signal<SafeHtml | null>(null);
+  private readonly document = inject(DOCUMENT);
+  protected readonly html = signal<SafeHtml | null>(null);
 
   constructor() {
+    effect(() => this.variant() === 'gradient' && addGradient(this.document));
+
     effect((onCleanup) => {
       let active = true;
       onCleanup(() => (active = false));
-      loadSvg(this.name()).then(
-        (markup) => active && this.svg.set(this.sanitizer.bypassSecurityTrustHtml(markup)),
+      const raw = this.svg();
+      const markup = raw ? Promise.resolve(markClosedShapes(raw)) : loadSvg(this.name());
+      markup.then(
+        (svg) => active && this.html.set(this.sanitizer.bypassSecurityTrustHtml(svg)),
         (error: Error) => {
           console.warn(error.message);
-          if (active) this.svg.set(null);
+          if (active) this.html.set(null);
         },
       );
     });

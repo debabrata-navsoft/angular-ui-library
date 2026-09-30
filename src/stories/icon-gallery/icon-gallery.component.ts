@@ -1,7 +1,17 @@
-import { Component, ViewEncapsulation, computed, inject, input, signal } from '@angular/core';
-import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, ViewEncapsulation, computed, input, signal } from '@angular/core';
 
 import { ButtonComponent } from '../components/button/button.component';
+import {
+  ButtonToggleComponent,
+  type ToggleOption,
+} from '../components/button-toggle/button-toggle.component';
+import {
+  ICON_VARIANTS,
+  IconComponent,
+  type IconVariant,
+  markClosedShapes,
+} from '../components/icon/icon.component';
 import { SearchInputComponent } from '../components/search-input/search-input.component';
 
 export interface GalleryIcon {
@@ -10,18 +20,24 @@ export interface GalleryIcon {
   svg: string;
 }
 
-type PreparedIcon = GalleryIcon & { html: SafeHtml; keywords: string };
+type PreparedIcon = GalleryIcon & { keywords: string };
 
-const DEFAULTS = { size: 24, strokeWidth: 2, color: '#0f172a' };
+const DEFAULTS = { size: 24, strokeWidth: 2, color: '#0f172a', variant: 'outline' as IconVariant };
 type Settings = typeof DEFAULTS;
 
 /** Storybook page that lists every icon, like lucide.dev: search, customize, click to copy */
 @Component({
   selector: 'nex-icon-gallery',
-  imports: [ButtonComponent, SearchInputComponent],
+  imports: [
+    ButtonComponent,
+    ButtonToggleComponent,
+    IconComponent,
+    NgTemplateOutlet,
+    SearchInputComponent,
+  ],
   templateUrl: './icon-gallery.html',
   styleUrl: './icon-gallery.css',
-  // Styles must reach the <svg> elements inserted with innerHTML
+  // Styles are nested under .icon-gallery and reach into the child components
   encapsulation: ViewEncapsulation.None,
 })
 export class IconGalleryComponent {
@@ -30,8 +46,6 @@ export class IconGalleryComponent {
 
   /** Extra search keywords per icon name */
   readonly tags = input<Record<string, string[]>>({});
-
-  private readonly sanitizer = inject(DomSanitizer);
 
   protected readonly query = signal('');
   protected readonly settings = signal(DEFAULTS);
@@ -44,10 +58,14 @@ export class IconGalleryComponent {
     { key: 'strokeWidth', label: 'Stroke', min: 0.5, max: 3, step: 0.25 },
   ] as const;
 
+  protected readonly variants: ToggleOption<IconVariant>[] = ICON_VARIANTS.map((value) => ({
+    value,
+    label: value[0].toUpperCase() + value.slice(1),
+  }));
+
   private readonly prepared = computed<PreparedIcon[]>(() =>
     this.icons().map((icon) => ({
       ...icon,
-      html: this.sanitizer.bypassSecurityTrustHtml(icon.svg),
       keywords: [icon.name, ...(this.tags()[icon.name] ?? [])].join(' ').toLowerCase(),
     })),
   );
@@ -59,26 +77,27 @@ export class IconGalleryComponent {
 
   protected readonly isCustomized = computed(() => this.settings() !== DEFAULTS);
 
+  /** Only pass a color to the icons once it's picked, so the soft/solid tiles keep their own colors */
+  protected readonly color = computed(() =>
+    this.settings().color === DEFAULTS.color ? null : this.settings().color,
+  );
+
   /** Copyable code for the selected icon, with the current settings applied */
   protected readonly code = computed(() => {
     const icon = this.selected();
     if (!icon) return null;
-    const { size, strokeWidth, color } = this.settings();
+    const { size, strokeWidth, variant } = this.settings();
+    const color = this.color();
     const attrs = [
       `name="${icon.name}"`,
       size !== 20 && `[size]="${size}"`,
       strokeWidth !== DEFAULTS.strokeWidth && `[strokeWidth]="${strokeWidth}"`,
-      color !== DEFAULTS.color && `style="color: ${color}"`,
+      variant !== 'outline' && `variant="${variant}"`,
+      color && `[style.color]="'${color}'"`,
     ];
     return {
       angular: `<nex-icon ${attrs.filter(Boolean).join(' ')} />`,
-      svg: icon.svg
-        .replace(/<!--[\s\S]*?-->\s*/g, '')
-        .replace(/ width="[^"]*"/, ` width="${size}"`)
-        .replace(/ height="[^"]*"/, ` height="${size}"`)
-        .replace(/ stroke-width="[^"]*"/, ` stroke-width="${strokeWidth}"`)
-        .replaceAll('currentColor', color === DEFAULTS.color ? 'currentColor' : color)
-        .trim(),
+      svg: toSvgFile(icon.svg, this.settings(), color),
     };
   });
 
@@ -102,9 +121,54 @@ export class IconGalleryComponent {
 
   protected download() {
     const url = URL.createObjectURL(new Blob([this.code()!.svg], { type: 'image/svg+xml' }));
-    Object.assign(document.createElement('a'), { href: url, download: `${this.selected()!.name}.svg` }).click();
+    Object.assign(document.createElement('a'), {
+      href: url,
+      download: `${this.selected()!.name}.svg`,
+    }).click();
     URL.revokeObjectURL(url);
   }
+}
+
+/** Standalone .svg file for the chosen settings; theme colors are written out since there is no CSS */
+function toSvgFile(source: string, { size, strokeWidth, variant }: Settings, color: string | null) {
+  const theme = getComputedStyle(document.documentElement);
+  const primary = theme.getPropertyValue('--ui-primary').trim() || '#6366f1';
+  const accent = theme.getPropertyValue('--ui-accent').trim() || '#a855f7';
+  const gradient =
+    '<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="22" y2="22">' +
+    `<stop offset="0" stop-color="${primary}"/><stop offset="1" stop-color="${accent}"/></linearGradient></defs>`;
+  const tile = variant === 'soft' || variant === 'solid';
+
+  let svg = source
+    .replace(/<!--[\s\S]*?-->\s*/g, '')
+    .replace(/ class="[^"]*"/, '')
+    .replace(/ width="[^"]*"/, ` width="${tile ? 14 : size}"`)
+    .replace(/ height="[^"]*"/, ` height="${tile ? 14 : size}"`)
+    .replace(/ stroke-width="[^"]*"/, ` stroke-width="${strokeWidth}"`)
+    .trim();
+  const ink =
+    variant === 'solid' ? '#fff' : (color ?? (variant === 'soft' ? primary : 'currentColor'));
+
+  if (variant === 'duotone') svg = markClosedShapes(svg, 'fill="currentColor" fill-opacity="0.2"');
+  if (variant === 'gradient') {
+    svg = svg
+      .replace(/<svg[^>]*>/, `$&${gradient}`)
+      .replace('stroke="currentColor"', 'stroke="url(#g)"');
+  }
+  svg = svg.replaceAll('currentColor', ink);
+  if (!tile) return svg;
+
+  const rect = '<rect width="24" height="24" rx="6.7"';
+  const background =
+    variant === 'soft'
+      ? `${rect} fill="${ink}" fill-opacity="0.14"/>`
+      : color
+        ? `${rect} fill="${color}"/>`
+        : `${gradient}${rect} fill="url(#g)"/>`;
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">\n` +
+    `${background}\n${svg.replace('<svg', '<svg x="5" y="5"')}\n</svg>`
+  );
 }
 
 /** Clipboard API with a fallback for browsers/iframes where it is blocked */

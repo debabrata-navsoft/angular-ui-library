@@ -24,6 +24,17 @@
         />
       </label>
     }
+    <div class="control">
+      <span>Style</span>
+      <nex-button-toggle
+        size="small"
+        ariaLabel="Icon style"
+        [options]="variants"
+        [showCheck]="false"
+        [value]="settings().variant"
+        (valueChange)="update('variant', $any($event))"
+      />
+    </div>
     <label class="control">
       <span>Color</span>
       <input type="color" [value]="settings().color" (input)="update('color', $any($event.target).value)" />
@@ -39,12 +50,7 @@
     }
   </p>
 
-  <div
-    class="grid"
-    [style.--size.px]="settings().size"
-    [style.--stroke]="settings().strokeWidth"
-    [style.color]="settings().color"
-  >
+  <div class="grid" [style.--size.px]="settings().size">
     @for (icon of filtered(); track icon.name) {
       <button
         type="button"
@@ -53,7 +59,7 @@
         [title]="icon.name"
         (click)="select(icon)"
       >
-        <span class="svg" [innerHTML]="icon.html"></span>
+        <ng-container *ngTemplateOutlet="iconTpl; context: { $implicit: icon, size: settings().size }" />
         <span class="name">{{ icon.name }}</span>
       </button>
     } @empty {
@@ -65,12 +71,9 @@
 
   @if (code(); as code) {
     <aside class="panel" role="dialog" [attr.aria-label]="selected()!.name">
-      <div
-        class="preview"
-        [style.color]="settings().color"
-        [style.--stroke]="settings().strokeWidth"
-        [innerHTML]="selected()!.html"
-      ></div>
+      <div class="preview">
+        <ng-container *ngTemplateOutlet="iconTpl; context: { $implicit: selected(), size: 72 }" />
+      </div>
       <div class="details">
         <div class="head">
           <h2>{{ selected()!.name }}</h2>
@@ -91,3 +94,15 @@
     </aside>
   }
 </div>
+
+<!-- One icon with the current settings, shared by the grid and the preview -->
+<ng-template #iconTpl let-icon let-size="size">
+  <nex-icon
+    [name]="icon.name"
+    [svg]="icon.svg"
+    [size]="size"
+    [strokeWidth]="settings().strokeWidth"
+    [variant]="settings().variant"
+    [style.color]="color()"
+  />
+</ng-template>
