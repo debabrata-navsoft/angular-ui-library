@@ -220,8 +220,9 @@ select.ui-control {
   opacity: 1;
 }
 
-/* Dialog footer slot: the wrapper steps aside so its buttons are laid out (with gap) by the dialog footer */
-[dialogFooter] {
+/* Dialog/Card footer slots: the wrapper steps aside so its buttons are laid out (with gap) by the footer */
+[dialogFooter],
+[cardFooter] {
   display: contents;
 }
 

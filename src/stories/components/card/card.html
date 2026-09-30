@@ -1,11 +1,37 @@
-<div class="card">
-  @if (title()) {
-    <h3 class="card-title">{{ title() }}</h3>
+<ng-template #media>
+  <img class="card-image" [src]="image()" [alt]="imageAlt()" [style.height]="imageHeight()" />
+</ng-template>
+
+<div class="card" [class.card--media]="image()">
+  @if (image() && imagePosition() === 'top') {
+    <ng-container [ngTemplateOutlet]="media" />
   }
-  @if (subtitle()) {
-    <p class="card-subtitle">{{ subtitle() }}</p>
+
+  @if (title() || subtitle()) {
+    <div class="card-header" [class.card-header--avatar]="avatar()">
+      @if (avatar()) {
+        <app-avatar [src]="avatar()" [name]="title()" />
+      }
+      <div>
+        @if (title()) {
+          <h3 class="card-title">{{ title() }}</h3>
+        }
+        @if (subtitle()) {
+          <p class="card-subtitle">{{ subtitle() }}</p>
+        }
+      </div>
+    </div>
   }
+
+  @if (image() && imagePosition() === 'below-header') {
+    <ng-container [ngTemplateOutlet]="media" />
+  }
+
   <div class="card-body">
     <ng-content />
+  </div>
+
+  <div class="card-footer" [class]="'card-footer--' + footerAlign()">
+    <ng-content select="[cardFooter]" />
   </div>
 </div>

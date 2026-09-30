@@ -78,6 +78,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Menus (Menu, Menubar, MegaMenu, PanelMenu, TieredMenu) take `[model]="MenuItem[]"` from `types.ts`: `icon` is an icon file name, `command` runs on click, plus `url`, `items`, `separator`, `disabled`, `badge`. Popup menus expose `toggle(event)`, `show(event)`, `hide()`.
 - Drag and drop uses `@angular/cdk/drag-drop` (PickList). Style CDK states (`.cdk-drag-preview`, `.cdk-drag-placeholder`, `.cdk-drop-list-dragging`) in the component CSS. The preview is a clone of the item, so component styles still apply.
 - Badge is a standalone label; Overlay Badge (`<app-overlay-badge [value]="6">…</app-overlay-badge>`) wraps content and puts a count or dot on its corner.
+- Footer slots (`<div dialogFooter>`, `<div cardFooter>`) get `display: contents` from theme.css, so the component's footer lays out the buttons with its gap. Card's `footerAlign="stretch"` uses a grid to make them equal width.
 - Tree and TreeTable take `TreeNode[]` from `types.ts` (`key` is required and must be unique).
 - ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
 - Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/anchor-position.ts`.

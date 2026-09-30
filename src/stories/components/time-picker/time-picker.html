@@ -59,39 +59,28 @@
     </div>
   } @else {
     <div #field class="time-picker-field">
-      @if (mode() === 'list') {
-        <input
-          class="ui-control"
-          role="combobox"
-          autocomplete="off"
-          [id]="id"
-          [value]="draft() ?? text()"
-          [placeholder]="placeholder()"
-          [disabled]="disabled()"
-          aria-haspopup="listbox"
-          [attr.aria-controls]="id + '-list'"
-          [attr.aria-expanded]="opened()"
-          [attr.aria-activedescendant]="opened() && active() >= 0 ? id + '-opt-' + active() : null"
-          (click)="open()"
-          (input)="draft.set($any($event.target).value)"
-          (blur)="commit()"
-          (keydown)="onFieldKeydown($event)"
-        />
-      } @else {
-        <input
-          class="ui-control"
-          readonly
-          [id]="id"
-          [value]="text()"
-          [placeholder]="placeholder()"
-          [disabled]="disabled()"
-          aria-haspopup="dialog"
-          [attr.aria-expanded]="opened()"
-          (click)="open()"
-          (keydown.enter)="open()"
-          (keydown.arrowdown)="open()"
-        />
-      }
+      @let list = mode() === 'list';
+      <!-- List mode is a typeable combobox; spinner mode is a readonly field that opens the panel -->
+      <input
+        class="ui-control"
+        autocomplete="off"
+        [id]="id"
+        [readonly]="!list"
+        [value]="draft() ?? text()"
+        [placeholder]="placeholder()"
+        [disabled]="disabled()"
+        [attr.role]="list ? 'combobox' : null"
+        [attr.aria-haspopup]="list ? 'listbox' : 'dialog'"
+        [attr.aria-controls]="list ? id + '-list' : null"
+        [attr.aria-expanded]="opened()"
+        [attr.aria-activedescendant]="
+          list && opened() && active() >= 0 ? id + '-opt-' + active() : null
+        "
+        (click)="open()"
+        (input)="draft.set($any($event.target).value)"
+        (blur)="commit()"
+        (keydown)="onFieldKeydown($event)"
+      />
       <button
         type="button"
         class="time-picker-trigger"

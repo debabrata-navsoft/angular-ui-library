@@ -44,6 +44,9 @@ export function parseTime(text: string, base: Date): Date | null {
   return d;
 }
 
+/** Minutes since midnight */
+const minutesOf = (d: Date) => d.getHours() * 60 + d.getMinutes();
+
 /** Minutes since midnight for "HH:mm", or `fallback` when empty */
 const toMinutes = (hhmm: string, fallback: number) => {
   const [h, m] = hhmm.split(':').map(Number);
@@ -135,19 +138,17 @@ export class TimePickerComponent {
 
   /** List-mode options from minTime to maxTime, every `interval` minutes, on the date of the current value */
   protected readonly options = computed(() => {
-    const base = this.current();
-    const step = Math.max(1, this.interval());
     const selected = this.value();
     const options: { date: Date; label: string; selected: boolean }[] = [];
-    for (
-      let t = toMinutes(this.minTime(), 0);
-      t <= toMinutes(this.maxTime(), 24 * 60 - 1);
-      t += step
-    ) {
-      const date = new Date(base);
-      date.setHours(Math.floor(t / 60), t % 60, 0, 0);
-      const selectedHere = !!selected && selected.getHours() * 60 + selected.getMinutes() === t;
-      options.push({ date, label: formatTime(date, this.hourFormat()), selected: selectedHere });
+    const last = toMinutes(this.maxTime(), 24 * 60 - 1);
+    for (let t = toMinutes(this.minTime(), 0); t <= last; t += Math.max(1, this.interval())) {
+      const date = new Date(this.current());
+      date.setHours(0, t, 0, 0);
+      options.push({
+        date,
+        label: formatTime(date, this.hourFormat()),
+        selected: !!selected && minutesOf(selected) === t,
+      });
     }
     return options;
   });
@@ -217,10 +218,8 @@ export class TimePickerComponent {
     if (this.disabled() || this.opened()) return;
     this.opened.set(true);
     // Highlight the selected option, or the first one at/after the current time
-    const options = this.options();
     const v = this.value();
-    const now = v ? v.getHours() * 60 + v.getMinutes() : -1;
-    const index = options.findIndex((o) => o.date.getHours() * 60 + o.date.getMinutes() >= now);
+    const index = v ? this.options().findIndex((o) => minutesOf(o.date) >= minutesOf(v)) : -1;
     this.active.set(v ? Math.max(0, index) : -1);
   }
 
@@ -251,23 +250,21 @@ export class TimePickerComponent {
     }
   }
 
-  /** List mode keyboard: arrows move the highlight, Enter picks it (or commits typed text) */
+  /** Field keyboard. Spinner mode: Enter/ArrowDown open the panel. List mode: arrows move the highlight, Enter picks it or commits typed text */
   protected onFieldKeydown(event: KeyboardEvent) {
-    const count = this.options().length;
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (!this.opened()) return this.open();
-      const dir = event.key === 'ArrowDown' ? 1 : -1;
-      this.active.update((i) => (i < 0 ? (dir > 0 ? 0 : count - 1) : (i + dir + count) % count));
-    } else if (event.key === 'Enter') {
-      event.preventDefault();
+    const { key } = event;
+    if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Enter') return;
+    event.preventDefault();
+    if (this.mode() === 'spinner' || (!this.opened() && key !== 'Enter')) return this.open();
+    if (key === 'Enter') {
       const option = this.options()[this.active()];
-      if (this.opened() && option && this.draft() === null) this.choose(option.date);
-      else {
-        this.commit();
-        this.opened.set(false);
-      }
+      if (this.opened() && option && this.draft() === null) return this.choose(option.date);
+      this.commit();
+      return this.opened.set(false);
     }
+    const count = this.options().length;
+    const dir = key === 'ArrowDown' ? 1 : -1;
+    this.active.update((i) => (i < 0 ? (dir > 0 ? 0 : count - 1) : (i + dir + count) % count));
   }
 
   protected reposition() {
