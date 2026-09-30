@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { ScrollTopComponent } from '../stories/components/scroll-top/scroll-top.component';
 
 @Component({
   selector: 'nex-root',
-  imports: [],
+  imports: [RouterOutlet, ScrollTopComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected readonly title = signal('angular-ui-library');
-}
+export class App {}
