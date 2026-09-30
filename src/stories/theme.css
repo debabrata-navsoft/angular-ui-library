@@ -34,6 +34,16 @@
   --ui-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
   --ui-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.06);
   --ui-shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.12), 0 20px 48px rgba(15, 23, 42, 0.1);
+
+  /* Chart series colors, used in this order (validated for color-blind separation on white) */
+  --ui-chart-1: #6366f1;
+  --ui-chart-2: #eb6834;
+  --ui-chart-3: #1baf7a;
+  --ui-chart-4: #eda100;
+  --ui-chart-5: #e87ba4;
+  --ui-chart-6: #008300;
+  --ui-chart-7: #4a3aa7;
+  --ui-chart-8: #e34948;
   --ui-ring: 0 0 0 4px var(--ui-primary-ring);
   --ui-ease: 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }

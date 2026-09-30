@@ -29,4 +29,7 @@ export class TextInputComponent {
 
   /** Is the input disabled? */
   readonly disabled = input(false);
+
+  /** Accessible name when there is no visible label */
+  readonly ariaLabel = input('');
 }
