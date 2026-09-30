@@ -3,7 +3,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
-  selector: 'app-chip',
+  selector: 'nex-chip',
   imports: [IconComponent],
   templateUrl: './chip.html',
   styleUrl: './chip.css',

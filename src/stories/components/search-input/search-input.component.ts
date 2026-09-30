@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-search-input',
+  selector: 'nex-search-input',
   templateUrl: './search-input.html',
   styleUrl: './search-input.css',
 })

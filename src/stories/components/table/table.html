@@ -1,6 +1,6 @@
 @if (filterable()) {
   <div class="table-filter">
-    <app-search-input [placeholder]="filterPlaceholder()" (search)="filterText.set($event)" />
+    <nex-search-input [placeholder]="filterPlaceholder()" (search)="filterText.set($event)" />
   </div>
 }
 <div class="table-wrapper">

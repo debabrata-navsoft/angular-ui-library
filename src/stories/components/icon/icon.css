@@ -1,5 +1,5 @@
-/* Not encapsulated (see icon.component.ts), so every selector is scoped under .app-icon */
-.app-icon {
+/* Not encapsulated (see icon.component.ts), so every selector is scoped under .nex-icon */
+.nex-icon {
   display: inline-flex;
   flex-shrink: 0;
   vertical-align: middle;

@@ -13,7 +13,7 @@ import { formatFileSize } from '../file-upload/file-upload.component';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
-  selector: 'app-image-upload',
+  selector: 'nex-image-upload',
   imports: [IconComponent],
   templateUrl: './image-upload.html',
   styleUrl: './image-upload.css',

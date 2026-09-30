@@ -16,7 +16,7 @@ import { type AnchorPosition, anchorPosition } from '../../anchor-position';
 let nextId = 0;
 
 @Component({
-  selector: 'app-confirm-popup',
+  selector: 'nex-confirm-popup',
   imports: [IconComponent],
   host: {
     '(document:keydown.escape)': 'reject()',
@@ -34,7 +34,7 @@ export class ConfirmPopupComponent {
   private readonly service = inject(ConfirmationService);
   private readonly popup = viewChild<ElementRef<HTMLElement>>('popup');
   private readonly acceptButton = viewChild<ElementRef<HTMLButtonElement>>('acceptButton');
-  protected readonly id = `app-confirm-popup-${nextId++}`;
+  protected readonly id = `nex-confirm-popup-${nextId++}`;
   protected readonly position = signal<AnchorPosition | null>(null);
 
   /** Active confirmation meant for this popup: has a target element and a matching key */

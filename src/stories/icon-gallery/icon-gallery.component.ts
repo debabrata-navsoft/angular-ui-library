@@ -17,7 +17,7 @@ type Settings = typeof DEFAULTS;
 
 /** Storybook page that lists every icon, like lucide.dev: search, customize, click to copy */
 @Component({
-  selector: 'app-icon-gallery',
+  selector: 'nex-icon-gallery',
   imports: [ButtonComponent, SearchInputComponent],
   templateUrl: './icon-gallery.html',
   styleUrl: './icon-gallery.css',
@@ -71,7 +71,7 @@ export class IconGalleryComponent {
       color !== DEFAULTS.color && `style="color: ${color}"`,
     ];
     return {
-      angular: `<app-icon ${attrs.filter(Boolean).join(' ')} />`,
+      angular: `<nex-icon ${attrs.filter(Boolean).join(' ')} />`,
       svg: icon.svg
         .replace(/<!--[\s\S]*?-->\s*/g, '')
         .replace(/ width="[^"]*"/, ` width="${size}"`)

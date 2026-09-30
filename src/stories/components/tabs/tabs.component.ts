@@ -7,7 +7,7 @@ export interface Tab {
 }
 
 @Component({
-  selector: 'app-tabs',
+  selector: 'nex-tabs',
   templateUrl: './tabs.html',
   styleUrl: './tabs.css',
 })

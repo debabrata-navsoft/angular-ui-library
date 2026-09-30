@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-stepper',
+  selector: 'nex-stepper',
   templateUrl: './stepper.html',
   styleUrl: './stepper.css',
 })

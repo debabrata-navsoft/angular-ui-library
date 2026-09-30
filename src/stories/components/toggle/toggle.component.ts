@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
 @Component({
-  selector: 'app-toggle',
+  selector: 'nex-toggle',
   templateUrl: './toggle.html',
   styleUrl: './toggle.css',
 })

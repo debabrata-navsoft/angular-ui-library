@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import type { Tone } from '../../types';
 
 @Component({
-  selector: 'app-progress-bar',
+  selector: 'nex-progress-bar',
   templateUrl: './progress-bar.html',
   styleUrl: './progress-bar.css',
 })

@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, effect, inject, input, signal } from '@angular/core';
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
 
-/** Each SVG is downloaded once from /icons (served from src/stories/icons) and shared by every <app-icon> */
+/** Each SVG is downloaded once from /icons (served from src/stories/icons) and shared by every <nex-icon> */
 const cache = new Map<string, Promise<string>>();
 
 function loadSvg(name: string): Promise<string> {
@@ -17,13 +17,13 @@ function loadSvg(name: string): Promise<string> {
 }
 
 @Component({
-  selector: 'app-icon',
+  selector: 'nex-icon',
   templateUrl: './icon.html',
   styleUrl: './icon.css',
   // Styles must reach the <svg> inserted with innerHTML, which view encapsulation can't target
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'app-icon',
+    class: 'nex-icon',
     '[style.width.px]': 'size()',
     '[style.height.px]': 'size()',
     '[style.--icon-stroke]': 'strokeWidth()',

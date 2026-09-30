@@ -20,7 +20,7 @@ const meta: Meta<ToastComponent> = {
     props: args,
     template: `
       <storybook-button label="Show toast" [primary]="true" (onClick)="open = true" />
-      <app-toast
+      <nex-toast
         [(open)]="open"
         [message]="message"
         [type]="type"

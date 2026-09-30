@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
 @Component({
-  selector: 'app-text-input',
+  selector: 'nex-text-input',
   templateUrl: './text-input.html',
   styleUrl: './text-input.css',
 })

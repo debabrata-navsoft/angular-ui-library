@@ -46,8 +46,8 @@ export const PrefixSuffix: Story = {
   render: () => ({
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px">
-        <app-input-number label="Weight" [value]="72.5" suffix=" kg" [maxFractionDigits]="1" />
-        <app-input-number label="Budget" [value]="5000" prefix="$ " />
+        <nex-input-number label="Weight" [value]="72.5" suffix=" kg" [maxFractionDigits]="1" />
+        <nex-input-number label="Budget" [value]="5000" prefix="$ " />
       </div>
     `,
   }),

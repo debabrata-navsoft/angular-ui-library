@@ -37,13 +37,13 @@
                       (click)="toggle(node); $event.stopPropagation()"
                       (keydown)="$event.stopPropagation()"
                     >
-                      <app-icon name="chevron-right" [size]="16" />
+                      <nex-icon name="chevron-right" [size]="16" />
                     </button>
                   } @else {
                     <span class="toggler toggler--spacer"></span>
                   }
                   @if (node.icon || (parent ? (open ? 'folder-open' : 'folder') : null); as icon) {
-                    <app-icon class="node-icon" [name]="icon" [size]="18" />
+                    <nex-icon class="node-icon" [name]="icon" [size]="18" />
                   }
                   {{ text }}
                 </span>

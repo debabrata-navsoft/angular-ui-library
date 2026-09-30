@@ -6,7 +6,7 @@ export interface AccordionItem {
 }
 
 @Component({
-  selector: 'app-accordion',
+  selector: 'nex-accordion',
   templateUrl: './accordion.html',
   styleUrl: './accordion.css',
 })

@@ -89,7 +89,7 @@ export function formatDate(date: Date, format = 'dd/mm/yy'): string {
 let nextId = 0;
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'nex-calendar',
   imports: [IconComponent, TimePickerComponent],
   host: {
     '(document:keydown.escape)': 'close(true)',
@@ -165,7 +165,7 @@ export class CalendarComponent implements OnInit {
   /** Emits when the shown month changes (month is 0-11) */
   readonly monthChange = output<{ month: number; year: number }>();
 
-  protected readonly id = `app-calendar-${nextId++}`;
+  protected readonly id = `nex-calendar-${nextId++}`;
   protected readonly opened = signal(false);
   protected readonly position = signal<AnchorPosition | null>(null);
   /** First day of the first month on screen */

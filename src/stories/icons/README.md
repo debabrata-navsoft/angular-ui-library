@@ -3,10 +3,10 @@
 Put your own `.svg` files in this folder and use them by file name:
 
 ```html
-<app-icon name="house" />                                       <!-- icons/house.svg -->
-<app-icon name="my-logo" [size]="32" />                         <!-- icons/my-logo.svg -->
-<app-icon name="heart" style="color: red" />                    <!-- icons that use currentColor take the text color -->
-<app-icon name="search" label="Search" />                       <!-- label = accessible name when there is no visible text -->
+<nex-icon name="house" />                                       <!-- icons/house.svg -->
+<nex-icon name="my-logo" [size]="32" />                         <!-- icons/my-logo.svg -->
+<nex-icon name="heart" style="color: red" />                    <!-- icons that use currentColor take the text color -->
+<nex-icon name="search" label="Search" />                       <!-- label = accessible name when there is no visible text -->
 ```
 
 The folder ships with the full [Lucide](https://lucide.dev) set (ISC license, see `LICENSE-lucide.txt`). Browse, search and copy them on the **Icons** page at the top of the Storybook sidebar. New files show up there automatically.

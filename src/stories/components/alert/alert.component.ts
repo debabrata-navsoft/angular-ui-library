@@ -3,7 +3,7 @@ import { Component, input, output } from '@angular/core';
 import { TONE_ICONS, type Tone } from '../../types';
 
 @Component({
-  selector: 'app-alert',
+  selector: 'nex-alert',
   templateUrl: './alert.html',
   styleUrl: './alert.css',
 })

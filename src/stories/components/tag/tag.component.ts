@@ -8,7 +8,7 @@ export type TagSeverity = Tone | 'primary';
 export const TAG_SEVERITIES: TagSeverity[] = ['primary', ...TONES];
 
 @Component({
-  selector: 'app-tag',
+  selector: 'nex-tag',
   imports: [IconComponent],
   templateUrl: './tag.html',
   styleUrl: './tag.css',

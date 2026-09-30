@@ -30,7 +30,7 @@ const keysWhere = (nodes: TreeNode[], test: (n: TreeNode) => unknown) =>
   );
 
 @Component({
-  selector: 'app-tree',
+  selector: 'nex-tree',
   imports: [NgTemplateOutlet, IconComponent, SearchInputComponent],
   templateUrl: './tree.html',
   styleUrl: './tree.css',

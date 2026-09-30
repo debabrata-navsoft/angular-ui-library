@@ -29,10 +29,10 @@ const meta: Meta<AnimateOnScrollComponent> = {
       <div #scroller style="${scroller}">
         ${spacer}
         @for (n of [1, 2, 3, 4]; track n) {
-          <app-animate-on-scroll [root]="scroller" [animation]="animation" [delay]="delay" [duration]="duration"
+          <nex-animate-on-scroll [root]="scroller" [animation]="animation" [delay]="delay" [duration]="duration"
             [once]="once" [threshold]="threshold" (enter)="enter()" (leave)="leave()">
             <div style="${card}">Card {{ n }}: {{ animation }}</div>
-          </app-animate-on-scroll>
+          </nex-animate-on-scroll>
         }
       </div>
     `,
@@ -51,9 +51,9 @@ export const AllAnimations: Story = {
       <div #scroller style="${scroller}; overflow-x: hidden">
         ${spacer}
         @for (name of animations; track name) {
-          <app-animate-on-scroll [root]="scroller" [animation]="name" [duration]="duration" [once]="once" (enter)="enter()" (leave)="leave()">
+          <nex-animate-on-scroll [root]="scroller" [animation]="name" [duration]="duration" [once]="once" (enter)="enter()" (leave)="leave()">
             <div style="${card}">{{ name }}</div>
-          </app-animate-on-scroll>
+          </nex-animate-on-scroll>
         }
       </div>
     `,

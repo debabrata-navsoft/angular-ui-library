@@ -37,7 +37,7 @@ const meta: Meta<ConfirmPopupComponent> = {
   },
   render: (args) => ({
     props: { ...args, actions },
-    template: `<app-confirm-popup [key]="key" /><app-confirm-dialog-demo [actions]="actions" [popup]="true" />`,
+    template: `<nex-confirm-popup [key]="key" /><nex-confirm-dialog-demo [actions]="actions" [popup]="true" />`,
   }),
 };
 

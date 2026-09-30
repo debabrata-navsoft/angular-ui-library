@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 import type { Tone } from '../../types';
 
 @Component({
-  selector: 'app-badge',
+  selector: 'nex-badge',
   templateUrl: './badge.html',
   styleUrl: './badge.css',
 })

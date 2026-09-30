@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
 @Component({
-  selector: 'app-textarea',
+  selector: 'nex-textarea',
   templateUrl: './textarea.html',
   styleUrl: './textarea.css',
 })

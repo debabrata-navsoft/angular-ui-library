@@ -5,13 +5,13 @@ import { fn } from 'storybook/test';
 import { TextInputComponent } from '../text-input/text-input.component';
 import { InplaceComponent } from './inplace.component';
 
-/** Wraps display + content markup in an <app-inplace> bound to the story args */
+/** Wraps display + content markup in an <nex-inplace> bound to the story args */
 const inplace = (display: string, content: string) => `
-  <app-inplace [(active)]="active" [closable]="closable" [disabled]="disabled"
+  <nex-inplace [(active)]="active" [closable]="closable" [disabled]="disabled"
     (activate)="activate()" (deactivate)="deactivate()">
     <span inplaceDisplay>${display}</span>
     ${content}
-  </app-inplace>
+  </nex-inplace>
 `;
 
 const meta: Meta<InplaceComponent> = {
@@ -44,7 +44,7 @@ export const Input: Story = {
     props: { ...args, text: 'Click to edit' },
     template: inplace(
       `{{ text || 'Click to edit' }}`,
-      `<app-text-input inplaceContent [(value)]="text" placeholder="Type something" />`,
+      `<nex-text-input inplaceContent [(value)]="text" placeholder="Type something" />`,
     ),
   }),
 };

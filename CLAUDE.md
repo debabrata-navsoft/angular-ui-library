@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Angular 21 UI component library, developed and documented in Storybook 10 (`@storybook/angular-vite`).
+NexUI (Next-generation UI): Angular 21 UI component library, developed and documented in Storybook 10 (`@storybook/angular-vite`).
 
 ## Commands
 
@@ -23,7 +23,7 @@ src/stories/
   types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
   anchor-position.ts Shared fixed-position helper for popovers and popup menus
   menu-utils.ts      Shared menu logic: runItem, MenuPath, DismissableMenu, PopupMenu
-  icons/             Drop-in .svg files for <app-icon name="file-name" />: full Lucide set + user icons (see icons/README.md)
+  icons/             Drop-in .svg files for <nex-icon name="file-name" />: full Lucide set + user icons (see icons/README.md)
   icon-gallery/      "Icons" docs page (top of sidebar): search, customize, copy code. Not a library component
   components/
     <name>/
@@ -35,7 +35,7 @@ src/stories/
 src/app/             Demo Angular app (not used by Storybook)
 src/styles.css       Imports stories/theme.css for the app
 .storybook/          Storybook config; preview.ts imports src/stories/theme.css
-                     manager.ts sets the Storybook UI theme and brand name "Angular UI Library"
+                     manager.ts sets the Storybook UI theme and brand name "NexUI — Next-generation UI"
                      manager-head.html styles the Storybook sidebar (restart Storybook after editing either)
 ```
 
@@ -48,7 +48,7 @@ Every story title is `Components/<Name>`. Do not use an `Example/` group.
 - Signal APIs only: `input()`, `output()`, `model()` for two-way values (`[(value)]`, `[(checked)]`, `[(open)]`, `[(page)]`), `signal()`/`computed()` for internal state.
 - Built-in control flow (`@if`, `@for`, `@else`). Do not use `*ngIf`, `*ngFor` or `ngClass`.
 - Every component has 3 files: `templateUrl: './<name>.html'` and `styleUrl: './<name>.css'`. Never use inline `template` or `styles` in the `.ts` file.
-- Selector prefix `app-` (the Button/Header/Page examples keep `storybook-`).
+- Selector prefix `nex-` (the Button/Header/Page examples keep `storybook-`).
 - Every public input/output gets a one-line `/** doc comment */`. Storybook autodocs shows these.
 - Static `class="x"` plus `[class]="'x--' + variant()"` merge in Angular. Don't repeat the base class inside the binding.
 
@@ -67,25 +67,25 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 
 ## Icons
 
-- Users add their own `.svg` files to `src/stories/icons/`. `<app-icon name="x" />` (`components/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
+- Users add their own `.svg` files to `src/stories/icons/`. `<nex-icon name="x" />` (`components/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icon-gallery/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
 - Sidebar order is set in `.storybook/preview.ts` (`storySort`): Configure your project, Icons, Components.
-- `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.app-icon`.
+- `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.
 
 ## Shared patterns
 
 - Menus (Menu, Menubar, MegaMenu, PanelMenu, TieredMenu) take `[model]="MenuItem[]"` from `types.ts`: `icon` is an icon file name, `command` runs on click, plus `url`, `items`, `separator`, `disabled`, `badge`. Popup menus expose `toggle(event)`, `show(event)`, `hide()`.
 - Drag and drop uses `@angular/cdk/drag-drop` (PickList). Style CDK states (`.cdk-drag-preview`, `.cdk-drag-placeholder`, `.cdk-drop-list-dragging`) in the component CSS. The preview is a clone of the item, so component styles still apply.
-- Badge is a standalone label; Overlay Badge (`<app-overlay-badge [value]="6">…</app-overlay-badge>`) wraps content and puts a count or dot on its corner.
+- Badge is a standalone label; Overlay Badge (`<nex-overlay-badge [value]="6">…</nex-overlay-badge>`) wraps content and puts a count or dot on its corner.
 - Footer slots (`<div dialogFooter>`, `<div cardFooter>`) get `display: contents` from theme.css, so the component's footer lays out the buttons with its gap. Card's `footerAlign="stretch"` uses a grid to make them equal width.
 - Tree and TreeTable take `TreeNode[]` from `types.ts` (`key` is required and must be unique).
 - ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
 - Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/anchor-position.ts`.
-- All menus render rows with the internal `app-menu-item` (`components/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.
-- ConfirmDialog renders `<app-dialog>` internally; its No/Yes are `.ui-btn--text` (Yes turns red with `acceptTone: 'danger'`).
+- All menus render rows with the internal `nex-menu-item` (`components/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.
+- ConfirmDialog renders `<nex-dialog>` internally; its No/Yes are `.ui-btn--text` (Yes turns red with `acceptTone: 'danger'`).
 - `*-demo.component.ts` files (confirm-dialog, overlay-panel) are story-only helpers for examples that need injected services or icon buttons. They are not part of the library.
-- AnimateOnScroll is a wrapper component (`<app-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
+- AnimateOnScroll is a wrapper component (`<nex-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 
 ## Stories
 

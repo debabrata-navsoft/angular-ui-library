@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-  selector: 'app-skeleton',
+  selector: 'nex-skeleton',
   templateUrl: './skeleton.html',
   styleUrl: './skeleton.css',
   host: {

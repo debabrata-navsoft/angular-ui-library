@@ -25,7 +25,7 @@ export const AllTypes: Story = {
     template: `
       <div style="display: grid; gap: 12px">
         @for (tone of tones; track tone) {
-          <app-alert [type]="tone" [title]="tone + ':'" [message]="message" />
+          <nex-alert [type]="tone" [title]="tone + ':'" [message]="message" />
         }
       </div>
     `,

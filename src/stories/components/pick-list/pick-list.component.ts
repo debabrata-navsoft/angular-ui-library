@@ -23,7 +23,7 @@ import { SearchInputComponent } from '../search-input/search-input.component';
 export type ListSide = 'source' | 'target';
 
 @Component({
-  selector: 'app-pick-list',
+  selector: 'nex-pick-list',
   imports: [
     NgTemplateOutlet,
     CdkDrag,

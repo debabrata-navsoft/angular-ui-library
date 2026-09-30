@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 @Component({
-  selector: 'app-menubar',
+  selector: 'nex-menubar',
   imports: [IconComponent, MenuItemComponent, NgTemplateOutlet],
   templateUrl: './menubar.html',
   styleUrl: './menubar.css',

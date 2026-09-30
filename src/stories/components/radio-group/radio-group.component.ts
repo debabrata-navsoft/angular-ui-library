@@ -8,7 +8,7 @@ export interface RadioOption {
 let nextId = 0;
 
 @Component({
-  selector: 'app-radio-group',
+  selector: 'nex-radio-group',
   templateUrl: './radio-group.html',
   styleUrl: './radio-group.css',
 })

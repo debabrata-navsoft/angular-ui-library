@@ -1,7 +1,7 @@
 import { Component, computed, input, model, signal } from '@angular/core';
 
 @Component({
-  selector: 'app-rating',
+  selector: 'nex-rating',
   templateUrl: './rating.html',
   styleUrl: './rating.css',
 })

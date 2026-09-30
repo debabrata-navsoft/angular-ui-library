@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 let nextId = 0;
 
 @Component({
-  selector: 'app-tooltip',
+  selector: 'nex-tooltip',
   templateUrl: './tooltip.html',
   styleUrl: './tooltip.css',
 })

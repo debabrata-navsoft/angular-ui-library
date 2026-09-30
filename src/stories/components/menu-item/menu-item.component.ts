@@ -6,13 +6,13 @@ import { IconComponent } from '../icon/icon.component';
 
 /** One menu row (icon, label, badge, chevron) or separator, shared by Menu, TieredMenu, Menubar, MegaMenu and PanelMenu */
 @Component({
-  selector: 'app-menu-item',
+  selector: 'nex-menu-item',
   imports: [IconComponent, NgTemplateOutlet],
   templateUrl: './menu-item.html',
   styleUrl: './menu-item.css',
   // The CSS is global: the parent menus tune rows with --mi-* custom properties and reuse .mi-panel/.mi-float/.mi-flyout
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'app-menu-item' },
+  host: { class: 'nex-menu-item' },
 })
 export class MenuItemComponent {
   /** Item to render. Renders an <a href> when it has a `url`, a divider when `separator` */

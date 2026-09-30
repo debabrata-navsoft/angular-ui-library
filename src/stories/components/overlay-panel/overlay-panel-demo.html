@@ -1,9 +1,9 @@
 <button type="button" class="ui-btn ui-btn--primary" (click)="op.toggle($event)">
-  <app-icon name="share-2" [size]="16" />
+  <nex-icon name="share-2" [size]="16" />
   Share
 </button>
 
-<app-overlay-panel
+<nex-overlay-panel
   #op
   ariaLabel="Share this document"
   [dismissable]="dismissable()"
@@ -17,7 +17,7 @@
       <div class="share-row">
         <input class="ui-control" [value]="url" readonly aria-label="Document link" />
         <button type="button" class="ui-btn ui-btn--icon" aria-label="Copy link" (click)="copy()">
-          <app-icon name="copy" [size]="16" />
+          <nex-icon name="copy" [size]="16" />
         </button>
       </div>
     </div>
@@ -35,18 +35,18 @@
       <ul class="share-members">
         @for (member of members; track member.email) {
           <li>
-            <app-avatar [name]="member.name" size="small" />
+            <nex-avatar [name]="member.name" size="small" />
             <span class="share-person">
               <strong>{{ member.name }}</strong>
               <span>{{ member.email }}</span>
             </span>
             <span class="share-role">
               {{ member.role }}
-              <app-icon name="chevron-down" [size]="14" />
+              <nex-icon name="chevron-down" [size]="14" />
             </span>
           </li>
         }
       </ul>
     </div>
   </div>
-</app-overlay-panel>
+</nex-overlay-panel>

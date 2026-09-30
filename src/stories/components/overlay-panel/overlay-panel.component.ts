@@ -4,7 +4,7 @@ import { IconComponent } from '../icon/icon.component';
 import { type AnchorPosition, anchorPosition } from '../../anchor-position';
 
 @Component({
-  selector: 'app-overlay-panel',
+  selector: 'nex-overlay-panel',
   imports: [IconComponent],
   exportAs: 'overlayPanel',
   host: {

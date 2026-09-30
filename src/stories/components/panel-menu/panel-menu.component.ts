@@ -6,7 +6,7 @@ import type { MenuItem } from '../../types';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 @Component({
-  selector: 'app-panel-menu',
+  selector: 'nex-panel-menu',
   imports: [MenuItemComponent, NgTemplateOutlet],
   templateUrl: './panel-menu.html',
   styleUrl: './panel-menu.css',

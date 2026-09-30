@@ -54,10 +54,10 @@ const meta: Meta<MenubarComponent> = {
   render: (args) => ({
     props: args,
     template: `
-      <app-menubar [model]="model" (itemClick)="itemClick($event)">
+      <nex-menubar [model]="model" (itemClick)="itemClick($event)">
         <strong menubarStart style="font-size: 16px; background: var(--ui-gradient); -webkit-background-clip: text; color: transparent">Aurora</strong>
-        <app-search-input menubarEnd placeholder="Search" />
-      </app-menubar>
+        <nex-search-input menubarEnd placeholder="Search" />
+      </nex-menubar>
     `,
   }),
 };

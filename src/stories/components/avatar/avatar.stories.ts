@@ -34,7 +34,7 @@ export const Group: Story = {
     template: `
       <div style="display: flex; gap: 12px">
         @for (name of names; track name) {
-          <app-avatar [name]="name" />
+          <nex-avatar [name]="name" />
         }
       </div>
     `,

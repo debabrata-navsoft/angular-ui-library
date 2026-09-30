@@ -27,10 +27,10 @@ export const Colored: Story = {
     props: args,
     template: `
       <div style="display: flex; gap: 16px">
-        <app-icon [name]="name" [size]="size" style="color: var(--ui-primary)" />
-        <app-icon [name]="name" [size]="size" style="color: var(--ui-success)" />
-        <app-icon [name]="name" [size]="size" style="color: var(--ui-warning)" />
-        <app-icon [name]="name" [size]="size" style="color: var(--ui-danger)" />
+        <nex-icon [name]="name" [size]="size" style="color: var(--ui-primary)" />
+        <nex-icon [name]="name" [size]="size" style="color: var(--ui-success)" />
+        <nex-icon [name]="name" [size]="size" style="color: var(--ui-warning)" />
+        <nex-icon [name]="name" [size]="size" style="color: var(--ui-danger)" />
       </div>
     `,
   }),

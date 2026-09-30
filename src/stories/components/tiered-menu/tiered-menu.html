@@ -17,7 +17,7 @@
   >
     @for (item of items; track $index) {
       <li role="none" (mouseenter)="path.open(item, depth)">
-        <app-menu-item
+        <nex-menu-item
           [item]="item"
           chevron="chevron-right"
           [open]="path.isOpen(item, depth)"

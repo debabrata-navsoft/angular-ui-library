@@ -6,7 +6,7 @@ import { IconComponent } from '../icon/icon.component';
 let nextId = 0;
 
 @Component({
-  selector: 'app-input-number',
+  selector: 'nex-input-number',
   imports: [NgTemplateOutlet, IconComponent],
   templateUrl: './input-number.html',
   styleUrl: './input-number.css',

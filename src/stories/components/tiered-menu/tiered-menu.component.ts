@@ -6,7 +6,7 @@ import type { MenuItem } from '../../types';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 @Component({
-  selector: 'app-tiered-menu',
+  selector: 'nex-tiered-menu',
   imports: [MenuItemComponent, NgTemplateOutlet],
   templateUrl: './tiered-menu.html',
   styleUrl: './tiered-menu.css',

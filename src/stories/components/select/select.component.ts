@@ -6,7 +6,7 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'app-select',
+  selector: 'nex-select',
   templateUrl: './select.html',
   styleUrl: './select.css',
 })

@@ -5,7 +5,7 @@ import { create } from 'storybook/theming';
 addons.setConfig({
   theme: create({
     base: 'light',
-    brandTitle: 'Angular UI Library',
+    brandTitle: 'NexUI — Next-generation UI',
     brandUrl: '/',
     brandTarget: '_self',
 

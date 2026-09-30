@@ -63,7 +63,7 @@ function spin(value: number, step: number, dir: 1 | -1, max: number) {
 let nextId = 0;
 
 @Component({
-  selector: 'app-time-picker',
+  selector: 'nex-time-picker',
   imports: [NgTemplateOutlet, IconComponent],
   host: {
     '(document:keydown.escape)': 'close()',
@@ -114,7 +114,7 @@ export class TimePickerComponent {
   /** Is the picker disabled? */
   readonly disabled = input(false);
 
-  protected readonly id = `app-time-picker-${nextId++}`;
+  protected readonly id = `nex-time-picker-${nextId++}`;
   protected readonly opened = signal(false);
   protected readonly position = signal<AnchorPosition | null>(null);
   /** Text typed into the list-mode input, until it is committed on blur/Enter */

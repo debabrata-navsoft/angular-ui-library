@@ -42,7 +42,7 @@ export const Sizes: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 20px">
         @for (size of sizes; track size) {
-          <app-input-otp [label]="size" [size]="size" />
+          <nex-input-otp [label]="size" [size]="size" />
         }
       </div>
     `,

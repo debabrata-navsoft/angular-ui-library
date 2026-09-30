@@ -14,7 +14,7 @@ import { Size } from '../../types';
 let nextId = 0;
 
 @Component({
-  selector: 'app-input-otp',
+  selector: 'nex-input-otp',
   templateUrl: './input-otp.html',
   styleUrl: './input-otp.css',
 })
