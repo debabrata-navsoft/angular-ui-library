@@ -8,7 +8,8 @@ NexUI (Next-generation UI): Angular 21 UI component library, developed and docum
 npm run storybook         # Storybook dev server on http://localhost:6006
 npm run build-storybook   # Static Storybook build -> storybook-static/
 npm start                 # Angular app (src/app) on http://localhost:4200
-npm run build             # Production app build -> dist/
+npm run build             # Production app build with SSR -> dist/angular-ui-library/{browser,server}
+npm run serve:ssr:angular-ui-library   # Run the built SSR server (node, port 4000)
 npm run build:elements    # Web Components for React/Vue/HTML -> dist/nexui-elements/browser/ (nexui.js, styles.css, icons/)
 npm test                  # Vitest unit tests (*.spec.ts)
 npx ngc -p .storybook/tsconfig.json --noEmit   # Type-check all components + stories (incl. templates)
@@ -37,7 +38,8 @@ src/stories/
       <name>.css            Styles (styleUrl)
       <name>.stories.ts
   Configure.mdx, assets/   Storybook welcome page (boilerplate)
-src/app/             Demo Angular app (not used by Storybook)
+src/app/             Demo Angular app (not used by Storybook), server-rendered: src/server.ts (Express), src/main.server.ts,
+                     app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
 src/elements/nexui.ts  Web Components entry: registers every component as <nexui-*> (Angular Elements), window.NexUI.confirm()
 src/styles.css       Imports stories/theme.css for the app
 public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook (staticDirs)
@@ -63,6 +65,7 @@ Every story title is `Components/<Name>`. Do not use an `Example/` group.
 - Selector prefix `nex-` (the Button/Header/Page examples keep `storybook-`).
 - Every public input/output gets a one-line `/** doc comment */`. Storybook autodocs shows these.
 - Static `class="x"` plus `[class]="'x--' + variant()"` merge in Angular. Don't repeat the base class inside the binding.
+- Components must render on the server (the app uses SSR + hydration): don't touch `window`, `document`, `matchMedia`, observers or `fetch` in constructors, `computed` or effects. Put that code in `afterNextRender` or behind `isPlatformBrowser(inject(PLATFORM_ID))` (see Scroll Top, Icon, Chart).
 - Boolean inputs use `input(false, { transform: booleanAttribute })` and number inputs `input(0, { transform: numberAttribute })`, so HTML attributes (`card`, `num-visible="3"`) work in the Web Components and in Angular templates.
 
 ## Styling ("Aurora" design)

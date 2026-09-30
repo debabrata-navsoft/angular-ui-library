@@ -1,6 +1,7 @@
 import {
   Component,
   DOCUMENT,
+  PLATFORM_ID,
   ViewEncapsulation,
   effect,
   inject,
@@ -8,6 +9,7 @@ import {
   numberAttribute,
   signal,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser';
 
 export const ICON_VARIANTS = ['outline', 'duotone', 'gradient', 'soft', 'solid'] as const;
@@ -105,13 +107,17 @@ export class IconComponent {
   private readonly document = inject(DOCUMENT);
   protected readonly html = signal<SafeHtml | null>(null);
 
+  private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
+
   constructor() {
     effect(() => this.variant() === 'gradient' && addGradient(this.document));
 
     effect((onCleanup) => {
+      const raw = this.svg();
+      // Icon files are downloaded in the browser (after hydration on server-rendered pages)
+      if (!raw && !this.browser) return;
       let active = true;
       onCleanup(() => (active = false));
-      const raw = this.svg();
       const markup = raw ? Promise.resolve(markClosedShapes(raw)) : loadSvg(this.name());
       markup.then(
         (svg) => active && this.html.set(this.sanitizer.bypassSecurityTrustHtml(svg)),

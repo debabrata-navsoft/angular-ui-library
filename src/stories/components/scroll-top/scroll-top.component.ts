@@ -1,12 +1,16 @@
 import {
   Component,
+  PLATFORM_ID,
   booleanAttribute,
   computed,
   effect,
+  inject,
   input,
   numberAttribute,
   signal,
 } from '@angular/core';
+
+import { isPlatformBrowser } from '@angular/common';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -53,8 +57,11 @@ export class ScrollTopComponent {
     () => RING * (1 - Math.min(1, this.scrolled() / this.max())),
   );
 
+  private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
+
   constructor() {
     effect((onCleanup) => {
+      if (!this.browser) return; // Server render: no scrolling, the button starts hidden
       // The page scrolls documentElement but fires scroll events on window
       const el = this.target() ?? document.documentElement;
       const source = this.target() ?? window;

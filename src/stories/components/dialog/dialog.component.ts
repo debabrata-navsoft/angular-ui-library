@@ -74,7 +74,7 @@ export class DialogComponent {
     });
 
     // Move focus into the dialog when it opens
-    effect(() => this.panel()?.nativeElement.focus());
+    effect(() => this.panel()?.nativeElement.focus?.());
   }
 
   close() {
