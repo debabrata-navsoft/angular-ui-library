@@ -1,0 +1,40 @@
+:host {
+  display: inline-block;
+}
+
+.otp {
+  --otp-box: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.otp--small {
+    --otp-box: 38px;
+  }
+  &.otp--large {
+    --otp-box: 58px;
+  }
+}
+
+.otp__box {
+  width: var(--otp-box);
+  height: var(--otp-box);
+  padding: 0;
+  font-size: calc(var(--otp-box) * 0.42);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  caret-color: var(--ui-primary);
+
+  &.otp__box--filled:not([aria-invalid='true'], :focus, :disabled) {
+    border-color: var(--ui-primary);
+    background: var(--ui-primary-soft);
+  }
+}
+
+.otp__separator {
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ui-border-strong);
+}
