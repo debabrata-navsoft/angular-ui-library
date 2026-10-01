@@ -11,8 +11,9 @@
   --ui-primary-hover: #4f46e5;
   --ui-accent: #a855f7;
   --ui-gradient: linear-gradient(135deg, var(--ui-primary) 0%, var(--ui-accent) 100%);
-  --ui-primary-soft: #eef2ff;
-  --ui-primary-ring: rgba(99, 102, 241, 0.28);
+  /* Derived from --ui-primary, so changing the brand colors (e.g. the Storybook palette menu) updates them too */
+  --ui-primary-soft: color-mix(in srgb, var(--ui-primary) 10%, var(--ui-surface));
+  --ui-primary-ring: color-mix(in srgb, var(--ui-primary) 28%, transparent);
 
   /* Neutrals */
   --ui-text: #0f172a;
@@ -48,6 +49,28 @@
   --ui-ease: 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Dark mode: set data-theme="dark" on <html>. Same tokens, dark values; brand colors stay as they are */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ui-primary-soft: color-mix(in srgb, var(--ui-primary) 18%, var(--ui-surface));
+  --ui-primary-ring: color-mix(in srgb, var(--ui-primary) 40%, transparent);
+  --ui-text: #e2e8f0;
+  --ui-text-muted: #94a3b8;
+  --ui-text-subtle: #64748b;
+  --ui-border: #1e293b;
+  --ui-border-strong: #334155;
+  --ui-surface: #0f172a;
+  --ui-surface-muted: #0b1222;
+  --ui-surface-sunken: #1e293b;
+  --ui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --ui-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.35);
+  --ui-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5), 0 20px 48px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme='dark'] body {
+  background: var(--ui-surface);
+}
+
 body {
   font-family: var(--ui-font);
   color: var(--ui-text);
@@ -81,10 +104,11 @@ body {
 
 /* Color tones. Set a tone-* class, then read --tone-bg / --tone-fg / --tone-border / --tone-solid. */
 .tone-info {
-  --tone-bg: #eef2ff;
-  --tone-fg: #3730a3;
-  --tone-border: #c7d2fe;
-  --tone-solid: #6366f1;
+  /* Brand-colored, so it follows the theme color */
+  --tone-bg: var(--ui-primary-soft);
+  --tone-fg: color-mix(in srgb, var(--ui-primary) 72%, #000);
+  --tone-border: color-mix(in srgb, var(--ui-primary) 30%, var(--ui-surface));
+  --tone-solid: var(--ui-primary);
 }
 
 .tone-success {
@@ -113,6 +137,14 @@ body {
   --tone-fg: #334155;
   --tone-border: #e2e8f0;
   --tone-solid: #64748b;
+}
+
+/* Dark mode tones: tinted from the solid color */
+:root[data-theme='dark']
+  :is(.tone-info, .tone-success, .tone-warning, .tone-danger, .tone-neutral) {
+  --tone-bg: color-mix(in srgb, var(--tone-solid) 16%, var(--ui-surface));
+  --tone-fg: color-mix(in srgb, var(--tone-solid) 60%, #fff);
+  --tone-border: color-mix(in srgb, var(--tone-solid) 38%, var(--ui-surface));
 }
 
 /* Round tone icon used by Alert and Toast */

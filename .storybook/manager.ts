@@ -1,21 +1,62 @@
-import { addons } from 'storybook/manager-api';
-import { create } from 'storybook/theming';
+import {
+  CURRENT_STORY_WAS_SET,
+  GLOBALS_UPDATED,
+  SET_GLOBALS,
+} from 'storybook/internal/core-events';
+import { addons, types } from 'storybook/manager-api';
 
-// Storybook UI (sidebar, toolbar) branding. Restart Storybook after editing
+import { DEFAULT_GLOBALS, STORAGE_KEY, applyTheme, themeOf } from './nexui-theme';
+import { ModeTool, PaletteTool, SearchTool, managerTheme } from './theme-tools';
+
+/** The last light/dark mode and theme color the user picked */
+let saved = DEFAULT_GLOBALS;
+try {
+  saved = themeOf(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}'));
+} catch {}
+
+// Storybook UI (sidebar, toolbar) branding in the saved mode and color. Storybook's own toolbar tools are hidden
+// (with `features` in main.ts for backgrounds/grid, outline, measure and viewport); NexUI's are added below.
+// The sidebar CSS in manager-head.html reads data-theme and --ui-primary from this page. Restart after editing
+applyTheme(document, saved.theme, saved.palette);
 addons.setConfig({
-  theme: create({
-    base: 'light',
-    brandTitle: 'NexUI — Next-generation UI',
-    brandUrl: '/',
-    brandTarget: '_self',
+  theme: managerTheme(saved.theme, saved.palette),
+  toolbar: Object.fromEntries(
+    [
+      'zoom',
+      'remount',
+      'fullscreen',
+      'eject',
+      'copy',
+      'share',
+      'isolationMode',
+      'storybook/a11y/panel',
+    ].map((id) => [id, { hidden: true }]),
+  ),
+});
 
-    // Aurora colors from src/stories/styles/theme.css
-    colorPrimary: '#a855f7',
-    colorSecondary: '#6366f1',
-    barSelectedColor: '#6366f1',
-    appBorderRadius: 10,
-    fontBase: "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-  }),
+// Toolbar: search, light/dark mode and theme color (PrimeNG-style). The choice is saved and comes back on reload
+const TOOLS = [
+  ['search', 'Search', SearchTool],
+  ['mode', 'Light or dark mode', ModeTool],
+  ['palette', 'Theme color', PaletteTool],
+] as const;
+addons.register('nexui/theme', (api) => {
+  for (const [id, title, Tool] of TOOLS) {
+    addons.add(`nexui/${id}`, { type: types.TOOL, title, match: () => true, render: () => Tool() });
+  }
+  // The preview starts with the defaults; once it's ready, apply the saved choice
+  api.once(SET_GLOBALS, () => {
+    if (saved.theme !== DEFAULT_GLOBALS.theme || saved.palette !== DEFAULT_GLOBALS.palette)
+      api.updateGlobals(saved);
+  });
+  // A change from the toolbar or the landing pages' top bar: save it and restyle the Storybook UI. Storybook sends
+  // GLOBALS_UPDATED on every render, so unchanged themes stop at applyTheme
+  api.on(GLOBALS_UPDATED, ({ globals }: { globals: Record<string, string> }) => {
+    const { theme, palette } = themeOf(globals);
+    if (!applyTheme(document, theme, palette)) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, palette }));
+    api.setOptions({ theme: managerTheme(theme, palette) });
+  });
 });
 
 // Browser tab title: Storybook writes "Components / Button - Primary ⋅ Storybook"; show "NexUI - Button - Primary"
@@ -74,3 +115,28 @@ new MutationObserver((mutations) => {
       .forEach((other) => other !== opened && other.click());
   }
 }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['aria-expanded'] });
+
+// Layout per page, from the story's tags. `nexui-landing` pages (Welcome, the components catalog) fill the window like
+// a website: no sidebar, toolbar or addon panel. `nexui-gallery` pages (Icons, Animations, NexLottie) keep the
+// sidebar and toolbar but have no use for the addon panel. Elsewhere the panel comes back as the user left it
+type Layout = 'landing' | 'gallery' | 'default';
+addons.register('nexui/layout', (api) => {
+  // null until the first page: Storybook keeps the layout across reloads, so the first page always applies it
+  let current: Layout | null = null;
+  // CURRENT_STORY_WAS_SET fires on every selection, the first load included
+  api.on(CURRENT_STORY_WAS_SET, () => {
+    const tags = api.getCurrentStoryData()?.tags ?? [];
+    const layout: Layout = tags.includes('nexui-landing')
+      ? 'landing'
+      : tags.includes('nexui-gallery')
+        ? 'gallery'
+        : 'default';
+    if (layout === current) return;
+    // Links on the landing pages reload the manager, so the panel state is kept for the session
+    if (current === 'default') sessionStorage.setItem('nexui-panel', String(api.getIsPanelShown()));
+    current = layout;
+    api.toggleNav(layout !== 'landing');
+    api.toggleToolbar(layout !== 'landing');
+    api.togglePanel(layout === 'default' && sessionStorage.getItem('nexui-panel') !== 'false');
+  });
+});

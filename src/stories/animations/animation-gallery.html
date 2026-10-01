@@ -1,11 +1,14 @@
 <div class="gallery-page">
-  <h1>Animations</h1>
-  <p class="subtitle">
+  <header class="gallery-hero">
+    <span class="gallery-version"><i></i>{{ version }}</span>
+    <h1>Animations</h1>
+    <p class="subtitle">
     {{ animations().length }} CSS animations. Add <code>class="nex-anim-name"</code> to any element,
     and tune it with <code>--nex-anim-duration</code>, <code>--nex-anim-delay</code>,
     <code>--nex-anim-ease</code> and <code>--nex-anim-repeat</code>. Click a card to replay it and
     copy its code.
   </p>
+  </header>
 
   <div class="toolbar">
     <nex-search-input

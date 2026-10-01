@@ -15,6 +15,7 @@ import {
 import { SearchInputComponent } from '../components/form/search-input/search-input.component';
 import { copyToClipboard } from '../utils/clipboard';
 import { downloadBlob } from '../utils/download';
+import { VERSION } from '../getting-started/landing';
 
 export interface GalleryIcon {
   name: string;
@@ -43,6 +44,8 @@ type Settings = typeof DEFAULTS;
   encapsulation: ViewEncapsulation.None,
 })
 export class IconGalleryComponent {
+  protected readonly version = VERSION;
+
   /** All icons to show */
   readonly icons = input<GalleryIcon[]>([]);
 

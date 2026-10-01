@@ -1,16 +1,40 @@
 import type { Preview } from '@storybook/angular-vite';
+import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events';
+import { addons } from 'storybook/preview-api';
 import '../src/stories/styles/theme.css';
 // Shared layout of the Icons and Animations pages
 import '../src/stories/styles/gallery-page.css';
+// Storybook's docs pages in dark mode
+import './docs-theme.css';
+import { DEFAULT_GLOBALS, applyTheme } from './nexui-theme';
+
+// Light/dark mode and theme color (toolbar in manager.ts): applied to the whole preview, docs pages included
+const onGlobals = ({ globals }: { globals: Record<string, string> }) =>
+  applyTheme(document, globals['theme'], globals['palette']);
+addons.getChannel().on(SET_GLOBALS, onGlobals);
+addons.getChannel().on(GLOBALS_UPDATED, onGlobals);
 
 const preview: Preview = {
+  initialGlobals: DEFAULT_GLOBALS,
   parameters: {
     options: {
       storySort: {
         order: [
           'Getting Started',
+          ['Welcome', 'Use in React, Vue & Angular'],
           'Components',
-          ['Form', 'Data', 'Panel', 'Overlay', 'Menu', 'Feedback', 'Media', 'Chat', 'Misc'],
+          [
+            'Overview',
+            'Form',
+            'Data',
+            'Panel',
+            'Overlay',
+            'Menu',
+            'Feedback',
+            'Media',
+            'Chat',
+            'Misc',
+          ],
           'Icons',
           'Animations',
           'Onboarding',

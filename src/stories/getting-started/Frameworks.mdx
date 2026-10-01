@@ -9,12 +9,40 @@ use the same components as standard **Web Components** (custom elements), built 
 
 <table>
   <thead>
-    <tr><th></th><th>Angular</th><th>React / Vue / others</th></tr>
+    <tr>
+      <th></th>
+      <th>Angular</th>
+      <th>React / Vue / others</th>
+    </tr>
   </thead>
   <tbody>
-    <tr><td>Tag names</td><td><code>{'<nex-chart>'}</code></td><td><code>{'<nexui-chart>'}</code></td></tr>
-    <tr><td>Pass data</td><td><code>{'[datasets]="data"'}</code></td><td>set the <b>property</b> (see below)</td></tr>
-    <tr><td>Listen</td><td><code>{'(submitted)="save($event)"'}</code></td><td>DOM event, value in <code>event.detail</code></td></tr>
+    <tr>
+      <td>Tag names</td>
+      <td>
+        <code>{'<nex-chart>'}</code>
+      </td>
+      <td>
+        <code>{'<nexui-chart>'}</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Pass data</td>
+      <td>
+        <code>{'[datasets]="data"'}</code>
+      </td>
+      <td>
+        set the <b>property</b> (see below)
+      </td>
+    </tr>
+    <tr>
+      <td>Listen</td>
+      <td>
+        <code>{'(submitted)="save($event)"'}</code>
+      </td>
+      <td>
+        DOM event, value in <code>event.detail</code>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -75,8 +103,10 @@ export function Signup() {
 }
 
 <nexui-carousel num-visible="3" circular autoplay-interval="3000">
-  {products.map((p) => <div key={p.id}>{p.name}</div>)}
-</nexui-carousel>
+  {products.map((p) => (
+    <div key={p.id}>{p.name}</div>
+  ))}
+</nexui-carousel>;
 ```
 
 React 19 sets object props as properties and `on<event>` props as listeners (`onsubmitted`, `onvalueChange`).
@@ -100,7 +130,7 @@ declare module 'react' {
 Tell Vue these are custom elements (`vite.config.ts`):
 
 ```ts
-vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('nexui-') } } })
+vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('nexui-') } } });
 ```
 
 ```vue

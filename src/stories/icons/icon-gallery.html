@@ -1,9 +1,12 @@
 <div class="gallery-page icon-gallery">
-  <h1>Icons</h1>
-  <p class="subtitle">
+  <header class="gallery-hero">
+    <span class="gallery-version"><i></i>{{ version }}</span>
+    <h1>Icons</h1>
+    <p class="subtitle">
     {{ icons().length }} icons in <code>src/stories/icons/svg/</code>. Click an icon to copy its code.
     Add your own <code>.svg</code> files to that folder and they show up here.
   </p>
+  </header>
 
   <div class="toolbar">
     <nex-search-input

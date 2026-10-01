@@ -9,6 +9,8 @@ const ANIMATIONS = parseAnimations(css);
 
 const meta: Meta<AnimationGalleryComponent> = {
   title: 'Animations',
+  // manager.ts hides the addon panel on gallery pages
+  tags: ['nexui-gallery'],
   component: AnimationGalleryComponent,
   parameters: {
     layout: 'fullscreen',

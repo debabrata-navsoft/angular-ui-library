@@ -15,6 +15,8 @@ const ANIMATIONS: GalleryAnimation[] = Object.entries(files)
 
 const meta: Meta<LottieGalleryComponent> = {
   title: 'NexLottie',
+  // manager.ts hides the addon panel on gallery pages
+  tags: ['nexui-gallery'],
   component: LottieGalleryComponent,
   parameters: {
     layout: 'fullscreen',

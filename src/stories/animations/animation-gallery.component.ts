@@ -7,6 +7,7 @@ import {
 } from '../components/form/button-toggle/button-toggle.component';
 import { IconComponent } from '../components/media/icon/icon.component';
 import { SearchInputComponent } from '../components/form/search-input/search-input.component';
+import { VERSION } from '../getting-started/landing';
 
 export interface NexAnimation {
   /** Class suffix: nex-anim-<name> */
@@ -60,6 +61,8 @@ export function parseAnimations(css: string): NexAnimation[] {
   styleUrl: './animation-gallery.css',
 })
 export class AnimationGalleryComponent {
+  protected readonly version = VERSION;
+
   /** All animations to show (from parseAnimations) */
   readonly animations = input<NexAnimation[]>([]);
 

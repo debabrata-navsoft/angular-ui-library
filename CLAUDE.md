@@ -21,7 +21,10 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 
 ```
 src/stories/         One folder per top-level sidebar section, plus shared utils/ and styles/:
-  getting-started/   "Getting Started": Configure.mdx (welcome page) + assets/, Frameworks.mdx (React/Vue/HTML guide)
+  getting-started/   "Getting Started": welcome/ (the landing page, an Angular page built from NexUI components and effects),
+                     components-catalog/ ("View Components": every component grouped like the sidebar, read at runtime
+                     from Storybook's index.json; story Components/Overview, hidden from the sidebar), landing-nav/ (their
+                     top bar), landing.ts (PAGES, SECTIONS, VERSION shared by the landing and gallery pages), Frameworks.mdx
   components/        "Components": library components only, grouped like the sidebar (Components ▸ <Group> ▸ <Name>):
     <group>/           form, data, panel, overlay, menu, feedback, media, chat, misc
       <name>/
@@ -48,7 +51,8 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
   styles/            Global CSS:
     theme.css          Design tokens (--ui-*), .tone-* color classes, shared .ui-* classes; imports animations.css
     animations.css     nex-anim-* animation classes (see Animations below)
-    gallery-page.css   Shared layout of the Icons, Animations and NexLottie pages (.gallery-page wrapper), loaded by preview.ts
+    gallery-page.css   Shared layout of the Icons, Animations and NexLottie pages (.gallery-page wrapper with a centered
+                       .gallery-hero: version pill, big title, intro), loaded by preview.ts
 src/app/             Demo Angular app (not used by Storybook), server-rendered: src/server.ts (Express), src/main.server.ts,
                      app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
 src/elements/nexui.ts  Web Components entry: registers every component as <nexui-*> (Angular Elements), window.NexUI.confirm()
@@ -60,8 +64,18 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
                      and renames the browser tab ("NexUI - Button - Primary") over Storybook's own title
                      keeps one sidebar group open on load (the open page's group, else Getting Started), and makes
                      groups and components accordions (opening one closes the other)
+                     sets the layout per page from story tags: `nexui-landing` (Welcome, Components/Overview) hides the
+                     sidebar, toolbar and addon panel; `nexui-gallery` (Icons, Animations, NexLottie) hides the panel;
+                     elsewhere they come back. It listens to CURRENT_STORY_WAS_SET (fires on the first load too)
                      manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
                      icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
+                     Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts
+                     adds search, light/dark mode and theme color (PrimeNG-style). nexui-theme.ts holds the palettes and
+                     applyTheme(); the choice is the `theme`/`palette` globals, applied by preview.ts (data-theme +
+                     --ui-primary/--ui-primary-hover/--ui-accent) and saved by manager.ts in localStorage ('nexui-theme').
+                     docs-theme.css styles Storybook's docs pages in dark mode; manager-head.html's sidebar CSS uses
+                     --nav-* variables that follow the mode; the sidebar logo is public/nexui-brand-{light,dark}.svg. Toolbar tools are hidden by id in
+                     manager.ts (`isolationMode`, `storybook/a11y/panel`, …); only "Show addon panel" needs CSS
 ```
 
 All components live in `src/stories/components/<group>/<name>/`, one folder per component. Groups:
@@ -86,6 +100,7 @@ The sidebar accordion in `manager.ts` works at every level: opening a group or c
 
 The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neutrals, with soft layered shadows, rounded corners, a glowing focus ring on every interactive element, and short entrance/hover animations. Keep new components consistent with this:
 
+- Dark mode is `data-theme="dark"` on `<html>` (theme.css overrides the neutral tokens, shadows and tones); `--ui-primary-soft` and `--ui-primary-ring` are derived from `--ui-primary`, so components must use the variables for both modes and every theme color to work.
 - Use theme variables, not hex values. Colors: `--ui-primary`, `--ui-primary-hover`, `--ui-accent`, `--ui-gradient`, `--ui-primary-soft`, `--ui-text`, `--ui-text-muted`, `--ui-text-subtle`, `--ui-border`, `--ui-border-strong`, `--ui-surface`, `--ui-surface-muted`, `--ui-surface-sunken`, `--ui-success`, `--ui-warning`, `--ui-danger`. Shape and motion: `--ui-radius-sm`, `--ui-radius`, `--ui-radius-lg`, `--ui-shadow-sm`, `--ui-shadow`, `--ui-shadow-lg`, `--ui-ring`, `--ui-ease`, `--ui-font`.
 - Selected/active states use `background: var(--ui-gradient)` with white text. Hover changes color, background, border or shadow only (e.g. `--ui-primary-soft`). Never move elements on hover (no `translateY` lift). `:focus-visible` uses `box-shadow: var(--ui-ring)`.
 - Alert and Toast show a round tone icon: `<span class="ui-tone-icon">{{ icons[type()] }}</span>` with `TONE_ICONS`.
@@ -100,7 +115,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Users add their own `.svg` files to `src/stories/icons/svg/`. `<nex-icon name="x" />` (`components/media/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icons/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
-- `http://localhost:6006/` opens Configure your project (a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
+- `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`, a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
 - Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects. Root pages and the Onboarding and Effects groups are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.

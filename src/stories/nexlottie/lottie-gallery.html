@@ -1,11 +1,14 @@
 <div class="gallery-page">
-  <h1>NexLottie</h1>
-  <p class="subtitle">
+  <header class="gallery-hero">
+    <span class="gallery-version"><i></i>{{ version }}</span>
+    <h1>NexLottie</h1>
+    <p class="subtitle">
     {{ animations().length }} Lottie animations in <code>src/stories/nexlottie/files/</code>, played with
     <code>&lt;nex-lottie&gt;</code>. Download any animation from LottieFiles (<code>.json</code> or
     <code>.lottie</code>), or export one from After Effects, drop it into that folder and it shows
     up here. Or paste a link below to try it first.
   </p>
+  </header>
 
   <form class="link" (submit)="$event.preventDefault(); addLink(link)">
     <input

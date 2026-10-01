@@ -17,6 +17,8 @@ const ICONS: GalleryIcon[] = Object.entries(files)
 
 const meta: Meta<IconGalleryComponent> = {
   title: 'Icons',
+  // manager.ts hides the addon panel on gallery pages
+  tags: ['nexui-gallery'],
   component: IconGalleryComponent,
   parameters: {
     layout: 'fullscreen',

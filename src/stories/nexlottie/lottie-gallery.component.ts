@@ -8,6 +8,7 @@ import { LottieComponent, loadLottie } from '../components/media/lottie/lottie.c
 import { SearchInputComponent } from '../components/form/search-input/search-input.component';
 import { categoryOf, isDarkBg, type GalleryAnimation } from './gallery-animation';
 import { LottieDetailComponent } from './lottie-detail.component';
+import { VERSION } from '../getting-started/landing';
 
 export type { GalleryAnimation } from './gallery-animation';
 
@@ -19,6 +20,8 @@ export type { GalleryAnimation } from './gallery-animation';
   styleUrl: './lottie-gallery.css',
 })
 export class LottieGalleryComponent {
+  protected readonly version = VERSION;
+
   /** All animations to show */
   readonly animations = input<GalleryAnimation[]>([]);
 
