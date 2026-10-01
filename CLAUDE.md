@@ -35,6 +35,10 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
   onboarding/        "Onboarding": onboarding/ (Tour) and onboarding-checklist/ (Checklist) components
   nexlottie/         "NexLottie" page (lottie-gallery.*, lottie-detail.*, lottie-export.ts: preview, detail dialog, exports)
     files/             Drop-in Lottie files (.json) for <nex-lottie>, served at /lottie; the NexLottie page lists them
+  effects/           "Effects": visual effect components, one folder each: particles/, spotlight/, aurora/, starfield/,
+                     matrix-rain/, waves/, dot-grid/, cursor-trail/, confetti/
+    canvas-effect.ts   Shared engine of the canvas effects (base class CanvasEffect)
+    effect-story.ts    Story-only helpers (hero copy, dark backgrounds) for the Effects pages
   utils/             Shared TypeScript helpers (no components):
     types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
     anchor-position.ts Shared fixed-position helper for popovers and popup menus
@@ -63,7 +67,7 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
 All components live in `src/stories/components/<group>/<name>/`, one folder per component. Groups:
 Form (inputs, buttons, pickers, uploads), Data (tables, trees, charts, lists), Panel (layout containers), Overlay (dialogs, popups, tooltips), Menu, Feedback (alerts, progress, loading), Media (icons, avatars, badges, Lottie), Chat, Misc (page helpers). Onboarding components live in `src/stories/onboarding/<name>/` (their own sidebar section), not under components/.
 Import shared types and helpers with `from '../../../utils/types'` (or `../../../utils/<helper>`), components in the same group with `from '../<other>/<other>.component'` and in another group with `from '../../<group>/<other>/<other>.component'`.
-Every story title is `Components/<Group>/<Name>` (Onboarding keeps its own `Onboarding/…` group). Do not use an `Example/` group. The group order in the sidebar is set in `storySort` in `.storybook/preview.ts`.
+Every story title is `Components/<Group>/<Name>` (Onboarding and Effects keep their own `Onboarding/…` and `Effects/…` groups). Do not use an `Example/` group. The group order in the sidebar is set in `storySort` in `.storybook/preview.ts`.
 The sidebar accordion in `manager.ts` works at every level: opening a group or component closes its open siblings.
 
 ## Component conventions
@@ -97,7 +101,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icons/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
 - `http://localhost:6006/` opens Configure your project (a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
-- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie. Root pages and the Onboarding group are moved below Components with CSS `order` in manager-head.html.
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects. Root pages and the Onboarding and Effects groups are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.
 
@@ -140,6 +144,10 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Helpful (`nex-helpful`) is the "Was this helpful?" vote widget.
 - Onboarding lives in its own sidebar group (titles `Onboarding/Tour`, `Onboarding/Checklist`) instead of `Components/`. `nex-onboarding` is a tour over `steps` (CSS selectors) with `mode` spotlight | beacon | welcome and `theme` light | dark | gradient | glass. Use `start(step?)`, or `autoStart` + `storageKey` to show it once. `nex-onboarding-checklist` emits `showMe(task)` so the app can start a tour step. Tour stories use `docs.story.inline: false`, so each auto-starting tour runs in its own frame.
 - Scroll Top (`nex-scroll-top`) is fixed to the page corner by default. With `[target]` set to a scrolling element, place it as that element's last child: it sticks to the element's bottom edge.
+- Effects (`src/stories/effects/`, sidebar Effects ▸ …) wrap projected content and paint behind it (Confetti and Cursor Trail paint over it, with `.nex-effect__canvas--front`); give them a height and a background. Hosts use the global `.nex-effect` and `.nex-effect__content` classes from theme.css.
+  Canvas effects extend `CanvasEffect` (`effects/canvas-effect.ts`, a `@Directive` that also adds the `nex-effect` host class) and implement `seed()` (state for the current size), `step(dt)` and `draw(ctx)`, plus optional `active()` (Confetti, Cursor Trail and Dot Grid return false when idle, so no loop runs) and `onPointerMove`/`onPointerDown`/`onPointerLeave`. Inputs read in `seed()` reseed and inputs read in `draw()` repaint automatically, so don't add effects for that. The base handles canvas size and DPR and the pointer, and runs requestAnimationFrame only while on screen, in a visible tab, without reduced motion (a still frame instead) and while `active()`; it starts in `afterNextRender`, so effects are SSR-safe. Colors: `textColor()` and `palette(colors, vars)` read theme variables through a cache that's refreshed on resize (no `getComputedStyle` per frame). Batch canvas drawing into a few paths (opacity or depth steps) rather than one stroke per item.
+  Spotlight and Aurora are pure CSS; their pointer listeners are plain `addEventListener` calls in `afterNextRender`, so pointer moves don't run change detection. Confetti's `fire(x?, y?)` bursts from code (`trigger="manual"`). Stories build their template with `demo(tag, { height, background, content })` from `effects/effect-story.ts`.
+- Particles (`nex-particles`): dots joined by lines within `linkDistance`, `count` per 1000×600 px (so density is size-independent), a pointer `interaction` grab (lines to the cursor) | repulse | attract | none, and `pushOnClick` adds dots. Without `color` it uses the text color (`--ui-primary` by default).
 - AnimateOnScroll is a wrapper component (`<nex-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 
 ## Stories
