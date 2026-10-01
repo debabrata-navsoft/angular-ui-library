@@ -38,6 +38,16 @@ async function loadDotLottie(url: string): Promise<object> {
   return data;
 }
 
+const isDotLottie = (url: string) => url.split('?')[0].endsWith('.lottie');
+
+/** Lottie JSON from a .json or .lottie URL */
+export async function loadLottie(url: string): Promise<object> {
+  if (isDotLottie(url)) return loadDotLottie(url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Lottie file not found: ${url}`);
+  return response.json();
+}
+
 /**
  * Plays a Lottie animation (.json or .lottie from LottieFiles, After Effects + Bodymovin, …) as SVG. The player (lottie-web) is
  * loaded on first use, only in the browser. With "reduce motion" on, the last frame is shown still.
@@ -72,6 +82,9 @@ export class LottieComponent {
   /** Play only while hovered (overrides autoplay) */
   readonly hover = input(false, { transform: booleanAttribute });
 
+  /** Hold the current frame (e.g. while an overlay covers it); unpausing resumes autoplay */
+  readonly paused = input(false, { transform: booleanAttribute });
+
   /** Playback speed (1 = normal) */
   readonly speed = input(1, { transform: numberAttribute });
 
@@ -100,7 +113,7 @@ export class LottieComponent {
       let cancelled = false;
       const source = data
         ? Promise.resolve(structuredClone(data)) // lottie-web changes the data it's given, so pass a copy
-        : src.split('?')[0].endsWith('.lottie')
+        : isDotLottie(src)
           ? loadDotLottie(src)
           : null;
       Promise.all([import('lottie-web/build/player/lottie_light'), source]).then(
@@ -131,6 +144,19 @@ export class LottieComponent {
     });
 
     effect(() => this.animation()?.setSpeed(this.speed()));
+
+    // Pause and resume without recreating the animation
+    effect(() => {
+      const animation = this.animation();
+      if (!animation) return;
+      if (this.paused()) animation.pause();
+      else if (
+        this.autoplay() &&
+        !this.hover() &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches
+      )
+        animation.play();
+    });
   }
 
   /** Play from the current frame */

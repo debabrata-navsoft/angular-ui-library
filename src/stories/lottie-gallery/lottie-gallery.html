@@ -65,15 +65,15 @@
         class="card"
         [class.selected]="selected() === a"
         [style.background]="a.data?.meta?.bg ?? null"
-        [class.card--dark]="a.data?.meta?.bg === '#0f172a'"
+        [class.card--dark]="isDarkBg(a.data?.meta?.bg)"
         [attr.aria-label]="a.name"
         (click)="selected.set(a)"
       >
         <nex-lottie
           [data]="a.data ?? null"
-          [src]="a.src ?? ''"
           [speed]="speed()"
           [hover]="hoverOnly()"
+          [paused]="!!selected()"
           size="140px"
         />
         <span class="name">{{ a.name }}</span>
@@ -84,25 +84,11 @@
   </div>
 
   @if (selected(); as a) {
-    <aside class="panel" role="dialog" [attr.aria-label]="a.name">
-      <div class="preview" [style.background]="a.data?.meta?.bg ?? null">
-        <nex-lottie [data]="a.data ?? null" [src]="a.src ?? ''" [speed]="speed()" size="120px" />
-      </div>
-      <div class="details">
-        <div class="head">
-          <h2>{{ a.name }}</h2>
-          <button type="button" class="ui-close" aria-label="Close" (click)="selected.set(null)">
-            ×
-          </button>
-        </div>
-        <pre><code>{{ code() }}</code></pre>
-        <div class="actions">
-          <button type="button" class="ui-btn ui-btn--sm ui-btn--primary" (click)="copy()">
-            {{ copied() ? 'Copied!' : 'Copy code' }}
-          </button>
-          <button type="button" class="ui-btn ui-btn--sm" (click)="download(a)">Download</button>
-        </div>
-      </div>
-    </aside>
+    <nex-lottie-detail
+      [animation]="a"
+      [related]="related()"
+      (closed)="selected.set(null)"
+      (picked)="selected.set($event)"
+    />
   }
 </div>

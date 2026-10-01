@@ -14,6 +14,7 @@ import {
 } from '../components/icon/icon.component';
 import { SearchInputComponent } from '../components/search-input/search-input.component';
 import { copyToClipboard } from '../clipboard';
+import { downloadBlob } from '../download';
 
 export interface GalleryIcon {
   name: string;
@@ -121,12 +122,10 @@ export class IconGalleryComponent {
   }
 
   protected download() {
-    const url = URL.createObjectURL(new Blob([this.code()!.svg], { type: 'image/svg+xml' }));
-    Object.assign(document.createElement('a'), {
-      href: url,
-      download: `${this.selected()!.name}.svg`,
-    }).click();
-    URL.revokeObjectURL(url);
+    downloadBlob(
+      new Blob([this.code()!.svg], { type: 'image/svg+xml' }),
+      `${this.selected()!.name}.svg`,
+    );
   }
 }
 
