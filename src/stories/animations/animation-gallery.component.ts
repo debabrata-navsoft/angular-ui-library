@@ -72,6 +72,11 @@ export class AnimationGalleryComponent {
   protected readonly loop = signal(false);
   protected readonly selected = signal<NexAnimation | null>(null);
   protected readonly copied = signal('');
+  /** Code shown in the details panel, each with its own copy button */
+  protected readonly codeBlocks = [
+    { kind: 'html', label: 'HTML' },
+    { kind: 'css', label: 'CSS' },
+  ] as const;
 
   protected readonly categories = computed<ToggleOption<string>[]>(() =>
     ['All', ...new Set(this.animations().map((a) => a.category))].map((value) => ({

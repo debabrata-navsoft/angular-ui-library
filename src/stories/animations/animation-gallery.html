@@ -90,15 +90,24 @@
             ×
           </button>
         </div>
-        <pre><code>{{ code.html }}</code></pre>
-        <div class="actions">
-          <button type="button" class="ui-btn ui-btn--sm ui-btn--primary" (click)="copy('html')">
-            {{ copied() === 'html' ? 'Copied!' : 'Copy HTML' }}
-          </button>
-          <button type="button" class="ui-btn ui-btn--sm" (click)="copy('css')">
-            {{ copied() === 'css' ? 'Copied!' : 'Copy CSS' }}
-          </button>
-        </div>
+        @for (block of codeBlocks; track block.kind) {
+          <div class="snippet">
+            <div class="snippet__head">
+              <span>{{ block.label }}</span>
+              <button
+                type="button"
+                class="ui-btn ui-btn--text ui-btn--sm"
+                (click)="copy(block.kind)"
+              >
+                <nex-icon [name]="copied() === block.kind ? 'check' : 'copy'" [size]="14" />
+                {{ copied() === block.kind ? 'Copied!' : 'Copy ' + block.label }}
+              </button>
+            </div>
+            <pre
+              [class.snippet__css]="block.kind === 'css'"
+            ><code>{{ code[block.kind] }}</code></pre>
+          </div>
+        }
       </div>
     </aside>
   }

@@ -63,3 +63,19 @@
   background: radial-gradient(circle at 50% 40%, var(--ui-primary-soft), var(--ui-surface-muted));
   cursor: pointer;
 }
+
+/* HTML and CSS code blocks in the details panel; the CSS (base rule + class + keyframes) scrolls */
+.snippet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: var(--ui-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.snippet__css {
+  max-height: 180px;
+  overflow-y: auto;
+}
