@@ -16,8 +16,8 @@ const config: StorybookConfig = {
   // public/ gives the NexUI favicon.svg; drop-in SVG icons are served at /icons, Lottie files at /lottie
   "staticDirs": [
     "../public",
-    { "from": "../src/stories/icons", "to": "/icons" },
-    { "from": "../src/stories/lottie", "to": "/lottie" }
+    { "from": "../src/stories/icons/svg", "to": "/icons" },
+    { "from": "../src/stories/nexlottie/files", "to": "/lottie" }
   ]
 };
 export default config;

@@ -1,12 +1,23 @@
 import type { Preview } from '@storybook/angular-vite';
-import '../src/stories/theme.css';
+import '../src/stories/styles/theme.css';
 // Shared layout of the Icons and Animations pages
-import '../src/stories/gallery-page.css';
+import '../src/stories/styles/gallery-page.css';
 
 const preview: Preview = {
   parameters: {
     options: {
-      storySort: { order: ['Getting Started', 'Components', 'Icons', 'Animations', 'Onboarding', ['Tour', 'Checklist'], 'NexLottie'] },
+      storySort: {
+        order: [
+          'Getting Started',
+          'Components',
+          ['Form', 'Data', 'Panel', 'Overlay', 'Menu', 'Feedback', 'Media', 'Chat', 'Misc'],
+          'Icons',
+          'Animations',
+          'Onboarding',
+          ['Tour', 'Checklist'],
+          'NexLottie',
+        ],
+      },
     },
 
     controls: {
