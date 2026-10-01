@@ -26,7 +26,6 @@ const GROUPS: Record<string, string> = {
 interface IndexEntry {
   id: string;
   title: string;
-  type: 'docs' | 'story';
   importPath: string;
   tags?: string[];
 }
@@ -135,14 +134,14 @@ export class ComponentsCatalogComponent {
       }
       this.items.set(
         [...byTitle].map(([title, list]) => {
-          // The docs page if there is one, else the first story
-          const entry = list.find((e) => e.type === 'docs') ?? list[0];
+          const [entry] = list;
           const folder = entry.importPath.split('/').slice(-2, -1)[0];
           return {
             group: title.split('/')[1].toLowerCase(),
             title: title.split('/')[2],
             folder,
-            href: managerHref(`/${entry.type}/${entry.id}`),
+            // The component's id: Storybook opens its docs page if there is one, else the first story
+            href: managerHref(entry.id.split('--')[0]),
             icon: ICONS[folder] ?? 'box',
           };
         }),

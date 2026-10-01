@@ -67,7 +67,17 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
                      groups and components accordions (opening one closes the other)
                      sets the layout per page from story tags: `nexui-landing` (Welcome, Components/Overview) hides the
                      sidebar, toolbar and addon panel; `nexui-gallery` (Icons, Animations, NexLottie) hides the panel;
-                     elsewhere they come back. It listens to CURRENT_STORY_WAS_SET (fires on the first load too)
+                     elsewhere they come back. It uses `layoutCustomisations` (asked on every render, from the first
+                     frame; before the index loads, pages are known by id in `LAYOUTS`), so a reload never flashes the sidebar.
+                     The sidebar logo opens Welcome in place (selectStory) instead of reloading Storybook.
+                     The toolbar is hidden with CSS (`data-nexui-layout`), never toggleToolbar(false): Storybook then
+                     keeps a landmark without an element, and showing the sidebar later crashes the manager UI
+                     Short page URLs (`nexui/page-url`): "/" is Welcome, other pages are their Storybook id as one path
+                     segment (a component's id for its first page: /icons, /components-form-button-toggle). It turns
+                     them into ?path= just before Storybook reads the URL and shortens every URL Storybook writes;
+                     middleware.mjs serves them in the dev server (a static host needs a fallback to index.html).
+                     Landing-page links (`managerHref(PAGES.x)`) are short URLs that preview.ts opens in place
+                     (SELECT_STORY), without reloading Storybook
                      manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
                      icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
                      Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts
@@ -116,7 +126,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Users add their own `.svg` files to `src/stories/icons/svg/`. `<nex-icon name="x" />` (`components/media/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (`icons/icons.stories.ts`) reads every `.svg` with `import.meta.glob(..., { query: '?raw' })`, so new files need no code changes. Its data is passed as `props`, not `args`, to keep it out of the Controls panel.
-- `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`, a redirect script at the top of `manager-head.html`; Storybook would pick Icons).
+- `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`; Storybook would pick Icons) and keeps its URL as plain `/` (short page URLs in manager.ts).
 - Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects. Root pages and the Onboarding and Effects groups are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.

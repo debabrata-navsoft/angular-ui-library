@@ -47,6 +47,78 @@ addons.register('nexui/theme', (api) => {
   });
 });
 
+// Short page URLs instead of ?path=/docs/…: "/" for Welcome, else the page's Storybook id as one path segment,
+// without "--docs"/"--story" for a component's first page (/icons, /components-form-button-toggle). Other params
+// stay. `middleware.mjs` serves them in the dev server.
+// Storybook only reads ?path=, so a short URL becomes ?path= just before Storybook reads it: on Back/Forward (this
+// listener comes before Storybook's) and on load. On load Storybook's router reads the URL right after calling
+// replaceState(state with `idx`), which it only does when history.state has no `idx`: so `idx` is dropped and the
+// URL is rewritten in that call (rewriting it now would show the long URL for a frame). Every ?path= Storybook
+// writes is then shortened in a microtask, once its router has read it
+const WELCOME = 'getting-started-welcome--welcome';
+const replace = history.replaceState.bind(history);
+function storybookUrl() {
+  if (new URLSearchParams(location.search).has('path')) return undefined;
+  const page = location.pathname.split('/').pop()!;
+  const id = /^[\w-]+$/.test(page) ? page : WELCOME;
+  return `${location.pathname.replace(/[^/]*$/, '')}?path=/story/${id}${location.search.replace('?', '&')}`;
+}
+const pageUrl = location.href;
+const opened = !!storybookUrl();
+if (opened) {
+  const { idx: _idx, ...state } = history.state ?? {};
+  replace(state, '');
+  history.replaceState = (state, unused, url) => replace(state, unused, url ?? storybookUrl());
+}
+let shorten = () => {};
+addEventListener('popstate', () => {
+  const url = storybookUrl();
+  if (url) replace(history.state, '', url);
+  requestAnimationFrame(() => shorten());
+});
+addons.register('nexui/page-url', (api) => {
+  // Storybook's router has read the long URL by now
+  if (opened) replace(history.state, '', pageUrl);
+  shorten = () => {
+    const url = new URL(location.href);
+    const id = url.searchParams.get('path')?.split('/')[2];
+    const entry = id ? api.resolveStory(id) : undefined;
+    if (!id || !entry || entry.type === 'root') return;
+    const parent = entry.parent ? api.resolveStory(entry.parent) : undefined;
+    const first =
+      entry.type === 'docs' || (parent?.type === 'component' && parent.children[0] === id);
+    url.searchParams.delete('path');
+    // Mode and theme color are saved in localStorage (saveTheme), so they stay out of the URL
+    const globals = url.searchParams
+      .get('globals')
+      ?.split(';')
+      .filter((g) => !/^(theme|palette):/.test(g));
+    if (globals?.length) url.searchParams.set('globals', globals.join(';'));
+    else url.searchParams.delete('globals');
+    url.pathname = url.pathname.replace(
+      /[^/]*$/,
+      id === WELCOME ? '' : first ? id.split('--')[0] : id,
+    );
+    replace(history.state, '', url.href);
+  };
+  for (const method of ['pushState', 'replaceState'] as const) {
+    const write = method === 'pushState' ? history.pushState.bind(history) : replace;
+    history[method] = (state, unused, url) => {
+      write(state, unused, url);
+      queueMicrotask(shorten);
+    };
+  }
+  api.on(CURRENT_STORY_WAS_SET, shorten);
+  // The sidebar logo (brandUrl "/") opens Welcome in place instead of reloading Storybook; new-tab clicks keep it
+  document.addEventListener('click', (event) => {
+    const link = (event.target as Element).closest?.('.sidebar-header a[href="/"]');
+    if (!link || event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
+      return;
+    event.preventDefault();
+    api.selectStory(WELCOME);
+  });
+});
+
 // Browser tab title: Storybook writes "Components / Button - Primary ⋅ Storybook"; show "NexUI - Button - Primary"
 function renameTab() {
   const title = document.title;
@@ -106,25 +178,36 @@ new MutationObserver((mutations) => {
 
 // Layout per page, from the story's tags. `nexui-landing` pages (Welcome, the components catalog) fill the window like
 // a website: no sidebar, toolbar or addon panel. `nexui-gallery` pages (Icons, Animations, NexLottie) keep the
-// sidebar and toolbar but have no use for the addon panel. Elsewhere the panel comes back as the user left it
-type Layout = 'landing' | 'gallery' | 'default';
-addons.register('nexui/layout', (api) => {
-  // null until the first page: Storybook keeps the layout across reloads, so the first page always applies it
-  let current: Layout | null = null;
-  // CURRENT_STORY_WAS_SET fires on every selection, the first load included
-  api.on(CURRENT_STORY_WAS_SET, () => {
-    const tags = api.getCurrentStoryData()?.tags ?? [];
-    const layout: Layout = tags.includes('nexui-landing')
-      ? 'landing'
-      : tags.includes('nexui-gallery')
-        ? 'gallery'
-        : 'default';
-    if (layout === current) return;
-    // Links on the landing pages reload the manager, so the panel state is kept for the session
-    if (current === 'default') sessionStorage.setItem('nexui-panel', String(api.getIsPanelShown()));
-    current = layout;
-    api.toggleNav(layout !== 'landing');
-    api.toggleToolbar(layout !== 'landing');
-    api.togglePanel(layout === 'default' && sessionStorage.getItem('nexui-panel') !== 'false');
-  });
+// sidebar and toolbar but have no use for the addon panel. Elsewhere the panel stays as the user left it.
+// Storybook asks layoutCustomisations on every render, the first one included, so a reload never shows the wrong
+// layout. Until the story index has loaded there are no tags, so these pages are also known by id
+const LAYOUTS: Record<string, string> = {
+  'getting-started-welcome': 'landing',
+  'components-overview': 'landing',
+  icons: 'gallery',
+  animations: 'gallery',
+  nexlottie: 'gallery',
+};
+function layoutOf({
+  storyId = '',
+  index,
+}: {
+  storyId?: string;
+  index?: Record<string, { tags?: string[] }>;
+}) {
+  const tags = index?.[storyId]?.tags;
+  const layout =
+    (tags
+      ? ['landing', 'gallery'].find((name) => tags.includes(`nexui-${name}`))
+      : LAYOUTS[storyId.split('--')[0]]) ?? 'default';
+  // The toolbar is hidden with CSS (manager-head.html): Storybook keeps a hidden toolbar's landmark registered
+  // without an element, and showing the sidebar later then crashes the manager UI
+  document.documentElement.dataset['nexuiLayout'] = layout;
+  return layout;
+}
+addons.setConfig({
+  layoutCustomisations: {
+    showSidebar: (state) => layoutOf(state) !== 'landing',
+    showPanel: (state) => (layoutOf(state) === 'default' ? undefined : false),
+  },
 });

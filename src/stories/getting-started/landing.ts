@@ -3,21 +3,27 @@ import pkg from '../../../package.json';
 
 export const VERSION = `nexui@${pkg.version}`;
 
-/** Storybook paths. Landing pages run in the preview iframe; links open these in the manager */
+/**
+ * Storybook pages by their short URL (see manager.ts): a Storybook id, or a component's id for its first page.
+ * Landing pages run in the preview iframe; links open these in the manager
+ */
 export const PAGES = {
-  welcome: '/story/getting-started-welcome--welcome',
-  catalog: '/story/components-overview--overview',
-  getStarted: '/docs/getting-started-use-in-react-vue-angular--docs',
-  icons: '/story/icons--icons',
-  animations: '/story/animations--animations',
-  lottie: '/story/nexlottie--nex-lottie',
-  effects: '/story/effects-particles--hero',
-  onboarding: '/docs/onboarding-tour--docs',
+  welcome: '',
+  catalog: 'components-overview',
+  getStarted: 'getting-started-use-in-react-vue-angular',
+  icons: 'icons',
+  animations: 'animations',
+  lottie: 'nexlottie',
+  effects: 'effects-particles--hero',
+  onboarding: 'onboarding-tour',
 };
 
-/** Link into the Storybook manager, which sits next to the preview's iframe.html (use with target="_top") */
-export function managerHref(path: string) {
-  return `./?path=${path}`;
+/**
+ * Link into the Storybook manager, which sits next to the preview's iframe.html (use with target="_top").
+ * preview.ts opens it in place, without reloading Storybook
+ */
+export function managerHref(page: string) {
+  return `./${page}`;
 }
 
 /** The site's sections, for the landing nav and Welcome's "Pick a place to start" cards */

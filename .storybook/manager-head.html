@@ -1,10 +1,3 @@
-<script>
-  // Opening Storybook without a page (http://localhost:6006/) starts on the Welcome page.
-  // Runs before Storybook boots, which would otherwise pick the first story in the sidebar.
-  if (!new URLSearchParams(location.search).has('path')) {
-    history.replaceState(null, '', '?path=/story/getting-started-welcome--welcome');
-  }
-</script>
 <style>
   /* Sidebar colors follow NexUI's light/dark mode and theme color: manager.ts sets data-theme and --ui-primary on
      this page too */
@@ -173,7 +166,9 @@
 
   /* Toolbar: NexUI's search / mode / color buttons only. manager.ts hides the other tools by id; this one is built
      into the toolbar and has none */
-  button[aria-label='Show addon panel'] {
+  button[aria-label='Show addon panel'],
+  /* Landing pages (manager.ts sets data-nexui-layout) have no toolbar */
+  [data-nexui-layout='landing'] [data-testid='sb-preview-toolbar'] {
     display: none !important;
   }
 
