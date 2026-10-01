@@ -6,7 +6,7 @@ import '../src/stories/styles/theme.css';
 import '../src/stories/styles/gallery-page.css';
 // Storybook's docs pages in dark mode
 import './docs-theme.css';
-import { DEFAULT_GLOBALS, applyTheme } from './nexui-theme';
+import { applyTheme, savedTheme } from './nexui-theme';
 
 // Light/dark mode and theme color (toolbar in manager.ts): applied to the whole preview, docs pages included
 const onGlobals = ({ globals }: { globals: Record<string, string> }) =>
@@ -15,7 +15,8 @@ addons.getChannel().on(SET_GLOBALS, onGlobals);
 addons.getChannel().on(GLOBALS_UPDATED, onGlobals);
 
 const preview: Preview = {
-  initialGlobals: DEFAULT_GLOBALS,
+  // Start in the saved choice, so a reload doesn't flash the light theme first
+  initialGlobals: savedTheme(),
   parameters: {
     options: {
       storySort: {

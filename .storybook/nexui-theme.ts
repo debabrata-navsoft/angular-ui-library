@@ -20,8 +20,30 @@ export const PALETTES: Record<
 
 export const DEFAULT_GLOBALS = { theme: 'light', palette: 'indigo' };
 
-/** localStorage key holding the last choice, e.g. {"theme":"dark","palette":"teal"} */
-export const STORAGE_KEY = 'nexui-theme';
+/**
+ * localStorage key holding the last choice plus its CSS variables, e.g. {"theme":"dark","palette":"teal","vars":{…}}.
+ * The colors let preview-head.html theme Storybook's loading screen before any of this code has loaded
+ */
+const STORAGE_KEY = 'nexui-theme';
+
+/** The last mode and palette the user picked (manager and preview share the origin, so both can read it) */
+export function savedTheme() {
+  try {
+    return themeOf(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}'));
+  } catch {
+    return DEFAULT_GLOBALS;
+  }
+}
+
+export function saveTheme(theme: string, palette: string) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, palette, vars: paletteVars(palette) }));
+}
+
+/** The CSS variables a palette sets */
+function paletteVars(palette: string | undefined) {
+  const { primary, hover, accent } = paletteColors(palette);
+  return { '--ui-primary': primary, '--ui-primary-hover': hover, '--ui-accent': accent };
+}
 
 /** A palette's colors; unknown keys fall back to the default */
 export function paletteColors(key: string | undefined) {
@@ -47,9 +69,6 @@ export function applyTheme(doc: Document, theme: string | undefined, palette: st
   if (root.dataset['nexuiTheme'] === key) return false;
   root.dataset['nexuiTheme'] = key;
   root.dataset['theme'] = mode;
-  const colors = paletteColors(palette);
-  root.style.setProperty('--ui-primary', colors.primary);
-  root.style.setProperty('--ui-primary-hover', colors.hover);
-  root.style.setProperty('--ui-accent', colors.accent);
+  for (const [name, value] of Object.entries(paletteVars(palette))) root.style.setProperty(name, value);
   return true;
 }

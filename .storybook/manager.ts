@@ -1,18 +1,11 @@
-import {
-  CURRENT_STORY_WAS_SET,
-  GLOBALS_UPDATED,
-  SET_GLOBALS,
-} from 'storybook/internal/core-events';
+import { CURRENT_STORY_WAS_SET, GLOBALS_UPDATED } from 'storybook/internal/core-events';
 import { addons, types } from 'storybook/manager-api';
 
-import { DEFAULT_GLOBALS, STORAGE_KEY, applyTheme, themeOf } from './nexui-theme';
+import { applyTheme, saveTheme, savedTheme, themeOf } from './nexui-theme';
 import { ModeTool, PaletteTool, SearchTool, managerTheme } from './theme-tools';
 
-/** The last light/dark mode and theme color the user picked */
-let saved = DEFAULT_GLOBALS;
-try {
-  saved = themeOf(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}'));
-} catch {}
+/** The last light/dark mode and theme color the user picked (preview.ts starts the stories with it too) */
+const saved = savedTheme();
 
 // Storybook UI (sidebar, toolbar) branding in the saved mode and color. Storybook's own toolbar tools are hidden
 // (with `features` in main.ts for backgrounds/grid, outline, measure and viewport); NexUI's are added below.
@@ -44,17 +37,12 @@ addons.register('nexui/theme', (api) => {
   for (const [id, title, Tool] of TOOLS) {
     addons.add(`nexui/${id}`, { type: types.TOOL, title, match: () => true, render: () => Tool() });
   }
-  // The preview starts with the defaults; once it's ready, apply the saved choice
-  api.once(SET_GLOBALS, () => {
-    if (saved.theme !== DEFAULT_GLOBALS.theme || saved.palette !== DEFAULT_GLOBALS.palette)
-      api.updateGlobals(saved);
-  });
   // A change from the toolbar or the landing pages' top bar: save it and restyle the Storybook UI. Storybook sends
   // GLOBALS_UPDATED on every render, so unchanged themes stop at applyTheme
   api.on(GLOBALS_UPDATED, ({ globals }: { globals: Record<string, string> }) => {
     const { theme, palette } = themeOf(globals);
     if (!applyTheme(document, theme, palette)) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, palette }));
+    saveTheme(theme, palette);
     api.setOptions({ theme: managerTheme(theme, palette) });
   });
 });

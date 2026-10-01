@@ -59,7 +59,8 @@ src/elements/nexui.ts  Web Components entry: registers every component as <nexui
 src/styles.css       Imports stories/styles/theme.css for the app
 public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook (staticDirs)
 .storybook/          Storybook config; preview.ts imports src/stories/styles/theme.css
-                     preview-head.html adds a plain-JS "back to top" button to every page (docs scroll in the preview frame)
+                     preview-head.html adds a plain-JS "back to top" button to every page (docs scroll in the preview frame),
+                     and themes Storybook's loading screen (spinner, docs skeleton) from the saved 'nexui-theme' before JS loads
                      manager.ts sets the Storybook UI theme and brand name "NexUI — Next-generation UI"
                      and renames the browser tab ("NexUI - Button - Primary") over Storybook's own title
                      keeps one sidebar group open on load (the open page's group, else Getting Started), and makes
