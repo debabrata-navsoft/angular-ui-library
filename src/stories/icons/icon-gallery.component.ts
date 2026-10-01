@@ -1,5 +1,13 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, ViewEncapsulation, computed, input, signal } from '@angular/core';
+import {
+  Component,
+  type ElementRef,
+  ViewEncapsulation,
+  computed,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 
 import { ButtonComponent } from '../components/form/button/button.component';
 import {
@@ -15,6 +23,7 @@ import {
 import { SearchInputComponent } from '../components/form/search-input/search-input.component';
 import { copyToClipboard } from '../utils/clipboard';
 import { downloadBlob } from '../utils/download';
+import { renderInBatches } from '../utils/render-in-batches';
 import { VERSION } from '../getting-started/landing';
 
 export interface GalleryIcon {
@@ -79,6 +88,10 @@ export class IconGalleryComponent {
     const words = this.query().toLowerCase().split(/\s+/).filter(Boolean);
     return this.prepared().filter((icon) => words.every((word) => icon.keywords.includes(word)));
   });
+
+  private readonly end = viewChild.required<ElementRef<HTMLElement>>('end');
+  /** A screenful of icons first, more as the grid is scrolled (all ~2,000 at once took a second) */
+  protected readonly shown = renderInBatches(this.filtered, this.end, 200);
 
   protected readonly isCustomized = computed(() => this.settings() !== DEFAULTS);
 

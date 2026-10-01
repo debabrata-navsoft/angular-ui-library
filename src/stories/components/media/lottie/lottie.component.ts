@@ -1,8 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   ElementRef,
   PLATFORM_ID,
+  afterNextRender,
   booleanAttribute,
   effect,
   inject,
@@ -103,8 +105,19 @@ export class LottieComponent {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly animation = signal<AnimationItem | null>(null);
+  /** Off screen the animation holds its frame, so pages with many animations stay fast */
+  private readonly onScreen = signal(true);
 
   constructor() {
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const observer = new IntersectionObserver(([entry]) =>
+        this.onScreen.set(entry.isIntersecting),
+      );
+      observer.observe(this.host);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
+
     // (Re)create the animation when the source or playback mode changes
     effect((onCleanup) => {
       const [src, data, loop] = [this.src(), this.data(), this.loop()];
@@ -145,11 +158,11 @@ export class LottieComponent {
 
     effect(() => this.animation()?.setSpeed(this.speed()));
 
-    // Pause and resume without recreating the animation
+    // Pause and resume without recreating the animation (also when it leaves or comes back on screen)
     effect(() => {
       const animation = this.animation();
       if (!animation) return;
-      if (this.paused()) animation.pause();
+      if (this.paused() || !this.onScreen()) animation.pause();
       else if (
         this.autoplay() &&
         !this.hover() &&

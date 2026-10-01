@@ -6,7 +6,6 @@ import {
 } from '../../components/form/button-toggle/button-toggle.component';
 import { SearchInputComponent } from '../../components/form/search-input/search-input.component';
 import { IconComponent } from '../../components/media/icon/icon.component';
-import { LandingNavComponent } from '../landing-nav/landing-nav.component';
 import { VERSION, managerHref } from '../landing';
 
 /** Sidebar order and labels of the component groups */
@@ -101,7 +100,7 @@ type View = 'grid' | 'compact' | 'list';
 /** "View Components": a full-screen catalog of every component, grouped like the sidebar, like primeng.dev/components */
 @Component({
   selector: 'nex-components-catalog',
-  imports: [ButtonToggleComponent, IconComponent, LandingNavComponent, SearchInputComponent],
+  imports: [ButtonToggleComponent, IconComponent, SearchInputComponent],
   templateUrl: './components-catalog.html',
   styleUrl: './components-catalog.css',
 })

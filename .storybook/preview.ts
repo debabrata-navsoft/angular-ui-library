@@ -1,6 +1,12 @@
 import type { Preview } from '@storybook/angular-vite';
-import { GLOBALS_UPDATED, SELECT_STORY, SET_GLOBALS } from 'storybook/internal/core-events';
+import {
+  GLOBALS_UPDATED,
+  SELECT_STORY,
+  SET_GLOBALS,
+  STORY_RENDERED,
+} from 'storybook/internal/core-events';
 import { addons } from 'storybook/preview-api';
+import { clickedPage } from '../src/stories/getting-started/landing';
 import '../src/stories/styles/theme.css';
 // Shared layout of the Icons and Animations pages
 import '../src/stories/styles/gallery-page.css';
@@ -15,16 +21,20 @@ addons.getChannel().on(SET_GLOBALS, onGlobals);
 addons.getChannel().on(GLOBALS_UPDATED, onGlobals);
 
 // Links from the landing pages to Storybook pages (managerHref: "./icons", "./" for Welcome) open in the manager
-// in place, like a sidebar click, instead of reloading Storybook. Modified clicks (new tab) keep the link
+// in place, like a sidebar click, instead of reloading Storybook. Modified clicks (new tab) keep the link, and the
+// site's own pages are opened by its router first (site.component.ts)
 document.addEventListener('click', (event) => {
-  const link = (event.target as Element).closest?.<HTMLAnchorElement>('a[target="_top"]');
-  if (!link || event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
-    return;
-  const url = new URL(link.href);
-  const page = url.pathname.split('/').pop()!;
-  if (url.origin !== location.origin || url.search || !/^[\w-]*$/.test(page)) return;
+  const page = clickedPage(event);
+  if (page === undefined) return;
   event.preventDefault();
   addons.getChannel().emit(SELECT_STORY, { storyId: page || 'getting-started-welcome--welcome' });
+});
+
+// The site's data (icons, animations, Lottie files) loads in the background once the first page is up, so
+// opening those pages doesn't wait for it
+addons.getChannel().once(STORY_RENDERED, async () => {
+  const { preloadSiteData } = await import('../src/stories/getting-started/site/site.routes');
+  preloadSiteData();
 });
 
 const preview: Preview = {

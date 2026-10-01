@@ -3,9 +3,9 @@
     <span class="gallery-version"><i></i>{{ version }}</span>
     <h1>Icons</h1>
     <p class="subtitle">
-    {{ icons().length }} icons in <code>src/stories/icons/svg/</code>. Click an icon to copy its code.
-    Add your own <code>.svg</code> files to that folder and they show up here.
-  </p>
+      {{ icons().length }} icons in <code>src/stories/icons/svg/</code>. Click an icon to copy its
+      code. Add your own <code>.svg</code> files to that folder and they show up here.
+    </p>
   </header>
 
   <div class="toolbar">
@@ -60,7 +60,7 @@
   </p>
 
   <div class="grid" [style.--size.px]="settings().size">
-    @for (icon of filtered(); track icon.name) {
+    @for (icon of shown(); track icon.name) {
       <button
         type="button"
         class="card"
@@ -80,6 +80,8 @@
       </p>
     }
   </div>
+  <!-- Near the screen, the grid renders its next batch of icons -->
+  <div #end></div>
 
   @if (code(); as code) {
     <aside class="panel" role="dialog" [attr.aria-label]="selected()!.name">

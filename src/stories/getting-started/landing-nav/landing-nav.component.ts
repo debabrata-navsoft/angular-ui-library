@@ -14,8 +14,8 @@ import { PAGES, SECTIONS, managerHref } from '../landing';
   styleUrl: './landing-nav.css',
 })
 export class LandingNavComponent {
-  /** Which link is the current page */
-  readonly active = input<'home' | 'catalog' | ''>('');
+  /** The current page: 'home' or a SECTIONS id */
+  readonly active = input('');
 
   protected readonly pages = PAGES;
   protected readonly href = managerHref;

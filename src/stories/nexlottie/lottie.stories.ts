@@ -1,34 +1,16 @@
-/// <reference types="vite/client" />
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { type GalleryAnimation, LottieGalleryComponent } from './lottie-gallery.component';
+import { SITE_STORY, type SiteComponent } from '../getting-started/site/site-story';
 
-/** Every .json in src/stories/nexlottie/files, read at build time, so new files appear automatically */
-const files = import.meta.glob<GalleryAnimation['data']>('./files/*.json', {
-  import: 'default',
-  eager: true,
-});
-
-const ANIMATIONS: GalleryAnimation[] = Object.entries(files)
-  .map(([path, data]) => ({ name: path.split('/').pop()!.replace('.json', ''), data }))
-  .sort((a, b) => a.name.localeCompare(b.name));
-
-const meta: Meta<LottieGalleryComponent> = {
+const meta: Meta<SiteComponent> = {
   title: 'NexLottie',
-  // manager.ts hides the addon panel on gallery pages
-  tags: ['nexui-gallery'],
-  component: LottieGalleryComponent,
-  parameters: {
-    layout: 'fullscreen',
-    controls: { disable: true },
-    actions: { disable: true },
-    a11y: { disable: true },
-  },
-  // Passed as props, not args, so the animation data isn't sent to the Controls panel
-  render: () => ({ props: { animations: ANIMATIONS } }),
+  // A page of the NexUI site (lottie-gallery.component.ts, data in lottie-data.ts)
+  tags: ['nexui-landing'],
+  ...SITE_STORY,
+  args: { page: 'nexlottie' },
 };
 
 export default meta;
 
 /** Named like the title, so Storybook shows it as a single "NexLottie" page in the sidebar */
-export const NexLottie: StoryObj<LottieGalleryComponent> = { name: 'NexLottie' };
+export const NexLottie: StoryObj<SiteComponent> = { name: 'NexLottie' };

@@ -20,7 +20,6 @@ import { AuroraComponent } from '../../effects/aurora/aurora.component';
 import { ParticlesComponent } from '../../effects/particles/particles.component';
 import { StarfieldComponent } from '../../effects/starfield/starfield.component';
 import { copyToClipboard } from '../../utils/clipboard';
-import { LandingNavComponent } from '../landing-nav/landing-nav.component';
 import { PAGES, SECTIONS, VERSION, managerHref } from '../landing';
 
 type Snippet = 'angular' | 'elements';
@@ -54,7 +53,6 @@ export class Settings {
     ChartComponent,
     CheckboxComponent,
     IconComponent,
-    LandingNavComponent,
     LottieComponent,
     ParticlesComponent,
     ProgressBarComponent,

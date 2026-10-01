@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, type ElementRef, computed, input, signal, viewChild } from '@angular/core';
 
 import {
   ButtonToggleComponent,
@@ -9,6 +9,7 @@ import { SearchInputComponent } from '../components/form/search-input/search-inp
 import { categoryOf, isDarkBg, type GalleryAnimation } from './gallery-animation';
 import { LottieDetailComponent } from './lottie-detail.component';
 import { VERSION } from '../getting-started/landing';
+import { renderInBatches } from '../utils/render-in-batches';
 
 export type { GalleryAnimation } from './gallery-animation';
 
@@ -48,6 +49,10 @@ export class LottieGalleryComponent {
       (a) => a.name.includes(query) && (category === 'All' || categoryOf(a) === category),
     );
   });
+
+  private readonly end = viewChild.required<ElementRef<HTMLElement>>('end');
+  /** A screenful of animations first, more as the grid is scrolled (each one is a Lottie player) */
+  protected readonly shown = renderInBatches(this.filtered, this.end, 30);
 
   /** Up to 6 animations from the selected one's category, topped up from the rest */
   protected readonly related = computed(() => {

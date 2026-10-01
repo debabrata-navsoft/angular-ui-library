@@ -1,20 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { WelcomeComponent } from './welcome.component';
+import { SITE_STORY, type SiteComponent } from '../site/site-story';
 
-const meta: Meta<WelcomeComponent> = {
+const meta: Meta<SiteComponent> = {
   title: 'Getting Started/Welcome',
-  // Full screen like a website: manager.ts hides the sidebar, toolbar and addon panel
+  // A page of the NexUI site, full screen like a website: manager.ts hides the sidebar, toolbar and addon panel
   tags: ['nexui-landing'],
-  component: WelcomeComponent,
-  parameters: {
-    layout: 'fullscreen',
-    controls: { disable: true },
-    actions: { disable: true },
-  },
+  ...SITE_STORY,
+  args: { page: '' },
 };
 
 export default meta;
 
 /** Named like the title, so Storybook shows it as a single "Welcome" page (story ID getting-started-welcome--welcome) */
-export const Welcome: StoryObj<WelcomeComponent> = { name: 'Welcome' };
+export const Welcome: StoryObj<SiteComponent> = { name: 'Welcome' };
