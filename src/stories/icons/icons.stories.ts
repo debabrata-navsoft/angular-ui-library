@@ -1,16 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { SITE_STORY, type SiteComponent } from '../getting-started/site/site-story';
-
-const meta: Meta<SiteComponent> = {
+/** Sidebar entry only: the Icons page (icon-gallery.component.ts) is in the Angular app, and manager.ts opens it there */
+const meta: Meta = {
   title: 'Icons',
-  // A page of the NexUI site (icon-gallery.component.ts, data in icons-data.ts)
-  tags: ['nexui-landing'],
-  ...SITE_STORY,
-  args: { page: 'icons' },
+  render: () => ({ template: '' }),
 };
 
 export default meta;
 
 /** Named like the title, so Storybook shows it as a single "Icons" page in the sidebar */
-export const Icons: StoryObj<SiteComponent> = {};
+export const Icons: StoryObj = {};

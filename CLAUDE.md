@@ -7,10 +7,12 @@ NexUI (Next-generation UI): Angular 21 UI component library, developed and docum
 ```bash
 npm run storybook         # Storybook dev server on http://localhost:6006
 npm run build-storybook   # Static Storybook build -> storybook-static/
-npm start                 # Angular app (src/app) on http://localhost:4200
+npm start                 # The NexUI site as an Angular app (src/app) on http://localhost:4200
 npm run build             # Production app build with SSR -> dist/angular-ui-library/{browser,server}
+npm run site-data         # The app's page data -> src/app/site-data/ (git-ignored; start/build/watch run it first)
 npm run serve:ssr:angular-ui-library   # Run the built SSR server (node, port 4000)
 npm run build:elements    # Web Components for React/Vue/HTML -> dist/nexui-elements/browser/ (nexui.js, styles.css, icons/)
+npm run build:lib         # The `nexui` npm package (ng-packagr) -> dist/nexui/ (publish: cd dist/nexui && npm publish)
 npm test                  # Vitest unit tests (*.spec.ts)
 npx ngc -p .storybook/tsconfig.json --noEmit   # Type-check all components + stories (incl. templates)
 ```
@@ -21,11 +23,11 @@ The Storybook Vite build does not fail on template type errors. Run the `ngc` co
 
 ```
 src/stories/         One folder per top-level sidebar section, plus shared utils/ and styles/:
-  getting-started/   "Getting Started": site/ (the NexUI site, see "Site" below), welcome/ (the landing page, an Angular
-                     page built from NexUI components and effects), components-catalog/ ("View Components": every
-                     component grouped like the sidebar, read at runtime from Storybook's index.json; story
-                     Components/Overview, hidden from the sidebar), landing-nav/ (the site's top bar), landing.ts (PAGES,
-                     SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Frameworks.mdx
+  getting-started/   "Getting Started": Frameworks.mdx (the only Storybook page here), plus the NexUI site's code (Angular
+                     app only, see "Site" below): welcome/ (the landing page, built from NexUI components and effects),
+                     components-catalog/ ("View Components": every component grouped like the sidebar), landing-nav/
+                     (the site's top bar), landing.ts (PAGES, SECTIONS, VERSION, APP_URL, STORYBOOK_URL, SITE_PAGES,
+                     pageHref())
   components/        "Components": library components only, grouped like the sidebar (Components ▸ <Group> ▸ <Name>):
     <group>/           form, data, panel, overlay, menu, feedback, media, chat, misc
       <name>/
@@ -33,11 +35,12 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
         <name>.html           Template (templateUrl)
         <name>.css            Styles (styleUrl)
         <name>.stories.ts
-  icons/             "Icons" page (icon-gallery.*, icons-data.ts, icons.stories.ts: search, customize, copy code)
+  icons/             "Icons" site page (icon-gallery.*: search, customize, copy code; icons.stories.ts is only its sidebar entry)
     svg/               Drop-in .svg files for <nex-icon name="file-name" />, served at /icons: full Lucide set + user icons (see svg/README.md)
-  animations/        "Animations" page (animation-gallery.*, animations-data.ts, animations.stories.ts: filter, preview, replay, copy code)
+  animations/        "Animations" site page (animation-gallery.*: filter, preview, replay, copy code; animations.stories.ts: sidebar entry)
   onboarding/        "Onboarding": onboarding/ (Tour) and onboarding-checklist/ (Checklist) components
-  nexlottie/         "NexLottie" page (lottie-gallery.*, lottie-detail.*, lottie-export.ts: preview, detail dialog, exports)
+  nexlottie/         "NexLottie" site page (lottie-gallery.*, lottie-detail.*, lottie-export.ts: preview, detail dialog, exports;
+                     lottie.stories.ts: sidebar entry)
     files/             Drop-in Lottie files (.json) for <nex-lottie>, served at /lottie; the NexLottie page lists them
   effects/           "Effects": visual effect components, one folder each: particles/, spotlight/, aurora/, starfield/,
                      matrix-rain/, waves/, dot-grid/, cursor-trail/, confetti/
@@ -53,9 +56,14 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
     theme.css          Design tokens (--ui-*), .tone-* color classes, shared .ui-* classes; imports animations.css
     animations.css     nex-anim-* animation classes (see Animations below)
     gallery-page.css   Shared layout of the Icons, Animations and NexLottie pages (.gallery-page wrapper with a centered
-                       .gallery-hero: version pill, big title, intro), loaded by preview.ts
-src/app/             Demo Angular app (not used by Storybook), server-rendered: src/server.ts (Express), src/main.server.ts,
-                     app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
+                       .gallery-hero: version pill, big title, intro), loaded by src/styles.css
+  public-api.ts      The npm package's exports (`import { … } from 'nexui'`); package.json (name, version, dependencies),
+                     ng-package.json (assets: styles/, icons/), tsconfig.lib.json and README.md sit next to it, since
+                     ng-packagr needs every source under the folder of ng-package.json. The site shows this version
+src/app/             The NexUI site as a server-rendered Angular app (see "Site"; not used by Storybook): app.ts (top bar,
+                     router outlet, link handling), app.routes.ts (pages, titles, data), src/server.ts (Express),
+                     src/main.server.ts, app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
+scripts/site-data.mjs  Writes the app's page data (icons, animations CSS, Lottie files, component list) to src/app/site-data/
 src/elements/nexui.ts  Web Components entry: registers every component as <nexui-*> (Angular Elements), window.NexUI.confirm()
 src/styles.css       Imports stories/styles/theme.css for the app
 public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook (staticDirs)
@@ -66,27 +74,21 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
                      and renames the browser tab ("NexUI - Button - Primary") over Storybook's own title
                      keeps one sidebar group open on load (the open page's group, else Getting Started), and makes
                      groups and components accordions (opening one closes the other)
-                     sets the layout per page from story tags: `nexui-landing` (the site's pages) hides the sidebar,
-                     toolbar and addon panel; elsewhere they come back. It uses `layoutCustomisations` (asked on every
-                     render, from the first frame; before the index loads, pages are known by id in `LANDING`), so a
-                     reload never flashes the sidebar. It follows the page the preview shows (STORY_PREPARED/DOCS_PREPARED,
-                     kept in addon state), not the selected one, so the layout doesn't change while the previous page is
-                     still on screen. The site's SITE_ROUTE event puts its page in the address bar and tab.
-                     The sidebar logo opens Welcome in place (selectStory) instead of reloading Storybook.
-                     The toolbar is hidden with CSS (`data-nexui-layout`), never toggleToolbar(false): Storybook then
-                     keeps a landmark without an element, and showing the sidebar later crashes the manager UI
-                     Short page URLs (`nexui/page-url`): "/" is Welcome, other pages are their Storybook id as one path
+                     sends the site's sidebar entries (Icons, Animations, NexLottie) and their URLs to the Angular app
+                     (`openInApp()`, location.replace to `APP_URL` + page)
+                     The sidebar logo (brandUrl in theme-tools.ts) opens Welcome in the Angular app (`APP_URL` in landing.ts).
+                     Short page URLs (`nexui/page-url`): "/" is Get Started (`HOME`), other pages are their Storybook id as one path
                      segment (a component's id for its first page: /icons, /components-form-button-toggle). It turns
                      them into ?path= just before Storybook reads the URL and shortens every URL Storybook writes;
                      middleware.mjs serves them in the dev server (a static host needs a fallback to index.html).
-                     Landing-page links (`managerHref(PAGES.x)`) are short URLs that preview.ts opens in place
-                     (SELECT_STORY), without reloading Storybook
                      manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
                      icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
                      Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts
                      adds search, light/dark mode and theme color (PrimeNG-style). nexui-theme.ts holds the palettes and
                      applyTheme(); the choice is the `theme`/`palette` globals, applied by preview.ts (data-theme +
                      --ui-primary/--ui-primary-hover/--ui-accent) and saved by manager.ts in localStorage ('nexui-theme').
+                     Storybook (6006) and the app (4200) are separate origins, so links between them carry the choice in
+                     the hash (`themeHash()`/`carryTheme()`; `readThemeHash()` in manager.ts and src/main.ts saves it).
                      docs-theme.css styles Storybook's docs pages in dark mode; manager-head.html's sidebar CSS uses
                      --nav-* variables that follow the mode; the sidebar logo is public/nexui-brand-{light,dark}.svg. Toolbar tools are hidden by id in
                      manager.ts (`isolationMode`, `storybook/a11y/panel`, …); only "Show addon panel" needs CSS
@@ -107,7 +109,9 @@ The sidebar accordion in `manager.ts` works at every level: opening a group or c
 - Selector prefix `nex-` (the Button/Header/Page examples keep `storybook-`).
 - Every public input/output gets a one-line `/** doc comment */`. Storybook autodocs shows these.
 - Static `class="x"` plus `[class]="'x--' + variant()"` merge in Angular. Don't repeat the base class inside the binding.
-- Components must render on the server (the app uses SSR + hydration): don't touch `window`, `document`, `matchMedia`, observers or `fetch` in constructors, `computed` or effects. Put that code in `afterNextRender` or behind `isPlatformBrowser(inject(PLATFORM_ID))` (see Scroll Top, Icon, Chart).
+- Components must render on the server (the app uses SSR + hydration), with the same DOM on both sides: write
+  `<thead>`/`<tbody>` in tables (the browser adds a missing tbody, which breaks hydration).
+  Also don't touch `window`, `document`, `matchMedia`, observers or `fetch` in constructors, `computed` or effects. Put that code in `afterNextRender` or behind `isPlatformBrowser(inject(PLATFORM_ID))` (see Scroll Top, Icon, Chart).
 - Boolean inputs use `input(false, { transform: booleanAttribute })` and number inputs `input(0, { transform: numberAttribute })`, so HTML attributes (`card`, `num-visible="3"`) work in the Web Components and in Angular templates.
 
 ## Styling ("Aurora" design)
@@ -128,8 +132,8 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 
 - Users add their own `.svg` files to `src/stories/icons/svg/`. `<nex-icon name="x" />` (`components/media/icon/`) fetches `icons/x.svg` at runtime, caches it, and inlines it so `currentColor` works.
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
-- The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page reads every `.svg` with `import.meta.glob(..., { query: '?raw' })` in `icons/icons-data.ts`, so new files need no code changes. The site's router gives it to the page (route resolvers), so it stays out of the Controls panel.
-- `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`; Storybook would pick Icons) and keeps its URL as plain `/` (short page URLs in manager.ts).
+- The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page (in the Angular app) lists every `.svg` through `npm run site-data`, so new files need no code changes (restart `npm start` to pick them up).
+- `http://localhost:6006/` opens Getting Started ▸ Use in React, Vue & Angular (`HOME` in manager.ts; Storybook would pick Icons) and keeps its URL as plain `/`. The NexUI site (Welcome, Components, Icons, Animations, NexLottie) is only in the Angular app (http://localhost:4200/); the sidebar logo and the Icons, Animations and NexLottie entries open it there (`APP_URL` in landing.ts).
 - Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects. Root pages and the Onboarding and Effects groups are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#nex-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<nex-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.nex-icon`.
@@ -137,7 +141,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 ## Animations
 
 - `src/stories/styles/animations.css` (imported by theme.css, so global) defines `nex-anim-<name>` classes for any element, tuned with `--nex-anim-duration`, `--nex-anim-delay`, `--nex-anim-ease`, `--nex-anim-repeat`. A shared `[class*='nex-anim-']` rule sets the defaults; each class sets `animation-name` (loop classes use the full shorthand with `infinite`). `prefers-reduced-motion` turns them off.
-- Categories are the `/* === Name === */` comments (Entrance, Attention, Loop, Exit). The **Animations** page (`animations/animations-data.ts`) imports the file with `?raw` and `parseAnimations()` builds the list and each card's standalone CSS, so a new class plus its `@keyframes nex-<name>` needs no other changes.
+- Categories are the `/* === Name === */` comments (Entrance, Attention, Loop, Exit). The **Animations** page gets the file through `npm run site-data`, and `parseAnimations()` builds the list and each card's standalone CSS, so a new class plus its `@keyframes nex-<name>` needs no other changes.
 
 ## Web Components (React, Vue, plain HTML)
 
@@ -149,25 +153,25 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 ## Lottie
 
 - `nex-lottie` (`components/media/lottie/`) plays Lottie animations as SVG with lottie-web's light build, imported on first use and only in the browser (SSR-safe). `src` takes a `.json` or `.lottie` URL (`.lottie` is unzipped with fflate, and its images are inlined). `data` takes a parsed object. `hover` plays only while hovered, `paused` holds the current frame (the NexLottie page pauses its grid while the dialog is open). `loadLottie(url)` reads either format into JSON. With reduced motion it shows the last frame still.
-- `src/stories/nexlottie/files/*.json` is served at `/lottie` (Storybook `staticDirs`, and `assets` in the app and elements builds). The starter set is generated by our own script (no third-party artwork). `meta.cat` sets the category and `meta.bg` the card background on the NexLottie page, which reads the folder with `import.meta.glob` (`nexlottie/lottie-data.ts`), so new files need no code changes. LottieFiles downloads work as-is and land in the "Other" category.
+- `src/stories/nexlottie/files/*.json` is served at `/lottie` (Storybook `staticDirs`, and `assets` in the app and elements builds). The starter set is generated by our own script (no third-party artwork). `meta.cat` sets the category and `meta.bg` the card background on the NexLottie page, which lists the folder through `npm run site-data`, so new files need no code changes. LottieFiles downloads work as-is and land in the "Other" category.
 - The NexLottie story sets `name: 'NexLottie'` so it shows as a single sidebar page (the story ID is `nexlottie--nex-lottie`).
 - Clicking a card opens `lottie-detail` (a `nex-dialog`, LottieFiles-style): preview with play/speed/background, tabs Download (dotLottie / JSON, plain and optimized, with real sizes) | Asset & Embed | Details, and related animations.
   "Other export formats" are built in the browser by `lottie-export.ts`: MP4/WebM/MOV via WebCodecs (`mediabunny`), GIF via `gifenc` (types in `gifenc.d.ts`), SVG/PNG from the frame on screen. Both packages are devDependencies, imported on click. Frames come from lottie-web's canvas renderer, which must be loaded **without** a `container` or it draws nothing offscreen.
 
 ## Site (Welcome, Components, Icons, Animations, NexLottie)
 
-- The five pages are one Angular app, `nex-site` (`getting-started/site/`): the landing nav plus `<router-outlet>`, with
-  Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
-  without Storybook loading a story.
-- Each page keeps its own story (sidebar entry and URL: `/`, `/components-overview`, `/icons`, `/animations`,
-  `/nexlottie`); the story spreads `SITE_STORY` (`site-story.ts`) and sets its page in `args: { page }`. `title` and
-  `tags: ['nexui-landing']` stay literal in each story file, since Storybook's indexer reads them statically.
-- The router keeps its URL in the preview iframe's hash (`withHashLocation`), so Back/Forward go through the browser's
-  history. Its TitleStrategy emits `SITE_ROUTE` ({ page, title }); manager.ts shows that page's short URL and title.
-- Page links stay `managerHref()` anchors with `target="_top"`: the site routes its own pages (`SITE_PAGES`), and
-  preview.ts opens the others in Storybook (SELECT_STORY). Both use `clickedPage()`, so new-tab clicks keep the link.
-- The galleries' data is in `icons/icons-data.ts`, `animations/animations-data.ts` and `nexlottie/lottie-data.ts`,
-  given to the pages by route resolvers. preview.ts preloads it after the first page renders (`preloadSiteData()`).
+- The five pages are the Angular app in `src/app/`, served by `npm start` at http://localhost:4200, server-rendered:
+  `App` (app.ts) is the landing nav plus `<router-outlet>`, and `app.routes.ts` holds the pages at their short URLs
+  (`/`, `/components-overview`, `/icons`, `/animations`, `/nexlottie`) with "NexUI - <page>" titles. The pages are not
+  rendered in Storybook: `icons.stories.ts`, `animations.stories.ts` and `lottie.stories.ts` are empty sidebar entries
+  that manager.ts sends to the app.
+- Page links use `pageHref()` (landing.ts): the site's pages (`SITE_PAGES`) are routed by `App.follow()` (plain
+  clicks only, so new-tab clicks keep the link), the others open Storybook (`STORYBOOK_URL`, http://localhost:6006/:
+  component docs, Get Started, Effects). The top bar's mode and color use `changeTheme()` (nexui-theme.ts:
+  applyTheme + localStorage 'nexui-theme'; src/index.html and main.ts apply the saved one before the app starts).
+  Site code doesn't import `storybook/*`.
+- The data comes from `npm run site-data` (src/app/site-data/), which reads `icons/svg/`, `styles/animations.css`,
+  `nexlottie/files/` and the `Components/…` story titles; route resolvers give it to the pages' inputs.
 - Long grids (Icons, NexLottie) render in batches as they're scrolled with `renderInBatches()` (`utils/render-in-batches.ts`).
   `nex-lottie` pauses while off screen. Storybook's `highlight` feature is off in main.ts: it read every element's
   computed style on each page change.
@@ -219,5 +223,7 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 ## Adding a component
 
 1. Pick a group and create `src/stories/components/<group>/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
-2. Add it to the `components` list in `src/elements/nexui.ts` (and the element list in `getting-started/Frameworks.mdx`).
-3. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook` and `npm run build:elements`.
+2. Add it to the `components` list in `src/elements/nexui.ts` (and the element list in `getting-started/Frameworks.mdx`),
+   and an `export *` line to `src/stories/public-api.ts` (the npm package).
+3. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook`, `npm run build:elements` and
+   `npm run build:lib`.

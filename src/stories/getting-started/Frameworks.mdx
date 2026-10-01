@@ -4,8 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Use NexUI in React, Vue & Angular
 
-NexUI is written in Angular. **Angular apps** use the components directly. **React, Vue, Svelte and plain HTML**
-use the same components as standard **Web Components** (custom elements), built from this repo.
+NexUI is written in Angular. **Angular apps** install it from npm (`npm install nexui`, see [Angular](#angular))
+and use the components directly. **React, Vue, Svelte and plain HTML** use the same components as standard
+**Web Components** (custom elements), built from this repo.
 
 <table>
   <thead>
@@ -145,18 +146,43 @@ Vue passes arrays and objects as properties automatically. Use the kebab-case ev
 
 ## Angular
 
-Use the components directly (no Web Components needed): copy or import them from `src/stories/components/`
-and add them to your component's `imports`:
+Angular apps (21+) install the **`nexui`** npm package and use the components directly, no Web Components needed.
+
+**1. Install**
+
+```bash
+npm install nexui
+```
+
+**2. Add the theme** to your global styles (`src/styles.css`):
+
+```css
+@import 'nexui/styles/theme.css';
+```
+
+**3. Serve the icons** at `/icons`, so `<nex-icon name="…">` can load them. In `angular.json`, under
+`build.options.assets`:
+
+```json
+{ "glob": "*.svg", "input": "node_modules/nexui/icons", "output": "icons" }
+```
+
+**4. Import** components from `nexui` and add them to your component's `imports`:
 
 ```ts
+import { ChartComponent, FormComponent } from 'nexui';
+
 @Component({
   imports: [ChartComponent, FormComponent],
   template: `<nex-chart type="line" [labels]="labels" [datasets]="data" />`,
 })
 ```
 
-Import `src/stories/styles/theme.css` in your global styles and serve `src/stories/icons/svg` at `/icons`
-(see `angular.json` in this repo).
+Shared types (`Tone`, `MenuItem`, `TreeNode`, …) and `ConfirmationService` come from `nexui` too. Dark mode is
+`data-theme="dark"` on `<html>`.
+
+Building the package from this repo: `npm run build:lib` writes it to `dist/nexui/`. Publish with
+`cd dist/nexui && npm publish`, or try it locally first with `npm pack` and `npm install ./nexui-0.1.0.tgz`.
 
 ## Plain HTML
 

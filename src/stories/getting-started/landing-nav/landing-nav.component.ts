@@ -1,10 +1,8 @@
-import { Component, DestroyRef, afterNextRender, inject, input, signal } from '@angular/core';
-import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
-import { addons } from 'storybook/preview-api';
+import { Component, afterNextRender, input, signal } from '@angular/core';
 
-import { PALETTES } from '../../../../.storybook/nexui-theme';
+import { PALETTES, changeTheme } from '../../../../.storybook/nexui-theme';
 import { IconComponent } from '../../components/media/icon/icon.component';
-import { PAGES, SECTIONS, managerHref } from '../landing';
+import { PAGES, SECTIONS, pageHref } from '../landing';
 
 /** Top bar of the full-screen landing pages: logo, section links, search, light/dark mode, theme color */
 @Component({
@@ -18,39 +16,26 @@ export class LandingNavComponent {
   readonly active = input('');
 
   protected readonly pages = PAGES;
-  protected readonly href = managerHref;
+  protected readonly href = pageHref;
   protected readonly palettes = Object.entries(PALETTES).map(([key, p]) => ({ key, ...p }));
   /** Every section except Onboarding, which has no page of its own */
   protected readonly links = SECTIONS.filter((s) => s.id !== 'onboarding');
 
-  /** Mirrors the page's data-theme, which the toolbar's mode button can also change */
+  /** The page's mode (main.ts applies the saved one before the app starts) */
   protected readonly dark = signal(false);
   protected readonly menuOpen = signal(false);
 
   constructor() {
-    afterNextRender(() => {
-      const root = document.documentElement;
-      const sync = () => this.dark.set(root.dataset['theme'] === 'dark');
-      sync();
-      const observer = new MutationObserver(sync);
-      observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-      this.destroyRef.onDestroy(() => observer.disconnect());
-    });
-  }
-
-  private readonly destroyRef = inject(DestroyRef);
-
-  /** Changes a Storybook global; preview.ts applies it and manager.ts saves it */
-  private setGlobal(globals: Record<string, string>) {
-    addons.getChannel().emit(UPDATE_GLOBALS, { globals });
+    afterNextRender(() => this.dark.set(document.documentElement.dataset['theme'] === 'dark'));
   }
 
   protected toggleMode() {
-    this.setGlobal({ theme: this.dark() ? 'light' : 'dark' });
+    this.dark.update((dark) => !dark);
+    changeTheme({ theme: this.dark() ? 'dark' : 'light' });
   }
 
   protected pickPalette(key: string) {
-    this.setGlobal({ palette: key });
+    changeTheme({ palette: key });
     this.menuOpen.set(false);
   }
 }

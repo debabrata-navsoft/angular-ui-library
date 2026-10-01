@@ -9,6 +9,7 @@ import { useGlobals, useStorybookApi } from 'storybook/manager-api';
 import { create } from 'storybook/theming';
 
 import { PALETTES, paletteColors } from './nexui-theme';
+import { APP_URL } from '../src/stories/getting-started/landing';
 
 const h = React.createElement;
 
@@ -47,7 +48,8 @@ export function managerTheme(mode: string | undefined, palette: string | undefin
   return create({
     base: dark ? 'dark' : 'light',
     brandTitle: 'NexUI — Next-generation UI',
-    brandUrl: '/',
+    // The logo opens Welcome, which is only in the Angular app
+    brandUrl: APP_URL,
     brandTarget: '_self',
     // public/nexui-brand-*.svg: logo tile plus "NexUI", in the text color of each mode
     brandImage: dark ? 'nexui-brand-dark.svg' : 'nexui-brand-light.svg',

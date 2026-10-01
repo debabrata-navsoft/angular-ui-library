@@ -34,12 +34,10 @@
           animations, Lottie and interactive effects, all in one modern Aurora design.
         </p>
         <div class="hero__actions nex-anim-fade-up">
-          <a class="ui-btn ui-btn--primary hero__cta" [href]="href(pages.getStarted)" target="_top">
+          <a class="ui-btn ui-btn--primary hero__cta" [href]="href(pages.getStarted)">
             Get Started <nex-icon name="arrow-right" [size]="18" />
           </a>
-          <a class="ui-btn hero__ghost" [href]="href(pages.catalog)" target="_top"
-            >View Components</a
-          >
+          <a class="ui-btn hero__ghost" [href]="href(pages.catalog)">View Components</a>
         </div>
         <div class="install nex-anim-fade-up">
           <nex-icon name="terminal" [size]="16" />
@@ -192,7 +190,7 @@
     <div class="explore">
       @for (s of sections; track s.id; let i = $index) {
         <nex-animate-on-scroll [delay]="i * 60">
-          <a class="explore__card" [href]="href(s.path)" target="_top">
+          <a class="explore__card" [href]="href(s.path)">
             <div class="explore__preview">
               @switch (s.id) {
                 @case ('catalog') {
@@ -259,7 +257,7 @@
             Import a component and use it with signals in Angular, or load the Web Components bundle
             in any other framework. Same components, same design.
           </p>
-          <a class="ui-btn" [href]="href(pages.getStarted)" target="_top">
+          <a class="ui-btn" [href]="href(pages.getStarted)">
             Read the framework guide <nex-icon name="arrow-right" [size]="16" />
           </a>
         </div>
@@ -298,12 +296,10 @@
         <h2>Ready to build something great?</h2>
         <p>Start with the components, then add icons, motion and effects as you go.</p>
         <div class="hero__actions">
-          <a class="ui-btn cta__primary" [href]="href(pages.catalog)" target="_top">
+          <a class="ui-btn cta__primary" [href]="href(pages.catalog)">
             Browse components <nex-icon name="arrow-right" [size]="18" />
           </a>
-          <a class="ui-btn hero__ghost" [href]="href(pages.effects)" target="_top"
-            >See the effects</a
-          >
+          <a class="ui-btn hero__ghost" [href]="href(pages.effects)">See the effects</a>
         </div>
       </div>
     </nex-animate-on-scroll>

@@ -1,4 +1,4 @@
-import { Component, afterNextRender, computed, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 
 import {
   ButtonToggleComponent,
@@ -6,7 +6,7 @@ import {
 } from '../../components/form/button-toggle/button-toggle.component';
 import { SearchInputComponent } from '../../components/form/search-input/search-input.component';
 import { IconComponent } from '../../components/media/icon/icon.component';
-import { VERSION, managerHref } from '../landing';
+import { VERSION, pageHref } from '../landing';
 
 /** Sidebar order and labels of the component groups */
 const GROUPS: Record<string, string> = {
@@ -20,14 +20,6 @@ const GROUPS: Record<string, string> = {
   chat: 'Chat',
   misc: 'Misc',
 };
-
-/** Storybook index entry (index.json, next to the preview's iframe.html) */
-interface IndexEntry {
-  id: string;
-  title: string;
-  importPath: string;
-  tags?: string[];
-}
 
 /** Lucide icon drawn on each card's preview, by component folder */
 const ICONS: Record<string, string> = {
@@ -97,6 +89,12 @@ const ICONS: Record<string, string> = {
 
 type View = 'grid' | 'compact' | 'list';
 
+/** A component on the page: its sidebar title ("Components/Form/Button Toggle") and folder (`npm run site-data`) */
+export interface CatalogEntry {
+  title: string;
+  folder: string;
+}
+
 /** "View Components": a full-screen catalog of every component, grouped like the sidebar, like primeng.dev/components */
 @Component({
   selector: 'nex-components-catalog',
@@ -114,39 +112,20 @@ export class ComponentsCatalogComponent {
     { value: 'list', icon: 'list', ariaLabel: 'List' },
   ];
 
-  /** Every component in the sidebar, from Storybook's own index: its group, title, link and preview icon */
-  private readonly items = signal<
-    { group: string; title: string; folder: string; href: string; icon: string }[]
-  >([]);
+  /** Every component in the Storybook sidebar */
+  readonly entries = input<CatalogEntry[]>([]);
 
-  constructor() {
-    afterNextRender(async () => {
-      const { entries } = (await (await fetch('./index.json')).json()) as {
-        entries: Record<string, IndexEntry>;
-      };
-      const byTitle = new Map<string, IndexEntry[]>();
-      for (const e of Object.values(entries)) {
-        const [root, group, name] = e.title.split('/');
-        // Only what the sidebar lists: `!dev` in a story removes its `dev` tag
-        if (root !== 'Components' || !name || !e.tags?.includes('dev')) continue;
-        byTitle.set(e.title, [...(byTitle.get(e.title) ?? []), e]);
-      }
-      this.items.set(
-        [...byTitle].map(([title, list]) => {
-          const [entry] = list;
-          const folder = entry.importPath.split('/').slice(-2, -1)[0];
-          return {
-            group: title.split('/')[1].toLowerCase(),
-            title: title.split('/')[2],
-            folder,
-            // The component's id: Storybook opens its docs page if there is one, else the first story
-            href: managerHref(entry.id.split('--')[0]),
-            icon: ICONS[folder] ?? 'box',
-          };
-        }),
-      );
-    });
-  }
+  /** Each component's group, title, link and preview icon */
+  private readonly items = computed(() =>
+    this.entries().map(({ title, folder }) => ({
+      group: title.split('/')[1].toLowerCase(),
+      title: title.split('/')[2],
+      folder,
+      // The component's Storybook id: Storybook opens its docs page if there is one, else the first story
+      href: pageHref(title.toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+      icon: ICONS[folder] ?? 'box',
+    })),
+  );
 
   protected readonly total = computed(() => this.items().length);
 

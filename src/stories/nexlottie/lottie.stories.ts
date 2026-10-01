@@ -1,16 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { SITE_STORY, type SiteComponent } from '../getting-started/site/site-story';
-
-const meta: Meta<SiteComponent> = {
+/** Sidebar entry only: the NexLottie page (lottie-gallery.component.ts) is in the Angular app, and manager.ts opens it there */
+const meta: Meta = {
   title: 'NexLottie',
-  // A page of the NexUI site (lottie-gallery.component.ts, data in lottie-data.ts)
-  tags: ['nexui-landing'],
-  ...SITE_STORY,
-  args: { page: 'nexlottie' },
+  render: () => ({ template: '' }),
 };
 
 export default meta;
 
 /** Named like the title, so Storybook shows it as a single "NexLottie" page in the sidebar */
-export const NexLottie: StoryObj<SiteComponent> = { name: 'NexLottie' };
+export const NexLottie: StoryObj = { name: 'NexLottie' };

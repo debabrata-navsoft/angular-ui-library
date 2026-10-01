@@ -166,9 +166,7 @@
 
   /* Toolbar: NexUI's search / mode / color buttons only. manager.ts hides the other tools by id; this one is built
      into the toolbar and has none */
-  button[aria-label='Show addon panel'],
-  /* Landing pages (manager.ts sets data-nexui-layout) have no toolbar */
-  [data-nexui-layout='landing'] [data-testid='sb-preview-toolbar'] {
+  button[aria-label='Show addon panel'] {
     display: none !important;
   }
 
