@@ -7,7 +7,9 @@ import {
 } from '../components/form/button-toggle/button-toggle.component';
 import { IconComponent } from '../components/media/icon/icon.component';
 import { SearchInputComponent } from '../components/form/search-input/search-input.component';
+import { FrameworkCodeComponent } from '../getting-started/framework-code/framework-code.component';
 import { VERSION } from '../getting-started/landing';
+import { FRAMEWORKS, markupCode, type Framework } from '../utils/framework-code';
 
 export interface NexAnimation {
   /** Class suffix: nex-anim-<name> */
@@ -56,7 +58,7 @@ export function parseAnimations(css: string): NexAnimation[] {
 /** Storybook page that lists every nex-anim-* class: filter, preview, click to replay and copy */
 @Component({
   selector: 'nex-animation-gallery',
-  imports: [ButtonToggleComponent, IconComponent, SearchInputComponent],
+  imports: [ButtonToggleComponent, FrameworkCodeComponent, IconComponent, SearchInputComponent],
   templateUrl: './animation-gallery.html',
   styleUrl: './animation-gallery.css',
 })
@@ -75,12 +77,6 @@ export class AnimationGalleryComponent {
   protected readonly loop = signal(false);
   protected readonly selected = signal<NexAnimation | null>(null);
   protected readonly copied = signal('');
-  /** Code shown in the details panel, each with its own copy button */
-  protected readonly codeBlocks = [
-    { kind: 'html', label: 'HTML' },
-    { kind: 'css', label: 'CSS' },
-  ] as const;
-
   protected readonly categories = computed<ToggleOption<string>[]>(() =>
     ['All', ...new Set(this.animations().map((a) => a.category))].map((value) => ({
       value,
@@ -96,20 +92,22 @@ export class AnimationGalleryComponent {
     );
   });
 
-  /** Inline style for the CSS variables the toolbar changed */
-  protected readonly vars = computed(() =>
-    [
-      this.duration() !== null && `--nex-anim-duration: ${this.duration()}s`,
-      this.loop() && '--nex-anim-repeat: infinite',
-    ]
-      .filter(Boolean)
-      .join('; '),
-  );
+  /** CSS variables the toolbar changed, as an inline style */
+  protected readonly vars = computed(() => {
+    const vars: Record<string, string> = {};
+    if (this.duration() !== null) vars['--nex-anim-duration'] = `${this.duration()}s`;
+    if (this.loop()) vars['--nex-anim-repeat'] = 'infinite';
+    return vars;
+  });
 
+  /** Markup for each framework, plus the standalone CSS of the selected animation */
   protected readonly code = computed(() => {
     const a = this.selected();
-    const style = this.vars() && ` style="${this.vars()}"`;
-    return a && { html: `<div class="nex-anim-${a.name}"${style}>…</div>`, css: a.css };
+    if (!a) return null;
+    const markup = Object.fromEntries(
+      FRAMEWORKS.map(({ value }) => [value, markupCode(value, `nex-anim-${a.name}`, this.vars())]),
+    ) as Record<Framework, string>;
+    return { markup, css: a.css };
   });
 
   /** Restarts the element's animations, including ones on ::after */
@@ -131,9 +129,9 @@ export class AnimationGalleryComponent {
     this.replay(tile);
   }
 
-  protected async copy(kind: 'html' | 'css') {
-    await copyToClipboard(this.code()![kind]);
-    this.copied.set(kind);
-    setTimeout(() => this.copied() === kind && this.copied.set(''), 1500);
+  protected async copyCss() {
+    await copyToClipboard(this.code()!.css);
+    this.copied.set('css');
+    setTimeout(() => this.copied() === 'css' && this.copied.set(''), 1500);
   }
 }

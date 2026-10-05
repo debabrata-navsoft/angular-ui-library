@@ -95,18 +95,12 @@
             ×
           </button>
         </div>
-        <pre><code>{{ code.angular }}</code></pre>
+        <nex-framework-code [code]="code.snippets" angularImport="IconComponent" />
         <div class="actions">
           <storybook-button
             size="small"
-            [primary]="true"
-            [label]="copied() === 'angular' ? 'Copied!' : 'Copy Angular'"
-            (onClick)="copy('angular')"
-          />
-          <storybook-button
-            size="small"
             [label]="copied() === 'svg' ? 'Copied!' : 'Copy SVG'"
-            (onClick)="copy('svg')"
+            (onClick)="copySvg()"
           />
           <storybook-button size="small" label="Download" (onClick)="download()" />
         </div>

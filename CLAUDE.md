@@ -25,7 +25,9 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      page built from NexUI components and effects), components-catalog/ ("View Components": every
                      component grouped like the sidebar, read at runtime from Storybook's index.json; story
                      Components/Overview, hidden from the sidebar), landing-nav/ (the site's top bar), landing.ts (PAGES,
-                     SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Frameworks.mdx
+                     SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Frameworks.mdx,
+                     framework-code/ (nex-framework-code: Angular | React | Next.js | Vue | HTML tabs over copyable code
+                     with a setup note; used by the Icons panel, Animations panel and NexLottie's Asset & Embed tab)
   components/        "Components": library components only, grouped like the sidebar (Components ▸ <Group> ▸ <Name>):
     <group>/           form, data, panel, overlay, menu, feedback, media, chat, misc
       <name>/
@@ -49,6 +51,8 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
     menu-utils.ts      Shared menu logic: runItem, MenuPath, DismissableMenu, PopupMenu
     clipboard.ts       copyToClipboard() shared by the Icons, Animations and NexLottie pages
     download.ts        downloadBlob() shared by the Icons and NexLottie pages
+    framework-code.ts  FRAMEWORKS, the shared FRAMEWORK choice, elementCode() (a component as <nex-x> or <nexui-x> with
+                       kebab attributes and JSX/Vue/HTML styles), markupCode() (class vs. className), setup snippets
   styles/            Global CSS:
     theme.css          Design tokens (--ui-*), .tone-* color classes, shared .ui-* classes; imports animations.css
     animations.css     nex-anim-* animation classes (see Animations below)
@@ -84,6 +88,10 @@ public/favicon.svg   NexUI logo, used as the favicon by the app and by Storybook
                      middleware.mjs serves them in the dev server (a static host needs a fallback to index.html).
                      Landing-page links (`managerHref(PAGES.x)`) are short URLs that preview.ts opens in place
                      (SELECT_STORY), without reloading Storybook
+                     docs-page.ts is every component's docs page (parameters.docs.page in preview.ts): Storybook's layout,
+                     but "Show code" has Angular | React | Next.js | Vue | HTML tabs. Angular is Storybook's snippet; the
+                     others come from framework-snippets.ts (story args + template → Web Component code; Angular-only
+                     templates fall back to the args). Plain .ts with createElement: the builder doesn't serve .tsx
                      manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
                      icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
                      Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts

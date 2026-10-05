@@ -15,6 +15,8 @@ import './docs-theme.css';
 // Tablet and mobile layout (last, so it overrides the files above)
 import '../src/stories/styles/responsive.css';
 import { applyTheme, savedTheme } from './nexui-theme';
+// Component docs pages with Angular / React / Next.js / Vue / HTML code tabs
+import { NexDocsPage } from './docs-page';
 
 // Light/dark mode and theme color (toolbar in manager.ts): applied to the whole preview, docs pages included
 const onGlobals = ({ globals }: { globals: Record<string, string> }) =>
@@ -81,6 +83,8 @@ const preview: Preview = {
         ],
       },
     },
+
+    docs: { page: NexDocsPage },
 
     controls: {
       matchers: {
