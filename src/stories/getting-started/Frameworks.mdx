@@ -4,8 +4,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Use NexUI in React, Vue & Angular
 
-NexUI is written in Angular. **Angular apps** use the components directly. **React, Vue, Svelte and plain HTML**
-use the same components as standard **Web Components** (custom elements), built from this repo.
+NexUI is written in Angular. **Angular apps** use the components directly. **React, Next.js, Vue, Svelte and plain
+HTML** use the same components as standard **Web Components** (custom elements), built from this repo.
 
 <table>
   <thead>
@@ -110,6 +110,7 @@ export function Signup() {
 ```
 
 React 19 sets object props as properties and `on<event>` props as listeners (`onsubmitted`, `onvalueChange`).
+This needs `nexui.js` loaded before React renders; with server rendering (Next.js, Remix) use the wrapper below.
 On **React 18**, use a ref: `ref.current.fields = [...]` and `ref.current.addEventListener('submitted', …)`.
 
 TypeScript: declare the tags once, e.g. in `src/nexui.d.ts`:
@@ -124,6 +125,130 @@ declare module 'react' {
   }
 }
 ```
+
+## Next.js (App Router)
+
+Next.js renders pages on the server and then **hydrates** them, before `nexui.js` has registered the elements.
+Strings, numbers and booleans work as attributes, but arrays, objects and event handlers that React sets during
+hydration are lost. A small client wrapper solves this: it waits for the element to be defined, then sets the
+properties and listeners. It works in server and client components, and on React 18.
+
+**1.** Copy `dist/nexui-elements/browser/` to `public/nexui/` (copy the whole folder: `nexui.js` loads chunk files
+next to it).
+
+**2.** Load the theme and the elements in `app/layout.tsx`:
+
+```tsx
+import Script from 'next/script';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="stylesheet" href="/nexui/styles.css" />
+      </head>
+      <body>
+        {children}
+        <Script id="nexui-config" strategy="beforeInteractive">
+          {`window.NEXUI_ICONS_URL = '/nexui/icons/';`}
+        </Script>
+        {/* After hydration; crossOrigin matches the module request, so the preload is used */}
+        <Script src="/nexui/nexui.js" type="module" crossOrigin="anonymous" strategy="afterInteractive" />
+      </body>
+    </html>
+  );
+}
+```
+
+**3.** Add the wrapper, `components/nexui.tsx`:
+
+```tsx
+'use client';
+import { createElement, useEffect, useRef, type ReactNode } from 'react';
+
+type NexUIProps = {
+  /** Element name, e.g. "nexui-chart" */
+  tag: `nexui-${string}`;
+  /** Arrays, objects and functions: set as properties once the element is defined */
+  props?: Record<string, unknown>;
+  /** Output events, e.g. { submitted: (e) => save(e.detail) } */
+  on?: Record<string, (event: CustomEvent) => void>;
+  children?: ReactNode;
+  /** Anything else (strings, numbers, booleans, id, className, style) is passed as an attribute */
+  [attribute: string]: unknown;
+};
+
+/** Renders a NexUI Web Component and gives it its properties and events once nexui.js has registered it */
+export function NexUI({ tag, props, on, children, ...attributes }: NexUIProps) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    let current = true;
+    customElements.whenDefined(tag).then(() => {
+      if (current && ref.current) Object.assign(ref.current, props);
+    });
+    return () => {
+      current = false;
+    };
+  }, [tag, props]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !on) return;
+    const listeners = Object.entries(on).map(([name, fn]) => [name, fn as EventListener] as const);
+    for (const [name, fn] of listeners) el.addEventListener(name, fn);
+    return () => {
+      for (const [name, fn] of listeners) el.removeEventListener(name, fn);
+    };
+  }, [on]);
+
+  // The element fills itself in on the client, so its server HTML is only a placeholder
+  return createElement(tag, { ref, ...attributes, suppressHydrationWarning: true }, children);
+}
+```
+
+**4.** Use it. In a **server component**, data can be passed directly:
+
+```tsx
+import { NexUI } from '@/components/nexui';
+
+export default function Page() {
+  return (
+    <NexUI
+      tag="nexui-chart"
+      type="bar"
+      props={{ labels: ['Q1', 'Q2', 'Q3', 'Q4'], datasets: [{ label: 'Sales', data: [120, 150, 170, 210] }] }}
+    />
+  );
+}
+```
+
+Event handlers are functions, so they need a **client component**:
+
+```tsx
+'use client';
+import { useMemo, useState } from 'react';
+import { NexUI } from '@/components/nexui';
+
+// Outside the component, so the same array is reused on every render
+const fields = [
+  { name: 'email', label: 'Email', type: 'email', required: true },
+  { name: 'password', label: 'Password', type: 'password', minLength: 8, required: true },
+];
+
+export function Signup() {
+  const [account, setAccount] = useState<Record<string, unknown> | null>(null);
+  const on = useMemo(() => ({ submitted: (e: CustomEvent) => setAccount(e.detail) }), []);
+  return <NexUI tag="nexui-form" card title="Create account" submit-label="Sign up" props={{ fields }} on={on} />;
+}
+```
+
+- Elements that only take attributes can be written directly: `<nexui-icon name="rocket" size="32" />`.
+- Keep `props` and `on` stable (constants outside the component, `useMemo`): a new object on every render
+  sets the properties and re-adds the listeners each time.
+- Add the TypeScript declaration from the React section (e.g. `nexui.d.ts` in the project root).
+- **Pages Router**: put the `<link>` and the `beforeInteractive` config script in `pages/_document.tsx`, and the
+  `nexui.js` script in `pages/_app.tsx`; the wrapper works the same.
 
 ## Vue 3
 
