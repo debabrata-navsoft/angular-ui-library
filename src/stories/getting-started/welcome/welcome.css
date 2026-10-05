@@ -261,6 +261,8 @@ h3 {
 }
 
 .feature {
+  /* border-box: height 100% includes the padding, so a card doesn't spill into the row below */
+  box-sizing: border-box;
   height: 100%;
   padding: 26px;
   border: 1px solid var(--ui-border);
@@ -268,12 +270,31 @@ h3 {
   background: var(--ui-surface);
   transition:
     border-color 0.2s var(--ui-ease),
-    box-shadow 0.2s var(--ui-ease);
+    box-shadow 0.2s var(--ui-ease),
+    transform 0.25s var(--ui-ease);
 }
 
+/* Zooms in on hover and back out when the pointer leaves; the icon zooms a little more */
 .feature:hover {
   border-color: color-mix(in srgb, var(--ui-primary) 40%, var(--ui-border));
-  box-shadow: var(--ui-shadow);
+  box-shadow: var(--ui-shadow-lg);
+  transform: scale(1.03);
+}
+
+.feature:hover .feature__icon {
+  transform: scale(1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature,
+  .feature__icon {
+    transition: none;
+  }
+
+  .feature:hover,
+  .feature:hover .feature__icon {
+    transform: none;
+  }
 }
 
 .feature__icon {
@@ -286,6 +307,7 @@ h3 {
   background: var(--ui-gradient);
   box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--ui-primary) 60%, transparent);
   color: #fff;
+  transition: transform 0.25s var(--ui-ease);
 }
 
 .feature p,
@@ -310,6 +332,7 @@ h3 {
 }
 
 .tile {
+  box-sizing: border-box;
   height: 100%;
   padding: 24px;
   border: 1px solid var(--ui-border);
@@ -369,6 +392,7 @@ h3 {
 
 /* ---- explore ---- */
 .explore__card {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;
