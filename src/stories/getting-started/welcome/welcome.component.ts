@@ -20,12 +20,12 @@ import { AuroraComponent } from '../../effects/aurora/aurora.component';
 import { ParticlesComponent } from '../../effects/particles/particles.component';
 import { StarfieldComponent } from '../../effects/starfield/starfield.component';
 import { copyToClipboard } from '../../utils/clipboard';
-import { PAGES, SECTIONS, VERSION, pageHref } from '../landing';
+import { PAGES, SECTIONS, VERSION, managerHref } from '../landing';
 
 type Snippet = 'angular' | 'elements';
 
 const SNIPPETS: Record<Snippet, string> = {
-  angular: `import { ToggleComponent } from 'nexui';
+  angular: `import { ToggleComponent } from './components/form/toggle/toggle.component';
 
 @Component({
   imports: [ToggleComponent],
@@ -68,7 +68,7 @@ export class Settings {
 export class WelcomeComponent {
   protected readonly pages = PAGES;
   protected readonly version = VERSION;
-  protected readonly href = pageHref;
+  protected readonly href = managerHref;
 
   protected readonly stats = [
     { value: '60+', label: 'Components' },
@@ -139,7 +139,7 @@ export class WelcomeComponent {
     { value: 'elements', label: 'React, Vue & HTML' },
   ];
 
-  protected readonly install = 'npm install nexui';
+  protected readonly install = 'git clone <repo> && npm install && npm run storybook';
   protected readonly snippet = signal<Snippet>('angular');
   protected readonly code = computed(() => SNIPPETS[this.snippet()]);
   protected readonly copied = signal('');

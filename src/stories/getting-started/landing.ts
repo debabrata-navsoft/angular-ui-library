@@ -1,23 +1,11 @@
-/** Shared by the NexUI site's pages (the Angular app, src/app) and Storybook's config. Not part of the library */
-// The npm package's version (src/stories/package.json)
-import pkg from '../package.json';
+/** Shared by the full-screen landing pages (Welcome, Components overview). Not part of the library */
+import pkg from '../../../package.json';
 
 export const VERSION = `nexui@${pkg.version}`;
 
-/** The Angular app (`npm start`), home of the NexUI site; Storybook's logo and site entries open it */
-export const APP_URL = 'http://localhost:4200/';
-
-/** Storybook (`npm run storybook`), where the site's links to other pages go: component docs, Get Started, Effects */
-export const STORYBOOK_URL = 'http://localhost:6006/';
-
-/** Link to a page by its short URL (see manager.ts): the site's pages stay in the app, the others open Storybook */
-export function pageHref(page: string) {
-  return (SITE_PAGES.includes(page) ? './' : STORYBOOK_URL) + page;
-}
-
 /**
  * Storybook pages by their short URL (see manager.ts): a Storybook id, or a component's id for its first page.
- * The site's own pages (SITE_PAGES) open in the app's router, the others in Storybook (pageHref)
+ * Landing pages run in the preview iframe; links open these in the manager
  */
 export const PAGES = {
   welcome: '',
@@ -30,8 +18,25 @@ export const PAGES = {
   onboarding: 'onboarding-tour',
 };
 
-/** Pages of the NexUI site, all in the Angular app (`npm start`): its router switches between them. Storybook's
- *  Icons, Animations and NexLottie entries open them there (manager.ts) */
+/**
+ * Link into the Storybook manager, which sits next to the preview's iframe.html (use with target="_top").
+ * preview.ts opens it in place, without reloading Storybook
+ */
+export function managerHref(page: string) {
+  return `./${page}`;
+}
+
+/** The page a plain click on a managerHref link opens (none for new-tab clicks, other links or handled clicks) */
+export function clickedPage(event: MouseEvent): string | undefined {
+  const link = (event.target as Element).closest?.<HTMLAnchorElement>('a[target="_top"]');
+  if (!link || event.defaultPrevented || event.button) return undefined;
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return undefined;
+  const url = new URL(link.href);
+  const page = url.pathname.split('/').pop()!;
+  return url.origin === location.origin && !url.search && /^[\w-]*$/.test(page) ? page : undefined;
+}
+
+/** Pages of the NexUI site: one Angular app (site/) whose router switches between them without Storybook */
 export const SITE_PAGES = [
   PAGES.welcome,
   PAGES.catalog,
@@ -39,6 +44,9 @@ export const SITE_PAGES = [
   PAGES.animations,
   PAGES.lottie,
 ];
+
+/** Channel event: the site's page changed ({ page, title }); manager.ts shows it in the address bar and tab */
+export const SITE_ROUTE = 'nexui/site-route';
 
 /** The site's sections, for the landing nav and Welcome's "Pick a place to start" cards */
 export const SECTIONS = [

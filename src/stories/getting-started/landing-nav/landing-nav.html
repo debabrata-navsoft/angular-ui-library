@@ -2,6 +2,7 @@
   <a
     class="brand"
     [href]="href(pages.welcome)"
+    target="_top"
     [attr.aria-current]="active() === 'home' ? 'page' : null"
   >
     <img src="favicon.svg" alt="" width="28" height="28" />
@@ -11,6 +12,7 @@
     @for (link of links; track link.id) {
       <a
         [href]="href(link.path)"
+        target="_top"
         [class.active]="active() === link.id"
         [attr.aria-current]="active() === link.id ? 'page' : null"
       >
@@ -22,6 +24,7 @@
     <a
       class="tool"
       [href]="href(pages.catalog)"
+      target="_top"
       aria-label="Search components"
       title="Search components"
     >
@@ -64,5 +67,5 @@
       }
     </div>
   </div>
-  <a class="get-started" [href]="href(pages.getStarted)">Get Started</a>
+  <a class="get-started" [href]="href(pages.getStarted)" target="_top">Get Started</a>
 </nav>

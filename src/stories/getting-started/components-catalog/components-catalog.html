@@ -34,7 +34,7 @@
       </h2>
       <div class="cards" [class]="'cards--' + view()">
         @for (item of group.items; track item.folder) {
-          <a class="card" [href]="item.href">
+          <a class="card" [href]="item.href" target="_top">
             <span class="thumb" aria-hidden="true">
               <nex-icon
                 [name]="item.icon"

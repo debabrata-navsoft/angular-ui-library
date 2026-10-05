@@ -1,8 +1,7 @@
 /**
- * Light/dark mode and theme colors for Storybook and the NexUI site. In Storybook they are globals (`theme`,
- * `palette`): the toolbar (manager.ts) changes them, preview.ts applies them to the page as `data-theme` plus the
- * primary/accent CSS variables, and manager.ts remembers them in localStorage. The Angular app (src/app/app.config.ts)
- * applies and saves them the same way, under the same localStorage key.
+ * Light/dark mode and theme colors for the whole Storybook. They are Storybook globals (`theme`, `palette`):
+ * the toolbar (manager.ts) and the landing pages' top bar change them, preview.ts applies them to the page as
+ * `data-theme` plus the primary/accent CSS variables, and manager.ts remembers them in localStorage.
  */
 
 /** Theme colors offered in the palette menu; indigo is the Aurora default in theme.css */
@@ -40,40 +39,6 @@ export function saveTheme(theme: string, palette: string) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, palette, vars: paletteVars(palette) }));
 }
 
-/** Applies and saves a new mode or palette (the NexUI site's top bar; Storybook's toolbar goes through globals) */
-export function changeTheme(change: { theme?: string; palette?: string }) {
-  const { theme, palette } = { ...savedTheme(), ...change };
-  applyTheme(document, theme, palette);
-  saveTheme(theme, palette);
-}
-
-// Storybook (port 6006) and the Angular app (port 4200) are separate origins with their own localStorage, so links
-// between them carry the choice in the hash (#theme=dark&palette=teal) and the page they open saves it
-
-/** The saved choice as a hash for a link to the other one */
-export function themeHash() {
-  const { theme, palette } = savedTheme();
-  return `#${new URLSearchParams({ theme, palette })}`;
-}
-
-/** Puts a theme hash into a link's address (on press, so the address is current when the link is followed) */
-export function carryTheme(link: HTMLAnchorElement) {
-  link.href = link.href.split('#')[0] + themeHash();
-}
-
-/** Saves the choice a link brought (themeHash) and drops the hash. Only known modes and palettes are kept */
-export function readThemeHash() {
-  const params = new URLSearchParams(location.hash.slice(1));
-  const theme = params.get('theme');
-  const palette = params.get('palette');
-  if (!theme || !palette) return;
-  saveTheme(
-    theme === 'dark' ? 'dark' : 'light',
-    palette in PALETTES ? palette : DEFAULT_GLOBALS.palette,
-  );
-  history.replaceState(history.state, '', location.href.split('#')[0]);
-}
-
 /** The CSS variables a palette sets */
 function paletteVars(palette: string | undefined) {
   const { primary, hover, accent } = paletteColors(palette);
@@ -104,7 +69,6 @@ export function applyTheme(doc: Document, theme: string | undefined, palette: st
   if (root.dataset['nexuiTheme'] === key) return false;
   root.dataset['nexuiTheme'] = key;
   root.dataset['theme'] = mode;
-  for (const [name, value] of Object.entries(paletteVars(palette)))
-    root.style.setProperty(name, value);
+  for (const [name, value] of Object.entries(paletteVars(palette))) root.style.setProperty(name, value);
   return true;
 }
