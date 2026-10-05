@@ -63,6 +63,10 @@ export interface FormField {
   pattern?: string;
   /** Error shown when `pattern` doesn't match */
   patternMessage?: string;
+  /** Name of another field this one must equal (e.g. confirm password) */
+  match?: string;
+  /** Error shown when `match` doesn't match */
+  matchMessage?: string;
   /** Textarea height in lines */
   rows?: number;
   /** Take the full row in a two-column form (textarea always does) */
@@ -297,6 +301,9 @@ export class FormComponent {
     }
     if (field.pattern && !new RegExp(`^(?:${field.pattern})$`).test(text)) {
       return field.patternMessage ?? `${field.label} is not valid`;
+    }
+    if (field.match && text !== String(this.value()[field.match] ?? '').trim()) {
+      return field.matchMessage ?? `${field.label} doesn't match`;
     }
     return '';
   }
