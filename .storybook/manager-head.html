@@ -16,6 +16,35 @@
     --nav-box-bg: #0f172a;
     --nav-box-border: #334155;
   }
+  /* Sidebar background (Storybook's appBg: its default light color, and the dark one in theme-tools.ts) */
+  :root {
+    --nav-bg: #f6f9fc;
+  }
+  :root[data-theme='dark'] {
+    --nav-bg: #0b1222;
+  }
+
+  /* The logo row and the search stay put while the list scrolls under them. The sidebar content has 16px top /
+     12px side padding and 16px gaps; the negative margins and matching padding keep the layout where it was and
+     let the background cover the full width */
+  #storybook-sidebar-region div:has(> .sidebar-header),
+  #storybook-sidebar-region div:has(> .search-field) {
+    position: sticky;
+    z-index: 2;
+    margin: -16px -12px 0;
+    padding: 16px 12px 0;
+    background: var(--nav-bg);
+  }
+  #storybook-sidebar-region div:has(> .sidebar-header) {
+    top: 0;
+  }
+  /* Right under the logo row (16px padding + 42px row) */
+  #storybook-sidebar-region div:has(> .search-field) {
+    top: 58px;
+    margin-bottom: -12px;
+    padding-bottom: 12px;
+  }
+
   /* PrimeNG-style sidebar: top-level rows (group headings and root pages like Icons) get a bold label and a
      boxed icon; groups get a chevron. Icons are Lucide SVG masks, so they follow the text color.
      Restart Storybook after editing. */
