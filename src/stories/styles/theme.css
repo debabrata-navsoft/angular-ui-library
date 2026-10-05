@@ -195,6 +195,11 @@ body {
   color: var(--ui-text-subtle);
 }
 
+/* The clear (×) button of search fields */
+input[type='search']::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
 .ui-control:hover:not(:disabled) {
   border-color: var(--ui-text-subtle);
 }

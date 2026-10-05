@@ -70,10 +70,11 @@ src/app/             Demo Angular app (not used by Storybook), server-rendered: 
                      app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
 src/elements/nexprime.ts  Web Components entry: registers every component as <np-*> (Angular Elements), window.NexPrime.confirm()
 src/styles.css       Imports stories/styles/theme.css for the app
-public/favicon.svg   NexPrime icon (NP monogram: two modules joined by a blue-violet connector on a navy tile), the favicon of
-                     the app and Storybook (staticDirs). Also nexprime-logo{,-dark,-mono}.svg (icon + wordmark),
-                     nexprime-icon-mono.svg and nexprime-brand-{light,dark}.svg (Storybook sidebar). The wordmark is
-                     Manrope ExtraBold (OFL) converted to outlines, so the files need no font
+public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→violet connector, violet P, glass edges, two
+                     glowing nodes) on a midnight tile; the favicon of the app and Storybook (staticDirs). Also
+                     nexprime-logo{,-dark,-mono}.svg (mark + wordmark), nexprime-icon-mono.svg, nexprime-brand-{light,dark}.svg
+                     (Storybook sidebar: the same lockup as the site's top bar, tile icon + "Nex" regular + "Prime" bold) and nexprime-hero.svg (1600×900 banner / social card). Wordmark and tagline are
+                     Manrope (OFL) converted to outlines, so the files need no font
 .storybook/          Storybook config; preview.ts imports src/stories/styles/theme.css
                      preview-head.html adds a plain-JS "back to top" button to every page (docs scroll in the preview frame),
                      and themes Storybook's loading screen (spinner, docs skeleton) from the saved 'np-theme' before JS loads
