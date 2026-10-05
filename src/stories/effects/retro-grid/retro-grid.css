@@ -1,4 +1,4 @@
-/* Layout comes from .nex-effect in theme.css; the grid is a tilted plane in perspective behind the content */
+/* Layout comes from .np-effect in theme.css; the grid is a tilted plane in perspective behind the content */
 :host {
   --rg-color: color-mix(in srgb, var(--ui-primary) 60%, transparent);
   isolation: isolate;

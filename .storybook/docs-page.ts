@@ -36,10 +36,10 @@ const LANGUAGE: Record<WebFramework, string> = {
   html: 'html',
 };
 
-/** Setup note under the generated code; Next.js snippets here use the NexUI wrapper (Frameworks.mdx) */
+/** Setup note under the generated code; Next.js snippets here use the NexPrime wrapper (Frameworks.mdx) */
 const note = (framework: WebFramework) =>
   framework === 'next'
-    ? 'Uses the NexUI wrapper (components/nexui.tsx). Load nexui.js once in app/layout.tsx.'
+    ? 'Uses the NexPrime wrapper (components/nexprime.tsx). Load nexprime.js once in app/layout.tsx.'
     : setupNote(framework);
 
 const GUIDE = managerHref(PAGES.getStarted);
@@ -90,7 +90,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
     try {
       return frameworkSnippets(story);
     } catch (error) {
-      console.warn('NexUI docs: could not build framework snippets', error);
+      console.warn('NexPrime docs: could not build framework snippets', error);
       return null;
     }
   }, [story]);
@@ -101,7 +101,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
     'button',
     {
       type: 'button',
-      className: 'nexui-code__toggle',
+      className: 'np-code__toggle',
       'aria-expanded': open,
       onClick: () => setOpen(!open),
     },
@@ -113,7 +113,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
     snippets &&
     h(
       'div',
-      { className: 'nexui-code__tabs', role: 'tablist', 'aria-label': 'Framework' },
+      { className: 'np-code__tabs', role: 'tablist', 'aria-label': 'Framework' },
       FRAMEWORKS.map(({ value, label }) =>
         h(
           'button',
@@ -122,7 +122,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
             type: 'button',
             role: 'tab',
             'aria-selected': shown === value,
-            className: 'nexui-code__tab',
+            className: 'np-code__tab',
             onClick: () => setFramework(value),
           },
           label,
@@ -139,7 +139,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
           h(Source, { code: snippets[shown], language: LANGUAGE[shown] as never, dark: true }),
           h(
             'p',
-            { className: 'nexui-code__note' },
+            { className: 'np-code__note' },
             note(shown) + ' ',
             h('a', { href: GUIDE, target: '_top' }, 'Setup guide'),
           ),
@@ -147,8 +147,8 @@ function StoryCode({ story }: { story: PreparedStory }) {
 
   return h(
     'div',
-    { className: 'nexui-code' },
-    h('div', { className: 'nexui-code__bar' }, toggle, tabs),
+    { className: 'np-code' },
+    h('div', { className: 'np-code__bar' }, toggle, tabs),
     code,
   );
 }
@@ -157,7 +157,7 @@ function StoryBlock({ story, primary }: { story: PreparedStory; primary?: boolea
   const of = story.moduleExport as never;
   return h(
     'section',
-    { id: `anchor--${story.id}`, className: 'nexui-story' },
+    { id: `anchor--${story.id}`, className: 'np-story' },
     !primary && h(Subheading, null, story.name),
     !primary && h(Description, { of }),
     h(Canvas, { of, sourceState: 'none' }),

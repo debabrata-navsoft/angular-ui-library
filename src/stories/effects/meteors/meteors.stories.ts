@@ -22,7 +22,7 @@ type Story = StoryObj<MeteorsComponent>;
 
 /** Shooting stars across a night sky */
 export const NightSky: Story = {
-  render: demo('nex-meteors', {
+  render: demo('np-meteors', {
     height: '480px',
     background: BACKGROUNDS.space,
     content: heroCopy({ title: 'Make a wish', text: 'Meteors streak across behind your content' }),
@@ -32,13 +32,13 @@ export const NightSky: Story = {
 /** A meteor shower: more, faster and steeper */
 export const Shower: Story = {
   args: { count: 40, speed: 1.6, angle: 115 },
-  render: demo('nex-meteors', { height: '420px', background: BACKGROUNDS.black }),
+  render: demo('np-meteors', { height: '420px', background: BACKGROUNDS.black }),
 };
 
 /** Theme-colored meteors on the Aurora gradient */
 export const Gradient: Story = {
   args: { color: '#ffffff', angle: 150 },
-  render: demo('nex-meteors', {
+  render: demo('np-meteors', {
     height: '420px',
     background: 'var(--ui-gradient)',
     content: heroCopy({ buttonClass: 'ui-btn' }),

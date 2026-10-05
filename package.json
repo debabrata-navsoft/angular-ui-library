@@ -1,5 +1,5 @@
 {
-  "name": "nexui",
+  "name": "nexprime-ui",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,11 +7,11 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "storybook": "ng run angular-ui-library:storybook",
-    "build-storybook": "ng run angular-ui-library:build-storybook",
+    "storybook": "ng run nexprime-ui:storybook",
+    "build-storybook": "ng run nexprime-ui:build-storybook",
     "vercel-build": "npm run build-storybook",
-    "build:elements": "ng run angular-ui-library:build-elements && node -e \"require('fs').renameSync('dist/nexui-elements/browser/main.js', 'dist/nexui-elements/browser/nexui.js')\"",
-    "serve:ssr:angular-ui-library": "node dist/angular-ui-library/server/server.mjs"
+    "build:elements": "ng run nexprime-ui:build-elements && node -e \"require('fs').renameSync('dist/nexprime-elements/browser/main.js', 'dist/nexprime-elements/browser/nexprime.js')\"",
+    "serve:ssr:nexprime-ui": "node dist/nexprime-ui/server/server.mjs"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

@@ -26,7 +26,7 @@ const BUCKETS = 8;
  * Projected content sits on top. Shows a still frame when the user prefers reduced motion.
  */
 @Component({
-  selector: 'nex-particles',
+  selector: 'np-particles',
   templateUrl: './particles.html',
   styleUrl: './particles.css',
 })

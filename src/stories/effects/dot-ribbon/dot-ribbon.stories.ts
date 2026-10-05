@@ -32,13 +32,13 @@ type Story = StoryObj<DotRibbonComponent>;
 
 /** A gray ribbon of dots floating across a light page, like a footer background */
 export const Light: Story = {
-  render: demo('nex-dot-ribbon', { height: '320px', background: 'var(--ui-surface-muted)' }),
+  render: demo('np-dot-ribbon', { height: '320px', background: 'var(--ui-surface-muted)' }),
 };
 
 /** Theme-colored ribbon behind a dark hero */
 export const Dark: Story = {
   args: { color: '#a5b4fc' },
-  render: demo('nex-dot-ribbon', {
+  render: demo('np-dot-ribbon', {
     height: '480px',
     background: BACKGROUNDS.space,
     content: heroCopy({
@@ -51,5 +51,5 @@ export const Dark: Story = {
 /** Strong twist and big waves */
 export const Twisted: Story = {
   args: { twist: 2, amplitude: 1.6, color: '#334155', size: 1.4 },
-  render: demo('nex-dot-ribbon', { height: '420px', background: 'var(--ui-surface)' }),
+  render: demo('np-dot-ribbon', { height: '420px', background: 'var(--ui-surface)' }),
 };

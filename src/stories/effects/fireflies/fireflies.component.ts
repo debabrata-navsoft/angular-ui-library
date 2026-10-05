@@ -20,7 +20,7 @@ const LEVELS = 5;
  * it shows a still frame.
  */
 @Component({
-  selector: 'nex-fireflies',
+  selector: 'np-fireflies',
   templateUrl: './fireflies.html',
   styleUrl: './fireflies.css',
 })

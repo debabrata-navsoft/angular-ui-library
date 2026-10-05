@@ -22,15 +22,15 @@ export function setupNote(framework: Framework, angularImport = '') {
     angular: angularImport
       ? `Add ${angularImport} to your component’s imports.`
       : 'The classes come with theme.css.',
-    react: 'React 19+. Load nexui.js and styles.css once.',
-    next: 'Server or client component. Load nexui.js once in app/layout.tsx.',
-    vue: 'Mark nexui-* tags as custom elements in vite.config.',
-    html: 'Load nexui.js and styles.css once.',
+    react: 'React 19+. Load nexprime.js and styles.css once.',
+    next: 'Server or client component. Load nexprime.js once in app/layout.tsx.',
+    vue: 'Mark np-* tags as custom elements in vite.config.',
+    html: 'Load nexprime.js and styles.css once.',
   }[framework];
 }
 
 export interface ElementCode {
-  /** Name without a prefix: "icon" renders <nex-icon> / <nexui-icon> */
+  /** Name without a prefix: "icon" renders <np-icon> / <np-icon> */
   tag: string;
   /** Inputs that are set; false, null and undefined are left out. Numbers are bound in Angular */
   inputs: Record<string, string | number | false | null | undefined>;
@@ -41,17 +41,17 @@ export interface ElementCode {
 export const kebab = (name: string) => name.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 export const camel = (name: string) => name.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
 
-/** A NexUI component as Angular markup or as its Web Component (React, Next.js, Vue, HTML) */
+/** A NexPrime component as Angular markup or as its Web Component (React, Next.js, Vue, HTML) */
 export function elementCode(framework: Framework, { tag, inputs, style = {} }: ElementCode) {
+  const element = `np-${tag}`;
   const set = Object.entries(inputs).filter(
     (entry): entry is [string, string | number] => entry[1] !== false && entry[1] != null,
   );
   if (framework === 'angular') {
     const attrs = set.map(([k, v]) => (typeof v === 'number' ? `[${k}]="${v}"` : `${k}="${v}"`));
-    return `<nex-${tag} ${[...attrs, ...cssAttribute(style)].join(' ')} />`;
+    return `<${element} ${[...attrs, ...cssAttribute(style)].join(' ')} />`;
   }
   const attrs = set.map(([k, v]) => `${kebab(k)}="${v}"`);
-  const element = `nexui-${tag}`;
   if (framework === 'react' || framework === 'next') {
     return `<${element} ${[...attrs, jsxStyle(style)].filter(Boolean).join(' ')} />`;
   }
@@ -60,7 +60,7 @@ export function elementCode(framework: Framework, { tag, inputs, style = {} }: E
   return framework === 'vue' ? `<${element} ${all} />` : `<${element} ${all}></${element}>`;
 }
 
-/** Plain markup with classes (the nex-anim-* animations): class="" vs. className and a style object in JSX */
+/** Plain markup with classes (the np-anim-* animations): class="" vs. className and a style object in JSX */
 export function markupCode(
   framework: Framework,
   className: string,
@@ -77,11 +77,11 @@ export function setupCode(framework: Framework) {
   switch (framework) {
     case 'react':
     case 'html':
-      return `<link rel="stylesheet" href="/nexui/styles.css" />\n<script type="module" src="/nexui/nexui.js"></script>`;
+      return `<link rel="stylesheet" href="/nexprime/styles.css" />\n<script type="module" src="/nexprime/nexprime.js"></script>`;
     case 'next':
-      return `<Script src="/nexui/nexui.js" type="module" crossOrigin="anonymous" strategy="afterInteractive" />`;
+      return `<Script src="/nexprime/nexprime.js" type="module" crossOrigin="anonymous" strategy="afterInteractive" />`;
     case 'vue':
-      return `vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('nexui-') } } })`;
+      return `vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('np-') } } })`;
     default:
       return '';
   }

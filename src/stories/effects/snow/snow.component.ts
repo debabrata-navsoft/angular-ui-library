@@ -14,7 +14,7 @@ const LEVELS = 4;
 
 /** Falling snow that sways in the wind; bigger flakes are closer and fall faster. A still frame with reduced motion */
 @Component({
-  selector: 'nex-snow',
+  selector: 'np-snow',
   templateUrl: './snow.html',
   styleUrl: './snow.css',
 })

@@ -19,7 +19,7 @@ const LEVELS = 6;
  * With reduced motion it shows a still frame.
  */
 @Component({
-  selector: 'nex-meteors',
+  selector: 'np-meteors',
   templateUrl: './meteors.html',
   styleUrl: './meteors.css',
 })

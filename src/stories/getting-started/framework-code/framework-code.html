@@ -1,5 +1,5 @@
 <div class="bar">
-  <nex-button-toggle
+  <np-button-toggle
     size="small"
     ariaLabel="Framework"
     [options]="frameworks"
@@ -8,7 +8,7 @@
     (valueChange)="pick($event)"
   />
   <button type="button" class="ui-btn ui-btn--text ui-btn--sm" (click)="copy()">
-    <nex-icon [name]="copied() ? 'check' : 'copy'" [size]="14" />
+    <np-icon [name]="copied() ? 'check' : 'copy'" [size]="14" />
     {{ copied() ? 'Copied!' : 'Copy' }}
   </button>
 </div>

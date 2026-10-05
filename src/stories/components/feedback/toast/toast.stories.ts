@@ -28,7 +28,7 @@ const meta: Meta<ToastComponent> = {
     props: args,
     template: `
       <storybook-button label="Show toast" [primary]="true" (onClick)="open = true" />
-      <nex-toast
+      <np-toast
         [(open)]="open"
         [message]="message"
         [type]="type"
@@ -79,7 +79,7 @@ export const AllTypes: Story = {
     },
     template: `
       @for (corner of corners; track corner[0]) {
-        <nex-toast [open]="true" [duration]="0" [type]="corner[0]" [position]="corner[1]" [message]="MESSAGES[corner[0]]" />
+        <np-toast [open]="true" [duration]="0" [type]="corner[0]" [position]="corner[1]" [message]="MESSAGES[corner[0]]" />
       }
     `,
   }),

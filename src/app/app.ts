@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { ScrollTopComponent } from '../stories/components/misc/scroll-top/scroll-top.component';
 
 @Component({
-  selector: 'nex-root',
+  selector: 'np-root',
   imports: [RouterOutlet, ScrollTopComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',

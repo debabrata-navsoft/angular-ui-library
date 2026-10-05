@@ -1,8 +1,8 @@
 /**
- * NexUI as Web Components, for React, Vue, Svelte or plain HTML.
- * Build with `npm run build:elements`; it outputs dist/nexui-elements/browser/ (nexui.js, styles.css, icons/).
- * Components are registered with a nexui- prefix (<nex-chart> → <nexui-chart>). The components render nex-* tags
- * inside themselves; registering those names too would make the browser start a second copy of each nested one.
+ * NexPrime as Web Components, for React, Vue, Svelte or plain HTML.
+ * Build with `npm run build:elements`; it outputs dist/nexprime-elements/browser/ (nexprime.js, styles.css, icons/).
+ * Components are registered under their Angular names (<np-chart>). They render np-* tags inside themselves too; those
+ * are created by Angular (marked with __ngContext__), so the custom element steps aside and Angular runs them.
  */
 import { type Type, provideZonelessChangeDetection, reflectComponentType } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
@@ -183,22 +183,47 @@ const components: Type<unknown>[] = [
 declare global {
   interface Window {
     /** Imperative API for things that are services in Angular */
-    NexUI: { confirm(options: Confirmation): void; close(): void };
+    NexPrime: { confirm(options: Confirmation): void; close(): void };
   }
 }
 
+type AttributeChange = [name: string, old: string | null, value: string | null, ns?: string];
+
+/** The custom element lifecycle that Angular Elements implements */
+type ElementClass = new () => HTMLElement & {
+  connectedCallback(): void;
+  disconnectedCallback(): void;
+  attributeChangedCallback(...change: AttributeChange): void;
+};
+
+/** Angular created this element as part of a component's own template, so Angular runs the component already */
+const ownedByAngular = (el: HTMLElement) => '__ngContext__' in el;
+
 createApplication({ providers: [provideZonelessChangeDetection()] }).then((app) => {
   for (const component of components) {
-    const tag = reflectComponentType(component)!.selector.replace(/^nex-/, 'nexui-');
+    const tag = reflectComponentType(component)!.selector;
     if (customElements.get(tag)) continue;
     const Element = createCustomElement(component, {
       injector: app.injector,
-    }) as unknown as typeof HTMLElement;
+    }) as unknown as ElementClass;
     // Outputs are dispatched with their name (valueChange); also dispatch a kebab-case copy (value-change)
     // because Vue listens for kebab-case names
     customElements.define(
       tag,
       class extends Element {
+        // An <np-icon> inside <np-card> also matches this element; starting it here would run a second copy
+        override connectedCallback() {
+          if (!ownedByAngular(this)) super.connectedCallback();
+        }
+
+        override disconnectedCallback() {
+          if (!ownedByAngular(this)) super.disconnectedCallback();
+        }
+
+        override attributeChangedCallback(...change: AttributeChange) {
+          if (!ownedByAngular(this)) super.attributeChangedCallback(...change);
+        }
+
         override dispatchEvent(event: Event) {
           const result = super.dispatchEvent(event);
           if (event instanceof CustomEvent && /[A-Z]/.test(event.type)) {
@@ -211,11 +236,11 @@ createApplication({ providers: [provideZonelessChangeDetection()] }).then((app) 
     );
   }
 
-  // <nexui-confirm-dialog> / <nexui-confirm-popup> are opened with NexUI.confirm({ message, accept, … })
+  // <np-confirm-dialog> / <np-confirm-popup> are opened with NexPrime.confirm({ message, accept, … })
   const confirmation = app.injector.get(ConfirmationService);
-  window.NexUI = {
+  window.NexPrime = {
     confirm: (options) => confirmation.confirm(options),
     close: () => confirmation.close(),
   };
-  window.dispatchEvent(new Event('nexui:ready'));
+  window.dispatchEvent(new Event('nexprime:ready'));
 });

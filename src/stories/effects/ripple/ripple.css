@@ -1,4 +1,4 @@
-/* Layout comes from .nex-effect in theme.css; the rings sit behind the content */
+/* Layout comes from .np-effect in theme.css; the rings sit behind the content */
 :host {
   --ripple-color: var(--ui-primary);
   isolation: isolate;

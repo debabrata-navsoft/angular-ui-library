@@ -5,11 +5,11 @@ import { Component, booleanAttribute, input, numberAttribute } from '@angular/co
  * on the server; `animated` makes the grain flicker like film, which reduced motion turns off.
  */
 @Component({
-  selector: 'nex-grain',
+  selector: 'np-grain',
   templateUrl: './grain.html',
   styleUrl: './grain.css',
   host: {
-    class: 'nex-effect',
+    class: 'np-effect',
     '[class.grain--animated]': 'animated()',
     '[style.--grain-opacity]': 'opacity()',
   },

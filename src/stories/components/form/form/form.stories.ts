@@ -114,7 +114,7 @@ export const Login: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <nex-form ${argsToTemplate(args)}>
+      <np-form ${argsToTemplate(args)}>
         <div formBeforeActions style="display: flex; justify-content: flex-end; margin-top: -8px">
           <a href="#" style="color: var(--ui-primary); font-size: 13px; font-weight: 600; text-decoration: none">
             Forgot password?
@@ -133,7 +133,7 @@ export const Login: Story = {
           Don't have an account?
           <a href="#" style="color: var(--ui-primary); font-weight: 600; text-decoration: none">Sign up</a>
         </p>
-      </nex-form>
+      </np-form>
     `,
   }),
 };
@@ -173,7 +173,7 @@ export const SignUp: Story = {
 /** "Back to sign in" link below the form, shared by the password templates */
 const BACK_TO_SIGN_IN = `
   <a href="#" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--ui-text-muted); font-size: 13px; font-weight: 600; text-decoration: none">
-    <nex-icon name="arrow-left" [size]="14" /> Back to sign in
+    <np-icon name="arrow-left" [size]="14" /> Back to sign in
   </a>`;
 
 /** Step after "Forgot password?" on the login card: one email field, then a check-your-inbox confirmation */
@@ -201,7 +201,7 @@ export const ForgotPassword: Story = {
   decorators: [moduleMetadata({ imports: [IconComponent] })],
   render: (args) => ({
     props: args,
-    template: `<nex-form ${argsToTemplate(args)}>${BACK_TO_SIGN_IN}</nex-form>`,
+    template: `<np-form ${argsToTemplate(args)}>${BACK_TO_SIGN_IN}</np-form>`,
   }),
 };
 
@@ -243,7 +243,7 @@ export const ResetPassword: Story = {
   decorators: [moduleMetadata({ imports: [IconComponent] })],
   render: (args) => ({
     props: args,
-    template: `<nex-form ${argsToTemplate(args)}>${BACK_TO_SIGN_IN}</nex-form>`,
+    template: `<np-form ${argsToTemplate(args)}>${BACK_TO_SIGN_IN}</np-form>`,
   }),
 };
 
@@ -360,7 +360,7 @@ export const Survey: Story = {
         fields: [
           {
             name: 'nps',
-            label: 'How likely are you to recommend NexUI? (0–10)',
+            label: 'How likely are you to recommend NexPrime? (0–10)',
             type: 'segmented',
             required: true,
             options: Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) })),

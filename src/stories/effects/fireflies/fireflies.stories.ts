@@ -22,7 +22,7 @@ type Story = StoryObj<FirefliesComponent>;
 
 /** Warm fireflies drifting at night; the pointer pushes them away */
 export const Night: Story = {
-  render: demo('nex-fireflies', {
+  render: demo('np-fireflies', {
     height: '480px',
     background: BACKGROUNDS.night,
     content: heroCopy({
@@ -35,5 +35,5 @@ export const Night: Story = {
 /** Theme-colored sparks, many and small */
 export const Sparks: Story = {
   args: { color: '#c4b5fd', count: 140, size: 1.4, speed: 1.4 },
-  render: demo('nex-fireflies', { height: '420px', background: BACKGROUNDS.black }),
+  render: demo('np-fireflies', { height: '420px', background: BACKGROUNDS.black }),
 };

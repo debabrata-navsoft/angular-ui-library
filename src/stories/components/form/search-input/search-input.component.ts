@@ -1,7 +1,7 @@
 import { Component, booleanAttribute, input, output } from '@angular/core';
 
 @Component({
-  selector: 'nex-search-input',
+  selector: 'np-search-input',
   templateUrl: './search-input.html',
   styleUrl: './search-input.css',
 })

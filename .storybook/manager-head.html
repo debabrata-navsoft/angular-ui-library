@@ -1,5 +1,5 @@
 <style>
-  /* Sidebar colors follow NexUI's light/dark mode and theme color: manager.ts sets data-theme and --ui-primary on
+  /* Sidebar colors follow NexPrime's light/dark mode and theme color: manager.ts sets data-theme and --ui-primary on
      this page too */
   :root {
     --nav-text: #1e293b;
@@ -166,11 +166,11 @@
     box-shadow: 0 6px 16px -8px var(--nav-accent);
   }
 
-  /* Toolbar: NexUI's search / mode / color buttons only. manager.ts hides the other tools by id; this one is built
+  /* Toolbar: NexPrime's search / mode / color buttons only. manager.ts hides the other tools by id; this one is built
      into the toolbar and has none */
   button[aria-label='Show addon panel'],
-  /* Landing pages (manager.ts sets data-nexui-layout) have no toolbar */
-  [data-nexui-layout='landing'] [data-testid='sb-preview-toolbar'] {
+  /* Landing pages (manager.ts sets data-np-layout) have no toolbar */
+  [data-np-layout='landing'] [data-testid='sb-preview-toolbar'] {
     display: none !important;
   }
 

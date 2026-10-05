@@ -88,7 +88,7 @@ let nextId = 0;
 
 /** Builds a validated form (single page or multi-step) from a list of fields */
 @Component({
-  selector: 'nex-form',
+  selector: 'np-form',
   imports: [
     CheckboxComponent,
     IconComponent,
@@ -164,7 +164,7 @@ export class FormComponent {
   readonly submitted = output<FormValue>();
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  protected readonly id = `nex-form-${nextId++}`;
+  protected readonly id = `np-form-${nextId++}`;
   /** Fields the user has left; their errors show from then on */
   private readonly touched = signal(new Set<string>());
   /** After a submit/next attempt every error on the page shows */

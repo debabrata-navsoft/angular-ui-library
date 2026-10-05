@@ -15,7 +15,7 @@ const footer = `
 /** Story template: `trigger` markup, then a dialog bound to every arg with body text and `withFooter` */
 const template = (trigger: string, withFooter = footer) => `
   ${trigger}
-  <nex-dialog
+  <np-dialog
     [visible]="visible" [header]="header" [modal]="modal" [closable]="closable"
     [dismissableMask]="dismissableMask" [maximizable]="maximizable" [position]="position" [width]="width"
     (visibleChange)="visible = $event; visibleChange($event)" (show)="show()" (hide)="hide()"
@@ -25,7 +25,7 @@ const template = (trigger: string, withFooter = footer) => `
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
     </p>
     ${withFooter}
-  </nex-dialog>
+  </np-dialog>
 `;
 
 const showButton = `<storybook-button label="Show dialog" [primary]="true" (onClick)="visible = true" />`;

@@ -4,8 +4,8 @@ import { SITE_STORY, type SiteComponent } from '../getting-started/site/site-sto
 
 const meta: Meta<SiteComponent> = {
   title: 'Icons',
-  // A page of the NexUI site (icon-gallery.component.ts, data in icons-data.ts)
-  tags: ['nexui-landing'],
+  // A page of the NexPrime site (icon-gallery.component.ts, data in icons-data.ts)
+  tags: ['np-landing'],
   ...SITE_STORY,
   args: { page: 'icons' },
 };

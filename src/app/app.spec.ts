@@ -18,6 +18,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('nex-scroll-top button')?.getAttribute('aria-label')).toBe('Back to top');
+    expect(compiled.querySelector('np-scroll-top button')?.getAttribute('aria-label')).toBe('Back to top');
   });
 });

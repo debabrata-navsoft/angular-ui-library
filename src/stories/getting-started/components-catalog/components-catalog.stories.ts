@@ -4,8 +4,8 @@ import { SITE_STORY, type SiteComponent } from '../site/site-story';
 
 const meta: Meta<SiteComponent> = {
   title: 'Components/Overview',
-  // A page of the NexUI site, opened from "View Components" and not listed in the sidebar
-  tags: ['!dev', 'nexui-landing'],
+  // A page of the NexPrime site, opened from "View Components" and not listed in the sidebar
+  tags: ['!dev', 'np-landing'],
   ...SITE_STORY,
   args: { page: 'components-overview' },
 };

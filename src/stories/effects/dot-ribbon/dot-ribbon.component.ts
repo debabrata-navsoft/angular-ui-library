@@ -20,7 +20,7 @@ const HALF_WIDTH = 1;
  * little. A still frame with reduced motion.
  */
 @Component({
-  selector: 'nex-dot-ribbon',
+  selector: 'np-dot-ribbon',
   templateUrl: './dot-ribbon.html',
   styleUrl: './dot-ribbon.css',
 })

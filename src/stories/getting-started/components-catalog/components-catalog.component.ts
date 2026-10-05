@@ -99,7 +99,7 @@ type View = 'grid' | 'compact' | 'list';
 
 /** "View Components": a full-screen catalog of every component, grouped like the sidebar, like primeng.dev/components */
 @Component({
-  selector: 'nex-components-catalog',
+  selector: 'np-components-catalog',
   imports: [ButtonToggleComponent, IconComponent, SearchInputComponent],
   templateUrl: './components-catalog.html',
   styleUrl: './components-catalog.css',

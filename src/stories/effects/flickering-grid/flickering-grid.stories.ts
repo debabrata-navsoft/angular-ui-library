@@ -23,7 +23,7 @@ type Story = StoryObj<FlickeringGridComponent>;
 
 /** Twinkling pixels behind a light hero, in the theme color */
 export const Default: Story = {
-  render: demo('nex-flickering-grid', {
+  render: demo('np-flickering-grid', {
     height: '460px',
     background: 'var(--ui-surface)',
     content: heroCopy({ dark: false }),
@@ -33,7 +33,7 @@ export const Default: Story = {
 /** Bigger, brighter squares on black, like an LED wall */
 export const Led: Story = {
   args: { color: '#22d3ee', squareSize: 8, gap: 4, flicker: 0.8, maxOpacity: 0.6 },
-  render: demo('nex-flickering-grid', {
+  render: demo('np-flickering-grid', {
     height: '420px',
     background: BACKGROUNDS.black,
     content: heroCopy(),

@@ -15,7 +15,7 @@ const LEVELS = 4;
 
 /** Bubbles rise and wobble from the bottom, each with a small highlight. A still frame with reduced motion */
 @Component({
-  selector: 'nex-bubbles',
+  selector: 'np-bubbles',
   templateUrl: './bubbles.html',
   styleUrl: './bubbles.css',
 })

@@ -22,7 +22,7 @@ type Story = StoryObj<RippleComponent>;
 
 /** Rings pulse out from behind the content */
 export const Default: Story = {
-  render: demo('nex-ripple', {
+  render: demo('np-ripple', {
     height: '480px',
     background: 'var(--ui-surface)',
     content: heroCopy({
@@ -36,7 +36,7 @@ export const Default: Story = {
 /** A radar look on a dark background */
 export const Radar: Story = {
   args: { color: '#22d3ee', rings: 10, size: 120, spacing: 60 },
-  render: demo('nex-ripple', {
+  render: demo('np-ripple', {
     height: '460px',
     background: BACKGROUNDS.ink,
     content: heroCopy({ button: '' }),

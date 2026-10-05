@@ -5,11 +5,11 @@ import { Component, computed, input, numberAttribute } from '@angular/core';
  * it renders on the server; reduced motion keeps the rings still.
  */
 @Component({
-  selector: 'nex-ripple',
+  selector: 'np-ripple',
   templateUrl: './ripple.html',
   styleUrl: './ripple.css',
   host: {
-    class: 'nex-effect',
+    class: 'np-effect',
     '[style.--ripple-size.px]': 'size()',
     '[style.--ripple-step.px]': 'spacing()',
     '[style.--ripple-color]': 'color() || null',

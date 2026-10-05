@@ -1,4 +1,4 @@
-/* Tablet and mobile layout for the whole Storybook: the NexUI site (top bar, Welcome, Components, Icons, Animations,
+/* Tablet and mobile layout for the whole Storybook: the NexPrime site (top bar, Welcome, Components, Icons, Animations,
    NexLottie), shared overlays, and Storybook's docs pages. Loaded by .storybook/preview.ts and src/styles.css.
 
    Breakpoints: tablet <= 1024px, mobile <= 640px, small phones <= 400px (the top bar switches at 760px).
@@ -16,60 +16,60 @@ video {
 }
 
 /* Button toggles with many options (the gallery filters) scroll sideways instead of widening the page */
-:root nex-button-toggle {
+:root np-button-toggle {
   display: inline-block;
   max-width: 100%;
 }
 
-:root nex-button-toggle .toggle-group:not(.toggle-group--vertical) {
+:root np-button-toggle .toggle-group:not(.toggle-group--vertical) {
   max-width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
 }
 
-:root nex-button-toggle .toggle-group::-webkit-scrollbar {
+:root np-button-toggle .toggle-group::-webkit-scrollbar {
   display: none;
 }
 
-:root nex-button-toggle .toggle-button {
+:root np-button-toggle .toggle-button {
   flex: none;
 }
 
 /* ============================== Tablet (<= 1024px) ============================== */
 @media (max-width: 1024px) {
   /* ---- top bar ---- */
-  :root nex-landing-nav .nav {
+  :root np-landing-nav .nav {
     gap: 16px;
     padding: 0 20px;
   }
 
-  :root nex-landing-nav .links.links a {
+  :root np-landing-nav .links.links a {
     padding: 8px 9px;
   }
 
   /* ---- Welcome ---- */
-  :root nex-welcome-page .hero__inner {
+  :root np-welcome-page .hero__inner {
     padding: 96px 24px 120px;
   }
 
-  :root nex-welcome-page .section {
+  :root np-welcome-page .section {
     padding: 80px 24px;
   }
 
-  :root nex-welcome-page .section__head {
+  :root np-welcome-page .section__head {
     margin-bottom: 40px;
   }
 
-  :root nex-welcome-page .quickstart {
+  :root np-welcome-page .quickstart {
     gap: 32px;
   }
 
   /* ---- Components catalog ---- */
-  :root nex-components-catalog .hero {
+  :root np-components-catalog .hero {
     padding: 64px 0 56px;
   }
 
-  :root nex-components-catalog .cards--grid {
+  :root np-components-catalog .cards--grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
@@ -82,7 +82,7 @@ video {
     padding: 32px 0 28px;
   }
 
-  :root nex-lottie-gallery .grid {
+  :root np-lottie-gallery .grid {
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   }
 }
@@ -90,14 +90,14 @@ video {
 /* =================== Top bar on phones and small tablets (<= 760px) =================== */
 /* The section links move to a second row that scrolls sideways, instead of disappearing */
 @media (max-width: 760px) {
-  :root nex-landing-nav .nav {
+  :root np-landing-nav .nav {
     flex-wrap: wrap;
     gap: 6px 12px;
     height: auto;
     padding: 10px 16px 0;
   }
 
-  :root nex-landing-nav .links {
+  :root np-landing-nav .links {
     display: flex;
     flex: 1 0 100%;
     order: 3;
@@ -107,20 +107,20 @@ video {
     scrollbar-width: none;
   }
 
-  :root nex-landing-nav .links::-webkit-scrollbar {
+  :root np-landing-nav .links::-webkit-scrollbar {
     display: none;
   }
 
-  :root nex-landing-nav .links.links a {
+  :root np-landing-nav .links.links a {
     flex: none;
     white-space: nowrap;
   }
 
-  :root nex-landing-nav .tools {
+  :root np-landing-nav .tools {
     margin-left: auto;
   }
 
-  :root nex-landing-nav .get-started {
+  :root np-landing-nav .get-started {
     padding: 7px 12px;
     font-size: 13px;
   }
@@ -129,133 +129,133 @@ video {
 /* ============================== Mobile (<= 640px) ============================== */
 @media (max-width: 640px) {
   /* ---- Welcome ---- */
-  :root nex-welcome-page .hero,
-  :root nex-welcome-page .hero__particles {
+  :root np-welcome-page .hero,
+  :root np-welcome-page .hero__particles {
     min-height: 520px;
   }
 
-  :root nex-welcome-page .hero__inner {
+  :root np-welcome-page .hero__inner {
     gap: 18px;
     padding: 72px 16px 96px;
   }
 
   /* Slightly smaller buttons, so both fit side by side */
-  :root nex-welcome-page :is(.hero__cta, .hero__ghost, .cta__primary) {
+  :root np-welcome-page :is(.hero__cta, .hero__ghost, .cta__primary) {
     padding: 10px 16px;
     font-size: 14px;
   }
 
   /* Two columns of stats; the fifth spans both */
-  :root nex-welcome-page .stats {
+  :root np-welcome-page .stats {
     grid-template-columns: repeat(2, 1fr);
     gap: 18px 0;
     margin: -40px 16px 0;
     padding: 20px 8px;
   }
 
-  :root nex-welcome-page .stat.stat + .stat {
+  :root np-welcome-page .stat.stat + .stat {
     border-left: 0;
   }
 
-  :root nex-welcome-page .stat.stat:nth-child(even) {
+  :root np-welcome-page .stat.stat:nth-child(even) {
     border-left: 1px solid var(--ui-border);
   }
 
-  :root nex-welcome-page .stat:last-child:nth-child(odd) {
+  :root np-welcome-page .stat:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
 
-  :root nex-welcome-page .section {
+  :root np-welcome-page .section {
     padding: 64px 16px;
   }
 
-  :root nex-welcome-page .section__head {
+  :root np-welcome-page .section__head {
     margin-bottom: 32px;
   }
 
-  :root nex-welcome-page .section__head.section__head p,
-  :root nex-welcome-page .quickstart__text.quickstart__text p,
-  :root nex-welcome-page .cta.cta p {
+  :root np-welcome-page .section__head.section__head p,
+  :root np-welcome-page .quickstart__text.quickstart__text p,
+  :root np-welcome-page .cta.cta p {
     font-size: 16px;
   }
 
   /* minmax(290px) would overflow a 320px screen */
-  :root nex-welcome-page .features,
-  :root nex-welcome-page .explore {
+  :root np-welcome-page .features,
+  :root np-welcome-page .explore {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
 
-  :root nex-welcome-page .feature {
+  :root np-welcome-page .feature {
     padding: 20px;
   }
 
-  :root nex-welcome-page .bento {
+  :root np-welcome-page .bento {
     gap: 14px;
   }
 
-  :root nex-welcome-page .tile {
+  :root np-welcome-page .tile {
     padding: 18px;
   }
 
-  :root nex-welcome-page .explore__preview {
+  :root np-welcome-page .explore__preview {
     height: 130px;
   }
 
-  :root nex-welcome-page .code.code pre {
+  :root np-welcome-page .code.code pre {
     padding: 16px;
     font-size: 12px;
   }
 
-  :root nex-welcome-page .cta {
+  :root np-welcome-page .cta {
     padding: 44px 20px;
     border-radius: 20px;
   }
 
   /* ---- Components catalog ---- */
-  :root nex-components-catalog .catalog {
+  :root np-components-catalog .catalog {
     padding: 0 16px 64px;
   }
 
-  :root nex-components-catalog .hero {
+  :root np-components-catalog .hero {
     gap: 14px;
     padding: 44px 0 36px;
   }
 
-  :root nex-components-catalog .hero.hero p {
+  :root np-components-catalog .hero.hero p {
     font-size: 16px;
   }
 
-  :root nex-components-catalog .search {
+  :root np-components-catalog .search {
     width: 100%;
   }
 
-  :root nex-components-catalog .group {
+  :root np-components-catalog .group {
     margin-top: 40px;
   }
 
-  :root nex-components-catalog h2 {
+  :root np-components-catalog h2 {
     margin-bottom: 14px;
     font-size: 24px;
   }
 
-  :root nex-components-catalog .cards--grid,
-  :root nex-components-catalog .cards--compact {
+  :root np-components-catalog .cards--grid,
+  :root np-components-catalog .cards--compact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
-  :root nex-components-catalog .cards--list {
+  :root np-components-catalog .cards--list {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  :root nex-components-catalog .card {
+  :root np-components-catalog .card {
     gap: 8px;
     padding: 6px 6px 12px;
     border-radius: 14px;
   }
 
-  :root nex-components-catalog .name {
+  :root np-components-catalog .name {
     font-size: 14px;
   }
 
@@ -288,7 +288,7 @@ video {
   }
 
   /* A control holding a button toggle (Icons' Style) gets its own row, so the toggle can scroll inside it */
-  :root .gallery-page .control:has(nex-button-toggle) {
+  :root .gallery-page .control:has(np-button-toggle) {
     flex-basis: 100%;
     min-width: 0;
   }
@@ -307,7 +307,7 @@ video {
     border-width: 1px 0 0;
     border-radius: var(--ui-radius-lg) var(--ui-radius-lg) 0 0;
     transform: none;
-    animation-name: nex-sheet-in;
+    animation-name: np-sheet-in;
   }
 
   :root .gallery-page .preview {
@@ -324,45 +324,45 @@ video {
     height: 96px;
   }
 
-  :root nex-animation-gallery .grid {
+  :root np-animation-gallery .grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 10px;
   }
 
-  :root nex-animation-gallery .stage {
+  :root np-animation-gallery .stage {
     height: 96px;
   }
 
-  :root nex-lottie-gallery .grid {
+  :root np-lottie-gallery .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
-  :root nex-lottie-gallery .card {
+  :root np-lottie-gallery .card {
     padding: 8px;
   }
 
   /* ---- Shared overlays ---- */
-  :root nex-dialog .dialog-mask {
+  :root np-dialog .dialog-mask {
     padding: 12px;
   }
 
   /* Dialogs set their width inline; on phones they use the full width */
-  :root nex-dialog .dialog:not(.dialog--maximized) {
+  :root np-dialog .dialog:not(.dialog--maximized) {
     width: 100% !important;
   }
 
-  :root nex-toast .toast {
+  :root np-toast .toast {
     min-width: 0;
     max-width: none;
   }
 
-  :root nex-toast :is(.toast--top-right, .toast--top-left, .toast--bottom-right, .toast--bottom-left) {
+  :root np-toast :is(.toast--top-right, .toast--top-left, .toast--bottom-right, .toast--bottom-left) {
     left: 12px;
     right: 12px;
   }
 
-  :root nex-table .table-filter {
+  :root np-table .table-filter {
     max-width: none;
   }
 
@@ -393,15 +393,15 @@ video {
 /* ============================== Small phones (<= 400px) ============================== */
 @media (max-width: 400px) {
   /* "Get Started" is also on the Welcome page; the logo, links and tools keep the row */
-  :root nex-landing-nav .get-started {
+  :root np-landing-nav .get-started {
     display: none;
   }
 
-  :root nex-landing-nav .brand {
+  :root np-landing-nav .brand {
     font-size: 18px;
   }
 
-  :root nex-components-catalog .cards--compact {
+  :root np-components-catalog .cards--compact {
     gap: 8px;
   }
 
@@ -410,7 +410,7 @@ video {
   }
 }
 
-@keyframes nex-sheet-in {
+@keyframes np-sheet-in {
   from {
     opacity: 0;
     transform: translateY(24px);

@@ -18,9 +18,9 @@ const meta: Meta<ModalComponent> = {
     props: args,
     template: `
       <storybook-button label="Open modal" [primary]="true" (onClick)="open = true" />
-      <nex-modal [(open)]="open" [title]="title">
+      <np-modal [(open)]="open" [title]="title">
         This is the modal content. Click outside, press Escape, or click × to close.
-      </nex-modal>
+      </np-modal>
     `,
   }),
 };

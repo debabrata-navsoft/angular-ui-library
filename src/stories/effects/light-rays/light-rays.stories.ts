@@ -22,7 +22,7 @@ type Story = StoryObj<LightRaysComponent>;
 
 /** Beams of light fan down behind a dark hero */
 export const Stage: Story = {
-  render: demo('nex-light-rays', {
+  render: demo('np-light-rays', {
     height: '480px',
     background: BACKGROUNDS.ink,
     content: heroCopy({
@@ -35,7 +35,7 @@ export const Stage: Story = {
 /** Warm sunbeams, wide and slow */
 export const Sunbeams: Story = {
   args: { color: 'rgb(253 230 138 / 0.8)', rays: 10, spread: 120, duration: 14 },
-  render: demo('nex-light-rays', {
+  render: demo('np-light-rays', {
     height: '420px',
     background: 'linear-gradient(to bottom,#78350f 0%,#1c1917 100%)',
     content: heroCopy({ button: '' }),

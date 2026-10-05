@@ -14,7 +14,7 @@ import '../src/stories/styles/gallery-page.css';
 import './docs-theme.css';
 // Tablet and mobile layout (last, so it overrides the files above)
 import '../src/stories/styles/responsive.css';
-import { applyTheme, savedTheme } from './nexui-theme';
+import { applyTheme, savedTheme } from './np-theme';
 // Component docs pages with Angular / React / Next.js / Vue / HTML code tabs
 import { NexDocsPage } from './docs-page';
 

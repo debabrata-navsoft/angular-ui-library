@@ -14,7 +14,7 @@ import { PAGES, managerHref } from '../landing';
 
 /** Framework tabs (Angular, React, Next.js, Vue, HTML) over copyable code, with a one-line setup note */
 @Component({
-  selector: 'nex-framework-code',
+  selector: 'np-framework-code',
   imports: [ButtonToggleComponent, IconComponent],
   templateUrl: './framework-code.html',
   styleUrl: './framework-code.css',

@@ -1,4 +1,4 @@
-/* Layout comes from .nex-effect in theme.css; the grain is drawn over the content, which stays clickable.
+/* Layout comes from .np-effect in theme.css; the grain is drawn over the content, which stays clickable.
    The noise tile is opaque, high-contrast gray (feColorMatrix), shown at a low opacity */
 .grain {
   position: absolute;

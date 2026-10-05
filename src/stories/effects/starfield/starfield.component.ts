@@ -15,7 +15,7 @@ const LEVELS = 6;
  * and hovering can jump to warp speed. With reduced motion it shows a still frame.
  */
 @Component({
-  selector: 'nex-starfield',
+  selector: 'np-starfield',
   templateUrl: './starfield.html',
   styleUrl: './starfield.css',
 })

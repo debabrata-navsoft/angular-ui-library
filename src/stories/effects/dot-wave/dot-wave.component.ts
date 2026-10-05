@@ -11,7 +11,7 @@ const LEVELS = 8;
  * reduced motion.
  */
 @Component({
-  selector: 'nex-dot-wave',
+  selector: 'np-dot-wave',
   templateUrl: './dot-wave.html',
   styleUrl: './dot-wave.css',
 })

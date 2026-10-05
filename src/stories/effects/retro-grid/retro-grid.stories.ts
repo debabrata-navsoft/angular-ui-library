@@ -23,7 +23,7 @@ type Story = StoryObj<RetroGridComponent>;
 /** Synthwave: a glowing grid scrolling towards you */
 export const Synthwave: Story = {
   args: { color: 'rgb(236 72 153 / 0.6)' },
-  render: demo('nex-retro-grid', {
+  render: demo('np-retro-grid', {
     height: '480px',
     background: 'linear-gradient(to bottom,#020617 0%,#1e1b4b 60%,#4c1d95 100%)',
     content: heroCopy({ title: 'Back to the future', text: 'A perspective grid behind your hero' }),
@@ -33,7 +33,7 @@ export const Synthwave: Story = {
 /** On a light page, in the theme color */
 export const Light: Story = {
   args: { duration: 20 },
-  render: demo('nex-retro-grid', {
+  render: demo('np-retro-grid', {
     height: '420px',
     background: 'var(--ui-surface)',
     content: heroCopy({ dark: false }),
@@ -43,7 +43,7 @@ export const Light: Story = {
 /** Dark, with small fast cells */
 export const Dark: Story = {
   args: { cellSize: 36, duration: 6, color: 'rgb(148 163 184 / 0.35)' },
-  render: demo('nex-retro-grid', {
+  render: demo('np-retro-grid', {
     height: '420px',
     background: BACKGROUNDS.black,
     content: heroCopy(),

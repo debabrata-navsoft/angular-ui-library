@@ -1,4 +1,4 @@
-/* NexUI landing page. Colors come from the theme; the hero uses a fixed dark backdrop so the effects glow */
+/* NexPrime landing page. Colors come from the theme; the hero uses a fixed dark backdrop so the effects glow */
 :host {
   display: block;
   font-family: var(--ui-font);
@@ -57,7 +57,7 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.04;
-  --nex-anim-delay: 0.08s;
+  --np-anim-delay: 0.08s;
 }
 
 /* Brighter gradient on the dark hero */
@@ -71,7 +71,7 @@
   color: rgb(226 232 240 / 0.85);
   font-size: clamp(16px, 2vw, 19px);
   line-height: 1.6;
-  --nex-anim-delay: 0.16s;
+  --np-anim-delay: 0.16s;
 }
 
 .hero__actions {
@@ -79,7 +79,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  --nex-anim-delay: 0.24s;
+  --np-anim-delay: 0.24s;
 }
 
 .hero__cta,
@@ -113,7 +113,7 @@
   border-radius: 12px;
   background: rgb(2 6 23 / 0.55);
   color: #94a3b8;
-  --nex-anim-delay: 0.32s;
+  --np-anim-delay: 0.32s;
 }
 
 .install code {

@@ -1,5 +1,5 @@
 /**
- * NexUI toolbar buttons (PrimeNG-style): search, light/dark mode and theme color. They replace Storybook's
+ * NexPrime toolbar buttons (PrimeNG-style): search, light/dark mode and theme color. They replace Storybook's
  * default toolbar tools (see `features` in main.ts and `toolbar` in manager.ts). Written with createElement, so
  * the manager needs no JSX setup. Icon shapes are Lucide (src/stories/icons/svg).
  */
@@ -8,7 +8,7 @@ import { IconButton, WithTooltip } from 'storybook/internal/components';
 import { useGlobals, useStorybookApi } from 'storybook/manager-api';
 import { create } from 'storybook/theming';
 
-import { PALETTES, paletteColors } from './nexui-theme';
+import { PALETTES, paletteColors } from './np-theme';
 
 const h = React.createElement;
 
@@ -46,11 +46,11 @@ export function managerTheme(mode: string | undefined, palette: string | undefin
   const dark = mode === 'dark';
   return create({
     base: dark ? 'dark' : 'light',
-    brandTitle: 'NexUI — Next-generation UI',
+    brandTitle: 'NexPrime — One UI system for every framework',
     brandUrl: '/',
     brandTarget: '_self',
-    // public/nexui-brand-*.svg: logo tile plus "NexUI", in the text color of each mode
-    brandImage: dark ? 'nexui-brand-dark.svg' : 'nexui-brand-light.svg',
+    // public/nexprime-brand-*.svg: the NP icon plus "NexPrime", in the text color of each mode
+    brandImage: dark ? 'nexprime-brand-dark.svg' : 'nexprime-brand-light.svg',
     colorPrimary: colors.accent,
     colorSecondary: colors.primary,
     barSelectedColor: colors.primary,

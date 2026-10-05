@@ -5,7 +5,7 @@ import { Component, input, numberAttribute } from '@angular/core';
  * beam follows the host's rounded corners. Pure CSS, so it renders on the server; reduced motion stops it.
  */
 @Component({
-  selector: 'nex-border-beam',
+  selector: 'np-border-beam',
   templateUrl: './border-beam.html',
   styleUrl: './border-beam.css',
   host: {

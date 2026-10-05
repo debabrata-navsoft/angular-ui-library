@@ -58,7 +58,7 @@ export function localPoint(el: HTMLElement, e: PointerEvent): Point {
  *
  * Subclasses provide `seed`, `step` and `draw`; their template is a `<canvas>` plus the projected content.
  */
-@Directive({ host: { class: 'nex-effect' } })
+@Directive({ host: { class: 'np-effect' } })
 export abstract class CanvasEffect {
   protected readonly host: HTMLElement = inject(ElementRef).nativeElement;
   private readonly destroyRef = inject(DestroyRef);

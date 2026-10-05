@@ -29,21 +29,21 @@ const SNIPPETS: Record<Snippet, string> = {
 
 @Component({
   imports: [ToggleComponent],
-  template: \`<nex-toggle label="Dark mode" [(checked)]="dark" />\`,
+  template: \`<np-toggle label="Dark mode" [(checked)]="dark" />\`,
 })
 export class Settings {
   dark = signal(false);
 }`,
-  elements: `<link rel="stylesheet" href="nexui/styles.css" />
-<script type="module" src="nexui/nexui.js"></script>
+  elements: `<link rel="stylesheet" href="nexprime/styles.css" />
+<script type="module" src="nexprime/nexprime.js"></script>
 
-<nexui-toggle label="Dark mode"></nexui-toggle>
-<nexui-chart type="area"></nexui-chart>`,
+<np-toggle label="Dark mode"></np-toggle>
+<np-chart type="area"></np-chart>`,
 };
 
-/** "Getting Started ▸ Welcome": the NexUI landing page, built from the library's own components and effects */
+/** "Getting Started ▸ Welcome": the NexPrime landing page, built from the library's own components and effects */
 @Component({
-  selector: 'nex-welcome-page',
+  selector: 'np-welcome-page',
   imports: [
     AnimateOnScrollComponent,
     AuroraComponent,

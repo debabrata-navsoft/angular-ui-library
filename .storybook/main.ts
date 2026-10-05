@@ -10,7 +10,7 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
   ],
   framework: '@storybook/angular-vite',
-  // The toolbar shows NexUI's own search / dark mode / theme color buttons (manager.ts) instead of these.
+  // The toolbar shows NexPrime's own search / dark mode / theme color buttons (manager.ts) instead of these.
   // highlight read every element's computed style on each page change (~350 ms leaving NexLottie)
   features: {
     backgrounds: false,
@@ -19,7 +19,7 @@ const config: StorybookConfig = {
     viewport: false,
     highlight: false,
   },
-  // public/ gives the NexUI favicon.svg; drop-in SVG icons are served at /icons, Lottie files at /lottie
+  // public/ gives the NexPrime favicon.svg; drop-in SVG icons are served at /icons, Lottie files at /lottie
   staticDirs: [
     '../public',
     { from: '../src/stories/icons/svg', to: '/icons' },

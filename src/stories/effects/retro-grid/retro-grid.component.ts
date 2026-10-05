@@ -5,11 +5,11 @@ import { Component, input, numberAttribute } from '@angular/core';
  * it renders on the server; reduced motion stops the scroll.
  */
 @Component({
-  selector: 'nex-retro-grid',
+  selector: 'np-retro-grid',
   templateUrl: './retro-grid.html',
   styleUrl: './retro-grid.css',
   host: {
-    class: 'nex-effect',
+    class: 'np-effect',
     '[style.--rg-angle.deg]': 'angle()',
     '[style.--rg-cell.px]': 'cellSize()',
     '[style.--rg-duration.s]': 'duration()',

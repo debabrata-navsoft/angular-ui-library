@@ -1,4 +1,4 @@
-<nav class="nav" aria-label="NexUI">
+<nav class="nav" aria-label="NexPrime">
   <a
     class="brand"
     [href]="href(pages.welcome)"
@@ -6,7 +6,7 @@
     [attr.aria-current]="active() === 'home' ? 'page' : null"
   >
     <img src="favicon.svg" alt="" width="28" height="28" />
-    <span>Nex<b>UI</b></span>
+    <span>Nex<b>Prime</b></span>
   </a>
   <div class="links">
     @for (link of links; track link.id) {
@@ -28,7 +28,7 @@
       aria-label="Search components"
       title="Search components"
     >
-      <nex-icon name="search" [size]="18" />
+      <np-icon name="search" [size]="18" />
     </a>
     <button
       type="button"
@@ -37,7 +37,7 @@
       [title]="dark() ? 'Light mode' : 'Dark mode'"
       (click)="toggleMode()"
     >
-      <nex-icon [name]="dark() ? 'sun' : 'moon'" [size]="18" />
+      <np-icon [name]="dark() ? 'sun' : 'moon'" [size]="18" />
     </button>
     <div class="palette">
       <button
@@ -48,7 +48,7 @@
         [attr.aria-expanded]="menuOpen()"
         (click)="menuOpen.set(!menuOpen())"
       >
-        <nex-icon name="palette" [size]="18" />
+        <np-icon name="palette" [size]="18" />
       </button>
       @if (menuOpen()) {
         <div class="palette__menu" role="menu" aria-label="Theme color">
@@ -66,7 +66,7 @@
               (click)="pickPalette(p.key)"
             >
               @if (p.key === palette()) {
-                <nex-icon name="check" [size]="16" />
+                <np-icon name="check" [size]="16" />
               }
             </button>
           }

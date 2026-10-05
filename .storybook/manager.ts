@@ -6,7 +6,7 @@ import {
 } from 'storybook/internal/core-events';
 import { type API, addons, types } from 'storybook/manager-api';
 
-import { applyTheme, saveTheme, savedTheme, themeOf } from './nexui-theme';
+import { applyTheme, saveTheme, savedTheme, themeOf } from './np-theme';
 import { SITE_PAGES, SITE_ROUTE } from '../src/stories/getting-started/landing';
 import { ModeTool, PaletteTool, SearchTool, managerTheme } from './theme-tools';
 
@@ -14,7 +14,7 @@ import { ModeTool, PaletteTool, SearchTool, managerTheme } from './theme-tools';
 const saved = savedTheme();
 
 // Storybook UI (sidebar, toolbar) branding in the saved mode and color. Storybook's own toolbar tools are hidden
-// (with `features` in main.ts for backgrounds/grid, outline, measure and viewport); NexUI's are added below.
+// (with `features` in main.ts for backgrounds/grid, outline, measure and viewport); NexPrime's are added below.
 // The sidebar CSS in manager-head.html reads data-theme and --ui-primary from this page. Restart after editing
 applyTheme(document, saved.theme, saved.palette);
 addons.setConfig({
@@ -39,9 +39,9 @@ const TOOLS = [
   ['mode', 'Light or dark mode', ModeTool],
   ['palette', 'Theme color', PaletteTool],
 ] as const;
-addons.register('nexui/theme', (api) => {
+addons.register('np/theme', (api) => {
   for (const [id, title, Tool] of TOOLS) {
-    addons.add(`nexui/${id}`, { type: types.TOOL, title, match: () => true, render: () => Tool() });
+    addons.add(`np/${id}`, { type: types.TOOL, title, match: () => true, render: () => Tool() });
   }
   // A change from the toolbar or the landing pages' top bar: save it and restyle the Storybook UI. Storybook sends
   // GLOBALS_UPDATED on every render, so unchanged themes stop at applyTheme
@@ -82,14 +82,14 @@ if (opened) {
   history.replaceState = (state, unused, url) => replace(state, unused, url ?? storybookUrl());
 }
 let shorten = () => {};
-/** The NexUI site's current page and title (it routes without Storybook, see site.routes.ts) */
+/** The NexPrime site's current page and title (it routes without Storybook, see site.routes.ts) */
 let site: { page: string; title: string } | undefined;
 addEventListener('popstate', () => {
   const url = storybookUrl();
   if (url) replace(history.state, '', url);
   requestAnimationFrame(() => shorten());
 });
-addons.register('nexui/page-url', (api) => {
+addons.register('np/page-url', (api) => {
   manager = api;
   // Storybook's router has read the long URL by now
   if (opened) replace(history.state, '', pageUrl);
@@ -142,7 +142,7 @@ addons.register('nexui/page-url', (api) => {
   });
 });
 
-// Browser tab title: Storybook writes "Components / Button - Primary ⋅ Storybook"; show "NexUI - Button - Primary",
+// Browser tab title: Storybook writes "Components / Button - Primary ⋅ Storybook"; show "NexPrime - Button - Primary",
 // or the site's page. Storybook's title is kept, since it can come before the site's page is cleared
 let storybookTitle = '';
 function renameTab() {
@@ -152,7 +152,7 @@ function renameTab() {
     .split(' - ')
     .map((part) => part.split(' / ').pop()!.trim())
     .filter((part, i, all) => part && part !== all[i - 1]);
-  const title = site ? `NexUI - ${site.title}` : ['NexUI', ...parts].join(' - ');
+  const title = site ? `NexPrime - ${site.title}` : ['NexPrime', ...parts].join(' - ');
   if (document.title !== title) document.title = title;
 }
 new MutationObserver(renameTab).observe(document.head, {
@@ -201,7 +201,7 @@ new MutationObserver((mutations) => {
   }
 }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['aria-expanded'] });
 
-// Layout per page: `nexui-landing` pages (the NexUI site: Welcome, Components, Icons, Animations, NexLottie) fill
+// Layout per page: `np-landing` pages (the NexPrime site: Welcome, Components, Icons, Animations, NexLottie) fill
 // the window like a website: no sidebar, toolbar or addon panel. Elsewhere the panel stays as the user left it.
 // Storybook asks layoutCustomisations on every render, the first one included, so a reload never shows the wrong
 // layout. It follows the page the preview shows, not the one selected, so it doesn't change while the previous
@@ -209,7 +209,7 @@ new MutationObserver((mutations) => {
 // later), kept in addon state, which re-renders the manager. Before that, the page in the URL. Until the story
 // index has loaded there are no tags, so these pages are also known by id
 const LANDING = SITE_PAGES.map((page) => page || WELCOME.split('--')[0]);
-const SHOWN = 'nexui/layout';
+const SHOWN = 'np/layout';
 function isLanding(state: {
   storyId?: string;
   index?: Record<string, { tags?: string[] }>;
@@ -217,10 +217,10 @@ function isLanding(state: {
 }) {
   const storyId = (state.addons?.[SHOWN] as string | undefined) ?? state.storyId ?? '';
   const tags = state.index?.[storyId]?.tags;
-  const landing = tags ? tags.includes('nexui-landing') : LANDING.includes(storyId.split('--')[0]);
+  const landing = tags ? tags.includes('np-landing') : LANDING.includes(storyId.split('--')[0]);
   // The toolbar is hidden with CSS (manager-head.html): Storybook keeps a hidden toolbar's landmark registered
   // without an element, and showing the sidebar later then crashes the manager UI
-  document.documentElement.dataset['nexuiLayout'] = landing ? 'landing' : 'default';
+  document.documentElement.dataset['npLayout'] = landing ? 'landing' : 'default';
   return landing;
 }
 addons.setConfig({

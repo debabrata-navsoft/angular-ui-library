@@ -22,7 +22,7 @@ type Story = StoryObj<SnowComponent>;
 
 /** Gentle snowfall at night */
 export const Snowfall: Story = {
-  render: demo('nex-snow', {
+  render: demo('np-snow', {
     height: '480px',
     background: BACKGROUNDS.night,
     content: heroCopy({
@@ -36,5 +36,5 @@ export const Snowfall: Story = {
 /** A blizzard: dense, fast, blown sideways */
 export const Blizzard: Story = {
   args: { count: 320, wind: 1.6, speed: 2 },
-  render: demo('nex-snow', { height: '420px', background: '#1e293b' }),
+  render: demo('np-snow', { height: '420px', background: '#1e293b' }),
 };

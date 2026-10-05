@@ -76,7 +76,7 @@ async function zipDotLottie(id: string, json: string): Promise<Blob> {
   const { zipSync, strToU8 } = await import('fflate');
   const manifest = {
     version: '1',
-    generator: 'NexUI',
+    generator: 'NexPrime',
     animations: [{ id, speed: 1, loop: true, autoplay: true }],
   };
   const zip = zipSync(
@@ -112,7 +112,7 @@ async function buildDownloads(name: string, data: object) {
       label: 'dotLottie',
       ext: 'lottie',
       blob: zip,
-      hint: 'Zipped Lottie, plays in <nex-lottie> and the LottieFiles players.',
+      hint: 'Zipped Lottie, plays in <np-lottie> and the LottieFiles players.',
     },
     {
       label: 'Optimized Lottie JSON',
@@ -151,7 +151,7 @@ function palette(data: unknown, max = 10): string[] {
 
 /** NexLottie page dialog for one animation: big preview, downloads, embed code, details and related animations */
 @Component({
-  selector: 'nex-lottie-detail',
+  selector: 'np-lottie-detail',
   imports: [
     ButtonToggleComponent,
     DialogComponent,
@@ -217,7 +217,7 @@ export class LottieDetailComponent {
     const { src } = this.animation();
     return src
       ? `Loaded from ${new URL(src).hostname}`
-      : `${this.category()} animation from the NexUI set. Free to use in any project.`;
+      : `${this.category()} animation from the NexPrime set. Free to use in any project.`;
   });
 
   /** The file's own background, and the one in use (a swatch overrides it) */
@@ -230,7 +230,7 @@ export class LottieDetailComponent {
     return a.src ?? `lottie/${a.name}.json`;
   });
 
-  /** <nex-lottie> / <nexui-lottie> for each framework */
+  /** <np-lottie> / <np-lottie> for each framework */
   protected readonly embed = computed(() => {
     const element: ElementCode = {
       tag: 'lottie',
@@ -241,11 +241,11 @@ export class LottieDetailComponent {
     ) as Record<Framework, string>;
   });
 
-  /** Without NexUI: lottie-web on its own */
+  /** Without NexPrime: lottie-web on its own */
   protected readonly snippets = computed(() => [
     {
       id: 'lottie-web',
-      label: 'lottie-web (without NexUI)',
+      label: 'lottie-web (without NexPrime)',
       code: `lottie.loadAnimation({\n  container: document.getElementById('animation'),\n  renderer: 'svg',\n  loop: true,\n  autoplay: true,\n  path: '${this.path()}',\n});`,
     },
   ]);

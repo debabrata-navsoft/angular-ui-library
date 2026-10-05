@@ -17,7 +17,7 @@ const REST = 0.28;
  * It only animates while something is moving, so an idle grid costs nothing.
  */
 @Component({
-  selector: 'nex-dot-grid',
+  selector: 'np-dot-grid',
   templateUrl: './dot-grid.html',
   styleUrl: './dot-grid.css',
 })

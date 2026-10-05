@@ -10,7 +10,7 @@ const LEVELS = 8;
  * A still frame with reduced motion.
  */
 @Component({
-  selector: 'nex-flickering-grid',
+  selector: 'np-flickering-grid',
   templateUrl: './flickering-grid.html',
   styleUrl: './flickering-grid.css',
 })

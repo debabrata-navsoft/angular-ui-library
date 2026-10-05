@@ -7,11 +7,11 @@ import { SECTIONS, SITE_PAGES, clickedPage } from '../landing';
 import { LandingNavComponent } from '../landing-nav/landing-nav.component';
 
 /**
- * The NexUI site: Welcome, Components, Icons, Animations and NexLottie in one Angular app. Its router switches
+ * The NexPrime site: Welcome, Components, Icons, Animations and NexLottie in one Angular app. Its router switches
  * pages instantly, without Storybook loading a story; each page's story opens the site on that page
  */
 @Component({
-  selector: 'nex-site',
+  selector: 'np-site',
   imports: [LandingNavComponent, RouterOutlet],
   templateUrl: './site.html',
   styleUrl: './site.css',

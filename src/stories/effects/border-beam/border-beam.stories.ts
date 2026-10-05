@@ -32,10 +32,10 @@ export const Card: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <nex-border-beam ${argsToTemplate(args)}
+      <np-border-beam ${argsToTemplate(args)}
         style="border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);background:var(--ui-surface);box-shadow:var(--ui-shadow)">
         ${card('Pro plan', 'Everything in Free, plus unlimited projects and priority support.')}
-      </nex-border-beam>`,
+      </np-border-beam>`,
   }),
 };
 
@@ -45,15 +45,15 @@ export const TwoBeams: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <nex-border-beam ${argsToTemplate(args)}
+      <np-border-beam ${argsToTemplate(args)}
         style="border-radius:20px;background:#0f172a;box-shadow:var(--ui-shadow-lg)">
-        <nex-border-beam [duration]="duration" [delay]="duration / 2" [size]="size" [borderWidth]="borderWidth"
+        <np-border-beam [duration]="duration" [delay]="duration / 2" [size]="size" [borderWidth]="borderWidth"
           colorFrom="#f472b6" colorTo="#8b5cf6" style="border-radius:inherit">
           <div style="display:grid;gap:10px;width:340px;padding:28px;font-family:var(--ui-font)">
             <h3 style="margin:0;color:#fff">Live now</h3>
             <p style="margin:0;color:#cbd5e1;line-height:1.6">Two beams chase each other around the border.</p>
           </div>
-        </nex-border-beam>
-      </nex-border-beam>`,
+        </np-border-beam>
+      </np-border-beam>`,
   }),
 };

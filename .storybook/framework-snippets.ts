@@ -2,7 +2,7 @@
  * React, Next.js, Vue and HTML versions of a story, for the "Show code" tabs on the docs pages (docs-page.ts).
  * Storybook writes the Angular snippet at build time; these are built in the browser from the story's component
  * (selector, inputs and outputs via reflectComponentType), its args, and its template when it has one.
- * NexUI components become their Web Components (<nex-select> → <nexui-select>): strings, numbers and booleans are
+ * NexPrime components become their Web Components (<np-select> → <np-select>): strings, numbers and booleans are
  * attributes, arrays/objects/functions are properties, outputs are DOM events (see Frameworks.mdx).
  */
 import { reflectComponentType, type Type } from '@angular/core';
@@ -25,7 +25,7 @@ type Node = { type: 'text'; text: string } | Element;
 class AngularOnly extends Error {}
 
 /** Components that are not Web Components (internal parts) */
-const NOT_ELEMENTS = new Set(['nex-menu-item']);
+const NOT_ELEMENTS = new Set(['np-menu-item']);
 const VOID = new Set([
   'area',
   'br',
@@ -40,8 +40,7 @@ const VOID = new Set([
   'track',
   'wbr',
 ]);
-const isNex = (tag: string) => tag.startsWith('nex-') && !NOT_ELEMENTS.has(tag);
-const webTag = (tag: string) => (isNex(tag) ? tag.replace(/^nex-/, 'nexui-') : tag);
+const isNp = (tag: string) => tag.startsWith('np-') && !NOT_ELEMENTS.has(tag);
 const element = (tag: string): Element => ({ type: 'element', tag, props: [], children: [] });
 
 export interface StoryLike {
@@ -55,7 +54,7 @@ export interface StoryLike {
 /** Code for each framework, or null when the story's component has no Web Component */
 export function frameworkSnippets(story: StoryLike): Record<WebFramework, string> | null {
   const mirror = story.component ? reflectComponentType(story.component as Type<unknown>) : null;
-  if (!mirror || !isNex(mirror.selector)) return null;
+  if (!mirror || !isNp(mirror.selector)) return null;
 
   let nodes: Node[] = [];
   let note = '';
@@ -257,7 +256,7 @@ function js(value: unknown, indent = ''): string {
 
 type Kind = 'event' | 'attribute' | 'property';
 
-/** How a prop is written: strings, numbers and true are attributes, other values on NexUI elements are
+/** How a prop is written: strings, numbers and true are attributes, other values on NexPrime elements are
  *  properties; false and null are left out */
 function kindOf(p: Prop, custom: boolean): Kind | undefined {
   if (p.kind === 'event') return 'event';
@@ -279,7 +278,7 @@ const attr = (name: string, value: unknown) =>
 function namer() {
   const used = new Map<string, number>();
   return (base: string) => {
-    const name = camel(base.replace(/^nexui-/, '').replace(/[^\w-]/g, ''));
+    const name = camel(base.replace(/^np-/, '').replace(/[^\w-]/g, ''));
     const n = (used.get(name) ?? 0) + 1;
     used.set(name, n);
     return n === 1 ? name : `${name}${n}`;
@@ -328,7 +327,7 @@ const cssToObject = (css: string) =>
   ) as Record<string, string>;
 
 // ---------------------------------------------------------------------------------------------------------------
-// React and Next.js (Next.js passes properties and events through the NexUI wrapper, Frameworks.mdx)
+// React and Next.js (Next.js passes properties and events through the NexPrime wrapper, Frameworks.mdx)
 // ---------------------------------------------------------------------------------------------------------------
 
 const JSX_NAMES: Record<string, string> = {
@@ -344,8 +343,8 @@ function toReact(nodes: Node[], next: boolean) {
   let client = false;
 
   const render = (node: Element, indent: string, children: () => string[]) => {
-    const custom = isNex(node.tag);
-    const tag = webTag(node.tag);
+    const custom = isNp(node.tag);
+    const tag = node.tag;
     const attrs: string[] = [];
     const props: string[] = [];
     const events: string[] = [];
@@ -393,7 +392,7 @@ function toReact(nodes: Node[], next: boolean) {
       ...(props.length ? [`props={${base}Props}`] : []),
       ...(events.length ? [`on={${base}Events}`] : []),
     ];
-    return print('<NexUI', wrapper, children(), indent, 'NexUI', true);
+    return print('<NexPrime', wrapper, children(), indent, 'NexPrime', true);
   };
 
   const body = nodes
@@ -403,7 +402,7 @@ function toReact(nodes: Node[], next: boolean) {
   // Outside the component, so the values stay the same object on every render
   const top = hoisted.length ? hoisted.join('\n\n') + '\n\n' : '';
   const head = next
-    ? `${client ? "'use client';\n\n" : ''}import { NexUI } from '@/components/nexui';\n\n`
+    ? `${client ? "'use client';\n\n" : ''}import { NexPrime } from '@/components/nexprime';\n\n`
     : '';
   return `${head}${top}export function Example() {\n  return (\n${jsx}\n  );\n}`;
 }
@@ -422,7 +421,7 @@ function toVue(nodes: Node[]) {
   const hoisted: string[] = [];
   const name = namer();
   const render = (node: Element, indent: string, children: () => string[]) => {
-    const custom = isNex(node.tag);
+    const custom = isNp(node.tag);
     const attrs = ordered(node.props).flatMap((p) => {
       const kind = kindOf(p, custom);
       if (kind === 'event')
@@ -436,7 +435,7 @@ function toVue(nodes: Node[]) {
       }
       return kind ? [attr(custom ? kebab(p.name) : p.name, p.value)] : [];
     });
-    return print('<' + webTag(node.tag), attrs, children(), indent, webTag(node.tag), true);
+    return print('<' + node.tag, attrs, children(), indent, node.tag, true);
   };
   const template = nodes.map((n) => walk(n, '  ', (t) => t, render)).join('\n');
   const script = hoisted.length ? `<script setup>\n${hoisted.join('\n\n')}\n</script>\n\n` : '';
@@ -447,8 +446,8 @@ function toHtml(nodes: Node[]) {
   const script: string[] = [];
   const name = namer();
   const render = (node: Element, indent: string, children: () => string[]) => {
-    const custom = isNex(node.tag);
-    const tag = webTag(node.tag);
+    const custom = isNp(node.tag);
+    const tag = node.tag;
     const attrs: string[] = [];
     const setup: string[] = [];
     for (const p of ordered(node.props)) {

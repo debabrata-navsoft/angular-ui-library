@@ -41,7 +41,7 @@ type Settings = typeof DEFAULTS;
 
 /** Storybook page that lists every icon, like lucide.dev: search, customize, click to copy */
 @Component({
-  selector: 'nex-icon-gallery',
+  selector: 'np-icon-gallery',
   imports: [
     ButtonComponent,
     ButtonToggleComponent,

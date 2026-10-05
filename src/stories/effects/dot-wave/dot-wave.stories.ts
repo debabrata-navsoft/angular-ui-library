@@ -23,13 +23,13 @@ type Story = StoryObj<DotWaveComponent>;
 
 /** Dark dots rolling on a light page; move the pointer to shift the view */
 export const Light: Story = {
-  render: demo('nex-dot-wave', { height: '460px', background: 'var(--ui-surface)' }),
+  render: demo('np-dot-wave', { height: '460px', background: 'var(--ui-surface)' }),
 };
 
 /** Theme-colored dots on a dark hero */
 export const Dark: Story = {
   args: { color: '#a5b4fc', amplitude: 1.3 },
-  render: demo('nex-dot-wave', {
+  render: demo('np-dot-wave', {
     height: '480px',
     background: BACKGROUNDS.space,
     content: heroCopy({ title: 'Ride the wave', text: 'A 3D surface of dots behind your content' }),
@@ -39,5 +39,5 @@ export const Dark: Story = {
 /** Dense, small dots in calm water */
 export const Calm: Story = {
   args: { spacing: 9, size: 1.2, amplitude: 0.6, speed: 0.5, color: '#0ea5e9' },
-  render: demo('nex-dot-wave', { height: '420px', background: 'var(--ui-surface-muted)' }),
+  render: demo('np-dot-wave', { height: '420px', background: 'var(--ui-surface-muted)' }),
 };

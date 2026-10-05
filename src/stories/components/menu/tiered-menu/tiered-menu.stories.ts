@@ -67,7 +67,7 @@ export const Popup: Story = {
     props: args,
     template: `
       <storybook-button label="Show menu" [primary]="true" (onClick)="menu.toggle($event)" />
-      <nex-tiered-menu #menu [model]="model" [popup]="true" (itemClick)="itemClick($event)" />
+      <np-tiered-menu #menu [model]="model" [popup]="true" (itemClick)="itemClick($event)" />
     `,
   }),
 };

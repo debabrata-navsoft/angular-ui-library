@@ -1,4 +1,4 @@
-/* Storybook's own docs pages (MDX pages, autodocs) in the NexUI look: modern type and rounded, soft cards in both
+/* Storybook's own docs pages (MDX pages, autodocs) in the NexPrime look: modern type and rounded, soft cards in both
    modes, plus dark-mode colors below */
 .sbdocs .sbdocs-title {
   font-size: clamp(34px, 4.5vw, 46px);
@@ -79,28 +79,28 @@
 }
 
 /* "Show code" bar with framework tabs under each story (docs-page.tsx) */
-.nexui-story {
+.np-story {
   margin-bottom: 40px;
 }
 
-.nexui-story .sbdocs-preview {
+.np-story .sbdocs-preview {
   margin-bottom: 0;
 }
 
 /* Right under the preview, like Storybook's own "Show code" */
-.nexui-code__bar {
+.np-code__bar {
   padding: 6px 0 10px;
 }
 
-.nexui-code__bar {
+.np-code__bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
 }
 
-.nexui-code__toggle,
-.nexui-code__tab {
+.np-code__toggle,
+.np-code__tab {
   border: 1px solid transparent;
   border-radius: 8px;
   background: none;
@@ -113,7 +113,7 @@
 }
 
 /* Like Storybook's own "Show code": icon and text, no background */
-.nexui-code__toggle {
+.np-code__toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -121,12 +121,12 @@
   font-size: 13px;
 }
 
-.nexui-code__toggle:hover,
-.nexui-code__toggle[aria-expanded='true'] {
+.np-code__toggle:hover,
+.np-code__toggle[aria-expanded='true'] {
   color: var(--ui-primary);
 }
 
-.nexui-code__tabs {
+.np-code__tabs {
   display: inline-flex;
   overflow-x: auto;
   max-width: 100%;
@@ -137,32 +137,32 @@
   scrollbar-width: none;
 }
 
-.nexui-code__tab {
+.np-code__tab {
   flex: none;
   padding: 5px 12px;
 }
 
-.nexui-code__tab:hover {
+.np-code__tab:hover {
   background: var(--ui-primary-soft);
   color: var(--ui-primary);
 }
 
-.nexui-code__tab[aria-selected='true'] {
+.np-code__tab[aria-selected='true'] {
   background: var(--ui-gradient);
   color: #fff;
 }
 
-:is(.nexui-code__toggle, .nexui-code__tab, .nexui-code__note a):focus-visible {
+:is(.np-code__toggle, .np-code__tab, .np-code__note a):focus-visible {
   outline: none;
   box-shadow: var(--ui-ring);
 }
 
-.nexui-code .docblock-source {
+.np-code .docblock-source {
   margin: 0 0 8px;
 }
 
 /* Copy button in the top-right corner instead of the bottom */
-.nexui-code .docblock-source > div:has(> button) {
+.np-code .docblock-source > div:has(> button) {
   position: absolute;
   top: 0;
   right: 0;
@@ -170,26 +170,26 @@
   z-index: 1;
 }
 
-.nexui-code .docblock-source > div:has(> button) > button {
+.np-code .docblock-source > div:has(> button) > button {
   border-radius: 0 var(--ui-radius-lg) 0 var(--ui-radius-sm);
 }
 
 /* Storybook's "Incomplete code snippet" warning sits in that corner too: Copy moves to its left */
-.nexui-code div:has(> button[aria-label='Incomplete code snippet']) .docblock-source > div:has(> button) {
+.np-code div:has(> button[aria-label='Incomplete code snippet']) .docblock-source > div:has(> button) {
   right: 36px;
 }
 
-.nexui-code div:has(> button[aria-label='Incomplete code snippet']) .docblock-source > div:has(> button) > button {
+.np-code div:has(> button[aria-label='Incomplete code snippet']) .docblock-source > div:has(> button) > button {
   border-radius: 0 0 var(--ui-radius-sm) var(--ui-radius-sm);
 }
 
-.nexui-code__note {
+.np-code__note {
   margin: 0;
   color: var(--ui-text-muted);
   font-size: 12px;
 }
 
-.nexui-code__note a {
+.np-code__note a {
   color: var(--ui-primary);
   font-weight: 600;
   text-decoration: none;

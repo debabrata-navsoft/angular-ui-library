@@ -12,7 +12,7 @@ import { VERSION } from '../getting-started/landing';
 import { FRAMEWORKS, markupCode, type Framework } from '../utils/framework-code';
 
 export interface NexAnimation {
-  /** Class suffix: nex-anim-<name> */
+  /** Class suffix: np-anim-<name> */
   name: string;
   /** Section of animations.css it's in */
   category: string;
@@ -29,12 +29,12 @@ function blockEnd(css: string, open: number) {
   return css.length;
 }
 
-/** Reads animations.css: categories come from its "=== Name ===" comments, animations from .nex-anim-* rules */
+/** Reads animations.css: categories come from its "=== Name ===" comments, animations from .np-anim-* rules */
 export function parseAnimations(css: string): NexAnimation[] {
-  const base = css.slice(0, blockEnd(css, css.indexOf('{', css.indexOf("[class*='nex-anim-']"))));
+  const base = css.slice(0, blockEnd(css, css.indexOf('{', css.indexOf("[class*='np-anim-']"))));
   const found = new Map<string, NexAnimation & { rules: string[] }>();
   let category = '';
-  for (const match of css.matchAll(/\/\* === (\w+) === \*\/|^\.nex-anim-([\w-]+)[^{]*\{/gm)) {
+  for (const match of css.matchAll(/\/\* === (\w+) === \*\/|^\.np-anim-([\w-]+)[^{]*\{/gm)) {
     if (match[1]) {
       category = match[1];
       continue;
@@ -45,7 +45,7 @@ export function parseAnimations(css: string): NexAnimation[] {
     found.set(match[2], entry);
   }
   return [...found.values()].map(({ rules, ...entry }) => {
-    const keyframes = [...rules.join('\n').matchAll(/animation(?:-name)?:\s*(nex-[\w-]+)/g)].map(
+    const keyframes = [...rules.join('\n').matchAll(/animation(?:-name)?:\s*(np-[\w-]+)/g)].map(
       ([, name]) => {
         const start = css.indexOf(`@keyframes ${name} {`);
         return css.slice(start, blockEnd(css, css.indexOf('{', start)));
@@ -55,9 +55,9 @@ export function parseAnimations(css: string): NexAnimation[] {
   });
 }
 
-/** Storybook page that lists every nex-anim-* class: filter, preview, click to replay and copy */
+/** Storybook page that lists every np-anim-* class: filter, preview, click to replay and copy */
 @Component({
-  selector: 'nex-animation-gallery',
+  selector: 'np-animation-gallery',
   imports: [ButtonToggleComponent, FrameworkCodeComponent, IconComponent, SearchInputComponent],
   templateUrl: './animation-gallery.html',
   styleUrl: './animation-gallery.css',
@@ -95,8 +95,8 @@ export class AnimationGalleryComponent {
   /** CSS variables the toolbar changed, as an inline style */
   protected readonly vars = computed(() => {
     const vars: Record<string, string> = {};
-    if (this.duration() !== null) vars['--nex-anim-duration'] = `${this.duration()}s`;
-    if (this.loop()) vars['--nex-anim-repeat'] = 'infinite';
+    if (this.duration() !== null) vars['--np-anim-duration'] = `${this.duration()}s`;
+    if (this.loop()) vars['--np-anim-repeat'] = 'infinite';
     return vars;
   });
 
@@ -105,7 +105,7 @@ export class AnimationGalleryComponent {
     const a = this.selected();
     if (!a) return null;
     const markup = Object.fromEntries(
-      FRAMEWORKS.map(({ value }) => [value, markupCode(value, `nex-anim-${a.name}`, this.vars())]),
+      FRAMEWORKS.map(({ value }) => [value, markupCode(value, `np-anim-${a.name}`, this.vars())]),
     ) as Record<Framework, string>;
     return { markup, css: a.css };
   });

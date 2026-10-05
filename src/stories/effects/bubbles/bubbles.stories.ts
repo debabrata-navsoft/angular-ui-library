@@ -22,7 +22,7 @@ type Story = StoryObj<BubblesComponent>;
 
 /** Bubbles rising through deep water */
 export const Ocean: Story = {
-  render: demo('nex-bubbles', {
+  render: demo('np-bubbles', {
     height: '480px',
     background: 'linear-gradient(to bottom,#0c4a6e 0%,#082f49 60%,#020617 100%)',
     content: heroCopy({ title: 'Dive deeper', text: 'Bubbles rise behind your content' }),
@@ -32,7 +32,7 @@ export const Ocean: Story = {
 /** Fizzy: many small, quick bubbles in the theme gradient */
 export const Fizzy: Story = {
   args: { color: '#ffffff', count: 110, maxSize: 8, speed: 2 },
-  render: demo('nex-bubbles', {
+  render: demo('np-bubbles', {
     height: '420px',
     background: 'var(--ui-gradient)',
     content: heroCopy({ buttonClass: 'ui-btn' }),

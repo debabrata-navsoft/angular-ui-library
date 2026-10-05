@@ -2,13 +2,13 @@ import { Component, DestroyRef, afterNextRender, inject, input, signal } from '@
 import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
 import { addons } from 'storybook/preview-api';
 
-import { DEFAULT_GLOBALS, PALETTES } from '../../../../.storybook/nexui-theme';
+import { DEFAULT_GLOBALS, PALETTES } from '../../../../.storybook/np-theme';
 import { IconComponent } from '../../components/media/icon/icon.component';
 import { PAGES, SECTIONS, managerHref } from '../landing';
 
 /** Top bar of the full-screen landing pages: logo, section links, search, light/dark mode, theme color */
 @Component({
-  selector: 'nex-landing-nav',
+  selector: 'np-landing-nav',
   imports: [IconComponent],
   templateUrl: './landing-nav.html',
   styleUrl: './landing-nav.css',
@@ -25,7 +25,7 @@ export class LandingNavComponent {
 
   /** Mirrors the page's data-theme, which the toolbar's mode button can also change */
   protected readonly dark = signal(false);
-  /** The current theme color, from the page's data-nexui-theme ("light|teal", set by applyTheme) */
+  /** The current theme color, from the page's data-np-theme ("light|teal", set by applyTheme) */
   protected readonly palette = signal(DEFAULT_GLOBALS.palette);
   protected readonly menuOpen = signal(false);
 
@@ -35,14 +35,14 @@ export class LandingNavComponent {
       const sync = () => {
         this.dark.set(root.dataset['theme'] === 'dark');
         // Before a color is picked the attribute can read "light|undefined": fall back to the default
-        const key = root.dataset['nexuiTheme']?.split('|')[1] ?? '';
+        const key = root.dataset['npTheme']?.split('|')[1] ?? '';
         this.palette.set(key in PALETTES ? key : DEFAULT_GLOBALS.palette);
       };
       sync();
       const observer = new MutationObserver(sync);
       observer.observe(root, {
         attributes: true,
-        attributeFilter: ['data-theme', 'data-nexui-theme'],
+        attributeFilter: ['data-theme', 'data-np-theme'],
       });
       this.destroyRef.onDestroy(() => observer.disconnect());
     });

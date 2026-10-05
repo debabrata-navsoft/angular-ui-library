@@ -42,7 +42,7 @@ export const DEFAULT_GLOBALS = { theme: 'light', palette: 'indigo' };
  * localStorage key holding the last choice plus its CSS variables, e.g. {"theme":"dark","palette":"teal","vars":{…}}.
  * The colors let preview-head.html theme Storybook's loading screen before any of this code has loaded
  */
-const STORAGE_KEY = 'nexui-theme';
+const STORAGE_KEY = 'np-theme';
 
 /** The last mode and palette the user picked (manager and preview share the origin, so both can read it) */
 export function savedTheme() {
@@ -84,8 +84,8 @@ export function applyTheme(doc: Document, theme: string | undefined, palette: st
   const root = doc.documentElement;
   const mode = theme === 'dark' ? 'dark' : 'light';
   const key = `${mode}|${palette}`;
-  if (root.dataset['nexuiTheme'] === key) return false;
-  root.dataset['nexuiTheme'] = key;
+  if (root.dataset['npTheme'] === key) return false;
+  root.dataset['npTheme'] = key;
   root.dataset['theme'] = mode;
   for (const [name, value] of Object.entries(paletteVars(palette))) root.style.setProperty(name, value);
   return true;

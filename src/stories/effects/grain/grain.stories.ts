@@ -17,7 +17,7 @@ type Story = StoryObj<GrainComponent>;
 
 /** Film grain over the theme gradient, for a printed look */
 export const Gradient: Story = {
-  render: demo('nex-grain', {
+  render: demo('np-grain', {
     height: '460px',
     background: 'var(--ui-gradient)',
     content: heroCopy({
@@ -31,7 +31,7 @@ export const Gradient: Story = {
 /** Still grain on a light page */
 export const Still: Story = {
   args: { animated: false, opacity: 0.08 },
-  render: demo('nex-grain', {
+  render: demo('np-grain', {
     height: '420px',
     background: 'var(--ui-surface-muted)',
     content: heroCopy({ dark: false }),

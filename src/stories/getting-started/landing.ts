@@ -1,7 +1,7 @@
 /** Shared by the full-screen landing pages (Welcome, Components overview). Not part of the library */
 import pkg from '../../../package.json';
 
-export const VERSION = `nexui@${pkg.version}`;
+export const VERSION = `${pkg.name}@${pkg.version}`;
 
 /**
  * Storybook pages by their short URL (see manager.ts): a Storybook id, or a component's id for its first page.
@@ -36,7 +36,7 @@ export function clickedPage(event: MouseEvent): string | undefined {
   return url.origin === location.origin && !url.search && /^[\w-]*$/.test(page) ? page : undefined;
 }
 
-/** Pages of the NexUI site: one Angular app (site/) whose router switches between them without Storybook */
+/** Pages of the NexPrime site: one Angular app (site/) whose router switches between them without Storybook */
 export const SITE_PAGES = [
   PAGES.welcome,
   PAGES.catalog,
@@ -46,7 +46,7 @@ export const SITE_PAGES = [
 ];
 
 /** Channel event: the site's page changed ({ page, title }); manager.ts shows it in the address bar and tab */
-export const SITE_ROUTE = 'nexui/site-route';
+export const SITE_ROUTE = 'np/site-route';
 
 /** The site's sections, for the landing nav and Welcome's "Pick a place to start" cards */
 export const SECTIONS = [
@@ -69,7 +69,7 @@ export const SECTIONS = [
     label: 'Animations',
     icon: 'sparkles',
     path: PAGES.animations,
-    text: 'Drop-in nex-anim-* classes for entrances, attention and loops.',
+    text: 'Drop-in np-anim-* classes for entrances, attention and loops.',
   },
   {
     id: 'lottie',

@@ -5,7 +5,7 @@ import { SITE_PROVIDERS } from './site.routes';
 
 /**
  * Story setup shared by the site's pages (Welcome, Components/Overview, Icons, Animations, NexLottie). Each story
- * sets `title`, `tags: ['nexui-landing']` (full screen, see manager.ts) and its page in `args`
+ * sets `title`, `tags: ['np-landing']` (full screen, see manager.ts) and its page in `args`
  */
 export const SITE_STORY = {
   component: SiteComponent,

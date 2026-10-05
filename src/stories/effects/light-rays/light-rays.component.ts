@@ -5,11 +5,11 @@ import { Component, computed, input, numberAttribute } from '@angular/core';
  * so it renders on the server; reduced motion keeps them still.
  */
 @Component({
-  selector: 'nex-light-rays',
+  selector: 'np-light-rays',
   templateUrl: './light-rays.html',
   styleUrl: './light-rays.css',
   host: {
-    class: 'nex-effect',
+    class: 'np-effect',
     '[style.--rays-color]': 'color() || null',
     '[style.--rays-duration.s]': 'duration()',
   },
