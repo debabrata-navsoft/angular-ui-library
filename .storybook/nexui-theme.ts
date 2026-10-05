@@ -11,11 +11,29 @@ export const PALETTES: Record<
 > = {
   indigo: { label: 'Indigo', primary: '#6366f1', hover: '#4f46e5', accent: '#a855f7' },
   violet: { label: 'Violet', primary: '#8b5cf6', hover: '#7c3aed', accent: '#ec4899' },
-  blue: { label: 'Blue', primary: '#3b82f6', hover: '#2563eb', accent: '#06b6d4' },
-  teal: { label: 'Teal', primary: '#14b8a6', hover: '#0d9488', accent: '#0ea5e9' },
-  emerald: { label: 'Emerald', primary: '#10b981', hover: '#059669', accent: '#84cc16' },
-  amber: { label: 'Amber', primary: '#f59e0b', hover: '#d97706', accent: '#ef4444' },
+  purple: { label: 'Purple', primary: '#a855f7', hover: '#9333ea', accent: '#6366f1' },
+  fuchsia: { label: 'Fuchsia', primary: '#d946ef', hover: '#c026d3', accent: '#8b5cf6' },
+  pink: { label: 'Pink', primary: '#ec4899', hover: '#db2777', accent: '#f43f5e' },
   rose: { label: 'Rose', primary: '#f43f5e', hover: '#e11d48', accent: '#f97316' },
+  red: { label: 'Red', primary: '#ef4444', hover: '#dc2626', accent: '#f59e0b' },
+  orange: { label: 'Orange', primary: '#f97316', hover: '#ea580c', accent: '#eab308' },
+  amber: { label: 'Amber', primary: '#f59e0b', hover: '#d97706', accent: '#ef4444' },
+  green: { label: 'Green', primary: '#22c55e', hover: '#16a34a', accent: '#14b8a6' },
+  emerald: { label: 'Emerald', primary: '#10b981', hover: '#059669', accent: '#84cc16' },
+  teal: { label: 'Teal', primary: '#14b8a6', hover: '#0d9488', accent: '#0ea5e9' },
+  cyan: { label: 'Cyan', primary: '#06b6d4', hover: '#0891b2', accent: '#3b82f6' },
+  sky: { label: 'Sky', primary: '#0ea5e9', hover: '#0284c7', accent: '#6366f1' },
+  blue: { label: 'Blue', primary: '#3b82f6', hover: '#2563eb', accent: '#06b6d4' },
+  slate: { label: 'Slate', primary: '#475569', hover: '#334155', accent: '#64748b' },
+  // Dark shades
+  navy: { label: 'Navy', primary: '#1e3a8a', hover: '#172554', accent: '#3b82f6' },
+  midnight: { label: 'Midnight', primary: '#312e81', hover: '#1e1b4b', accent: '#7c3aed' },
+  plum: { label: 'Plum', primary: '#6b21a8', hover: '#581c87', accent: '#c026d3' },
+  wine: { label: 'Wine', primary: '#9f1239', hover: '#881337', accent: '#e11d48' },
+  brown: { label: 'Brown', primary: '#92400e', hover: '#78350f', accent: '#d97706' },
+  forest: { label: 'Forest', primary: '#166534', hover: '#14532d', accent: '#65a30d' },
+  ocean: { label: 'Ocean', primary: '#115e59', hover: '#134e4a', accent: '#0891b2' },
+  graphite: { label: 'Graphite', primary: '#27272a', hover: '#18181b', accent: '#52525b' },
 };
 
 export const DEFAULT_GLOBALS = { theme: 'light', palette: 'indigo' };
