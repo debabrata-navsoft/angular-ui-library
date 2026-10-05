@@ -27,7 +27,7 @@ const meta: Meta<ToastComponent> = {
   render: (args) => ({
     props: args,
     template: `
-      <storybook-button label="Show toast" [primary]="true" (onClick)="open = true" />
+      <np-button label="Show toast" [primary]="true" (clicked)="open = true" />
       <np-toast
         [(open)]="open"
         [message]="message"

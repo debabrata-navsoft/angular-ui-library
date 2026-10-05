@@ -20,6 +20,7 @@ import { AvatarComponent } from '../stories/components/media/avatar/avatar.compo
 import { BadgeComponent } from '../stories/components/media/badge/badge.component';
 import { BottomSheetComponent } from '../stories/components/overlay/bottom-sheet/bottom-sheet.component';
 import { BreadcrumbComponent } from '../stories/components/menu/breadcrumb/breadcrumb.component';
+import { ButtonComponent } from '../stories/components/form/button/button.component';
 import { ButtonToggleComponent } from '../stories/components/form/button-toggle/button-toggle.component';
 import { CalendarComponent } from '../stories/components/form/calendar/calendar.component';
 import { CardComponent } from '../stories/components/panel/card/card.component';
@@ -36,6 +37,7 @@ import { DialogComponent } from '../stories/components/overlay/dialog/dialog.com
 import { DotGridComponent } from '../stories/effects/dot-grid/dot-grid.component';
 import { FileUploadComponent } from '../stories/components/form/file-upload/file-upload.component';
 import { FormComponent } from '../stories/components/form/form/form.component';
+import { HeaderComponent } from '../stories/components/misc/header/header.component';
 import { HelpfulComponent } from '../stories/components/feedback/helpful/helpful.component';
 import { IconComponent } from '../stories/components/media/icon/icon.component';
 import { ImageUploadComponent } from '../stories/components/form/image-upload/image-upload.component';
@@ -52,6 +54,7 @@ import { OnboardingChecklistComponent } from '../stories/onboarding/onboarding-c
 import { OnboardingComponent } from '../stories/onboarding/onboarding/onboarding.component';
 import { OverlayBadgeComponent } from '../stories/components/media/overlay-badge/overlay-badge.component';
 import { OverlayPanelComponent } from '../stories/components/overlay/overlay-panel/overlay-panel.component';
+import { PageComponent } from '../stories/components/misc/page/page.component';
 import { PaginationComponent } from '../stories/components/data/pagination/pagination.component';
 import { PanelMenuComponent } from '../stories/components/menu/panel-menu/panel-menu.component';
 import { ParticlesComponent } from '../stories/effects/particles/particles.component';
@@ -104,6 +107,7 @@ const components: Type<unknown>[] = [
   BadgeComponent,
   BottomSheetComponent,
   BreadcrumbComponent,
+  ButtonComponent,
   ButtonToggleComponent,
   CalendarComponent,
   CardComponent,
@@ -120,6 +124,7 @@ const components: Type<unknown>[] = [
   DotGridComponent,
   FileUploadComponent,
   FormComponent,
+  HeaderComponent,
   HelpfulComponent,
   IconComponent,
   ImageUploadComponent,
@@ -136,6 +141,7 @@ const components: Type<unknown>[] = [
   OnboardingComponent,
   OverlayBadgeComponent,
   OverlayPanelComponent,
+  PageComponent,
   PaginationComponent,
   PanelMenuComponent,
   ParticlesComponent,

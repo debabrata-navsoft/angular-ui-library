@@ -39,7 +39,7 @@ export const Basic: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <storybook-button label="Toggle panel" [primary]="true" (onClick)="op.toggle($event)" />
+      <np-button label="Toggle panel" [primary]="true" (clicked)="op.toggle($event)" />
       <np-overlay-panel #op ${bindings}>
         <p style="margin: 0; padding-right: 24px; max-width: 260px; line-height: 1.5">
           Any content goes here. Click outside or press Escape to close.

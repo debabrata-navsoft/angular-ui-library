@@ -7,8 +7,8 @@ import { DIALOG_POSITIONS, DialogComponent } from './dialog.component';
 
 const footer = `
   <div dialogFooter>
-    <storybook-button label="Cancel" size="small" (onClick)="visible = false" />
-    <storybook-button label="Save" size="small" [primary]="true" (onClick)="visible = false" />
+    <np-button label="Cancel" size="small" (clicked)="visible = false" />
+    <np-button label="Save" size="small" [primary]="true" (clicked)="visible = false" />
   </div>
 `;
 
@@ -28,7 +28,7 @@ const template = (trigger: string, withFooter = footer) => `
   </np-dialog>
 `;
 
-const showButton = `<storybook-button label="Show dialog" [primary]="true" (onClick)="visible = true" />`;
+const showButton = `<np-button label="Show dialog" [primary]="true" (clicked)="visible = true" />`;
 
 const meta: Meta<DialogComponent> = {
   title: 'Components/Overlay/Dialog',
@@ -65,7 +65,7 @@ export const Positions: Story = {
     template: template(`
       <div style="display: flex; flex-wrap: wrap; gap: 8px">
         @for (p of positions; track p) {
-          <storybook-button [label]="p" size="small" (onClick)="position = p; visible = true" />
+          <np-button [label]="p" size="small" (clicked)="position = p; visible = true" />
         }
       </div>`),
   }),

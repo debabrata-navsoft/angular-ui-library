@@ -23,7 +23,7 @@ const meta: Meta<TooltipComponent> = {
     template: `
       <div style="padding: 60px 120px; display: inline-block">
         <np-tooltip [text]="text" [position]="position">
-          <storybook-button label="Hover me" />
+          <np-button label="Hover me" />
         </np-tooltip>
       </div>
     `,

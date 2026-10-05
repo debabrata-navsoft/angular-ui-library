@@ -49,7 +49,7 @@
       />
     </label>
     @if (isCustomized()) {
-      <storybook-button size="small" label="Reset" (onClick)="reset()" />
+      <np-button size="small" label="Reset" (clicked)="reset()" />
     }
   </div>
 
@@ -97,12 +97,12 @@
         </div>
         <np-framework-code [code]="code.snippets" angularImport="IconComponent" />
         <div class="actions">
-          <storybook-button
+          <np-button
             size="small"
             [label]="copied() === 'svg' ? 'Copied!' : 'Copy SVG'"
-            (onClick)="copySvg()"
+            (clicked)="copySvg()"
           />
-          <storybook-button size="small" label="Download" (onClick)="download()" />
+          <np-button size="small" label="Download" (clicked)="download()" />
         </div>
       </div>
     </aside>

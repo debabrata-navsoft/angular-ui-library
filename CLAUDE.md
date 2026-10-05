@@ -123,7 +123,7 @@ The sidebar accordion in `manager.ts` works at every level: opening a group or c
 - Signal APIs only: `input()`, `output()`, `model()` for two-way values (`[(value)]`, `[(checked)]`, `[(open)]`, `[(page)]`), `signal()`/`computed()` for internal state.
 - Built-in control flow (`@if`, `@for`, `@else`). Do not use `*ngIf`, `*ngFor` or `ngClass`.
 - Every component has 3 files: `templateUrl: './<name>.html'` and `styleUrl: './<name>.css'`. Never use inline `template` or `styles` in the `.ts` file.
-- Selector prefix `np-` (NexPrime; it was `nex-`). The Button/Header/Page examples keep `storybook-`. Web Components
+- Selector prefix `np-` (NexPrime; it was `nex-`), for every component including Button, Header and Page. Web Components
   stay `<np-*>` (`np-form` → `np-form`).
 - Every public input/output gets a one-line `/** doc comment */`. Storybook autodocs shows these.
 - Static `class="x"` plus `[class]="'x--' + variant()"` merge in Angular. Don't repeat the base class inside the binding.
