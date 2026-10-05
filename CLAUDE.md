@@ -54,6 +54,9 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
     animations.css     nex-anim-* animation classes (see Animations below)
     gallery-page.css   Shared layout of the Icons, Animations and NexLottie pages (.gallery-page wrapper with a centered
                        .gallery-hero: version pill, big title, intro), loaded by preview.ts
+    responsive.css     Tablet (<= 1024px) and mobile (<= 640px) layout of the site pages, shared overlays and the docs
+                       pages; loaded last by preview.ts and by src/styles.css. Overrides start with `:root <host-tag>`
+                       (and repeat a class for descendant selectors) to beat Angular's scoped component styles
 src/app/             Demo Angular app (not used by Storybook), server-rendered: src/server.ts (Express), src/main.server.ts,
                      app.config.server.ts, app.routes.server.ts (RenderMode.Server for all routes)
 src/elements/nexui.ts  Web Components entry: registers every component as <nexui-*> (Angular Elements), window.NexUI.confirm()

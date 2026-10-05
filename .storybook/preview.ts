@@ -12,6 +12,8 @@ import '../src/stories/styles/theme.css';
 import '../src/stories/styles/gallery-page.css';
 // Storybook's docs pages in dark mode
 import './docs-theme.css';
+// Tablet and mobile layout (last, so it overrides the files above)
+import '../src/stories/styles/responsive.css';
 import { applyTheme, savedTheme } from './nexui-theme';
 
 // Light/dark mode and theme color (toolbar in manager.ts): applied to the whole preview, docs pages included

@@ -105,6 +105,8 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  /* border-box: max-width includes the padding, so the bar stays inside the hero on phones */
+  box-sizing: border-box;
   max-width: 100%;
   padding: 8px 8px 8px 16px;
   border: 1px solid rgb(255 255 255 / 0.14);
@@ -126,6 +128,7 @@
 .install__copy,
 .code__copy {
   display: grid;
+  flex-shrink: 0;
   place-items: center;
   width: 32px;
   height: 32px;
