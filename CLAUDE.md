@@ -14,6 +14,13 @@ npm start                 # Angular app (src/app) on http://localhost:4200
 npm run build             # Production app build with SSR -> dist/nexprime-ui/{browser,server}
 npm run serve:ssr:nexprime-ui          # Run the built SSR server (node, port 4000)
 npm run build:elements    # Web Components for React/Vue/HTML -> dist/nexprime-elements/browser/ (nexprime.js, styles.css, icons/)
+npm run build:lib         # npm package "nexprime-ui" (ng build nexprime-lib, ng-packagr) -> dist/nexprime-lib/ (entry src/public-api.ts,
+                          # config src/ng-package.json + src/package.json, README src/README.md, tsconfig.lib.json),
+                          # then build:elements; packaging/package-lib.mjs adds elements/ (nexprime-ui/elements, for
+                          # React/Vue/HTML) and react/ (nexprime-ui/react: <NexPrime> wrapper, JSX types) from packaging/.
+                          # packaging/ is outside src/ so the app's tsconfigs don't type-check its React typings
+npm run pack:lib          # build:lib + npm pack -> dist/nexprime-lib/nexprime-ui-<version>.tgz; publish with
+                          # `cd dist/nexprime-lib && npm publish`. New components: export them in src/public-api.ts
 npm test                  # Vitest unit tests (*.spec.ts)
 npx ngc -p .storybook/tsconfig.json --noEmit   # Type-check all components + stories (incl. templates)
 ```
@@ -244,5 +251,6 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 ## Adding a component
 
 1. Pick a group and create `src/stories/components/<group>/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
-2. Add it to the `components` list in `src/elements/nexprime.ts` (and the element list in `getting-started/Frameworks.mdx`).
+2. Add it to the `components` list in `src/elements/nexprime.ts` (and the element list in `getting-started/Frameworks.mdx`),
+   and export it from `src/public-api.ts` (the npm package).
 3. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook` and `npm run build:elements`.

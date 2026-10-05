@@ -138,6 +138,21 @@
           }
         }
       }
+    },
+    "nexprime-lib": {
+      "projectType": "library",
+      "root": "src",
+      "sourceRoot": "src",
+      "prefix": "np",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "src/ng-package.json",
+            "tsConfig": "tsconfig.lib.json"
+          }
+        }
+      }
     }
   }
 }
