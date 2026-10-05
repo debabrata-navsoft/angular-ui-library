@@ -30,6 +30,19 @@ export function circle(path: Path2D, x: number, y: number, r: number) {
   path.arc(x, y, r, 0, Math.PI * 2);
 }
 
+/** Fills each batch at its own opacity (`alpha(k)` for path k), in order, then restores full opacity */
+export function fillSteps(
+  ctx: CanvasRenderingContext2D,
+  paths: Path2D[],
+  alpha: (k: number) => number,
+) {
+  paths.forEach((path, k) => {
+    ctx.globalAlpha = alpha(k);
+    ctx.fill(path);
+  });
+  ctx.globalAlpha = 1;
+}
+
 /** Pointer position relative to an element's top-left corner */
 export function localPoint(el: HTMLElement, e: PointerEvent): Point {
   const rect = el.getBoundingClientRect();
@@ -95,6 +108,11 @@ export abstract class CanvasEffect {
   protected onPointerMove(_at: Point) {}
 
   protected onPointerLeave() {}
+
+  /** The pointer's horizontal position from -1 (left edge) to 1 (right edge); 0 when it's not over the effect */
+  protected pointerX() {
+    return this.pointer ? (this.pointer.x / this.width) * 2 - 1 : 0;
+  }
 
   /** How many items `perArea` per 1000×600 px means at the current size, so density is size-independent */
   protected countFor(perArea: number, min = 1, max = Infinity) {

@@ -1,6 +1,6 @@
 import { Component, input, numberAttribute } from '@angular/core';
 
-import { CanvasEffect, pathSteps } from '../canvas-effect';
+import { CanvasEffect, fillSteps, pathSteps } from '../canvas-effect';
 
 /** Squares are drawn in this many opacity steps, one path each */
 const LEVELS = 8;
@@ -65,10 +65,6 @@ export class FlickeringGridComponent extends CanvasEffect {
         paths[this.levels[r * this.cols + c]].rect(c * cell, r * cell, size, size);
       }
     }
-    paths.forEach((path, k) => {
-      ctx.globalAlpha = (k / (LEVELS - 1)) * this.maxOpacity();
-      ctx.fill(path);
-    });
-    ctx.globalAlpha = 1;
+    fillSteps(ctx, paths, (k) => (k / (LEVELS - 1)) * this.maxOpacity());
   }
 }

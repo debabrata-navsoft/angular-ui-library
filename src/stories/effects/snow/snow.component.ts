@@ -1,6 +1,6 @@
 import { Component, input, numberAttribute } from '@angular/core';
 
-import { CanvasEffect, circle, pathSteps, type Point } from '../canvas-effect';
+import { CanvasEffect, circle, fillSteps, pathSteps, type Point } from '../canvas-effect';
 
 interface Flake extends Point {
   /** Size step (0 = small and slow, LEVELS - 1 = big and fast, closer to the viewer) */
@@ -62,10 +62,6 @@ export class SnowComponent extends CanvasEffect {
     ctx.fillStyle = this.color() || this.textColor();
     const paths = pathSteps(LEVELS);
     for (const f of this.flakes) circle(paths[f.level], f.x, f.y, 0.8 + f.level * 0.9);
-    paths.forEach((path, k) => {
-      ctx.globalAlpha = 0.35 + (k / LEVELS) * 0.6;
-      ctx.fill(path);
-    });
-    ctx.globalAlpha = 1;
+    fillSteps(ctx, paths, (k) => 0.35 + (k / LEVELS) * 0.6);
   }
 }

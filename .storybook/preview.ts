@@ -89,6 +89,8 @@ const preview: Preview = {
             'Flickering Grid',
             'Light Rays',
             'Grain',
+            'Dot Wave',
+            'Dot Ribbon',
           ],
         ],
       },

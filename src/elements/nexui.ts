@@ -90,6 +90,8 @@ import { RippleComponent } from '../stories/effects/ripple/ripple.component';
 import { BubblesComponent } from '../stories/effects/bubbles/bubbles.component';
 import { FlickeringGridComponent } from '../stories/effects/flickering-grid/flickering-grid.component';
 import { GrainComponent } from '../stories/effects/grain/grain.component';
+import { DotWaveComponent } from '../stories/effects/dot-wave/dot-wave.component';
+import { DotRibbonComponent } from '../stories/effects/dot-ribbon/dot-ribbon.component';
 import { LightRaysComponent } from '../stories/effects/light-rays/light-rays.component';
 import { SnowComponent } from '../stories/effects/snow/snow.component';
 
@@ -172,6 +174,8 @@ const components: Type<unknown>[] = [
   BubblesComponent,
   FlickeringGridComponent,
   GrainComponent,
+  DotWaveComponent,
+  DotRibbonComponent,
   LightRaysComponent,
   SnowComponent,
 ];
