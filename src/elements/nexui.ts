@@ -82,6 +82,16 @@ import { TreeComponent } from '../stories/components/data/tree/tree.component';
 import { TreeTableComponent } from '../stories/components/data/tree-table/tree-table.component';
 import { VoiceChatComponent } from '../stories/components/chat/voice-chat/voice-chat.component';
 import { WavesComponent } from '../stories/effects/waves/waves.component';
+import { BorderBeamComponent } from '../stories/effects/border-beam/border-beam.component';
+import { FirefliesComponent } from '../stories/effects/fireflies/fireflies.component';
+import { MeteorsComponent } from '../stories/effects/meteors/meteors.component';
+import { RetroGridComponent } from '../stories/effects/retro-grid/retro-grid.component';
+import { RippleComponent } from '../stories/effects/ripple/ripple.component';
+import { BubblesComponent } from '../stories/effects/bubbles/bubbles.component';
+import { FlickeringGridComponent } from '../stories/effects/flickering-grid/flickering-grid.component';
+import { GrainComponent } from '../stories/effects/grain/grain.component';
+import { LightRaysComponent } from '../stories/effects/light-rays/light-rays.component';
+import { SnowComponent } from '../stories/effects/snow/snow.component';
 
 const components: Type<unknown>[] = [
   AccordionComponent,
@@ -154,6 +164,16 @@ const components: Type<unknown>[] = [
   TreeTableComponent,
   VoiceChatComponent,
   WavesComponent,
+  BorderBeamComponent,
+  FirefliesComponent,
+  MeteorsComponent,
+  RetroGridComponent,
+  RippleComponent,
+  BubblesComponent,
+  FlickeringGridComponent,
+  GrainComponent,
+  LightRaysComponent,
+  SnowComponent,
 ];
 
 declare global {

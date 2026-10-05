@@ -42,7 +42,9 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
   nexlottie/         "NexLottie" page (lottie-gallery.*, lottie-detail.*, lottie-export.ts: preview, detail dialog, exports)
     files/             Drop-in Lottie files (.json) for <nex-lottie>, served at /lottie; the NexLottie page lists them
   effects/           "Effects": visual effect components, one folder each: particles/, spotlight/, aurora/, starfield/,
-                     matrix-rain/, waves/, dot-grid/, cursor-trail/, confetti/
+                     matrix-rain/, waves/, dot-grid/, cursor-trail/, confetti/,
+                     meteors/, fireflies/, retro-grid/, border-beam/, ripple/, snow/, bubbles/,
+                     flickering-grid/, light-rays/, grain/
     canvas-effect.ts   Shared engine of the canvas effects (base class CanvasEffect)
     effect-story.ts    Story-only helpers (hero copy, dark backgrounds) for the Effects pages
   utils/             Shared TypeScript helpers (no components):
@@ -202,8 +204,11 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Helpful (`nex-helpful`) is the "Was this helpful?" vote widget.
 - Onboarding lives in its own sidebar group (titles `Onboarding/Tour`, `Onboarding/Checklist`) instead of `Components/`. `nex-onboarding` is a tour over `steps` (CSS selectors) with `mode` spotlight | beacon | welcome and `theme` light | dark | gradient | glass. Use `start(step?)`, or `autoStart` + `storageKey` to show it once. `nex-onboarding-checklist` emits `showMe(task)` so the app can start a tour step. Tour stories use `docs.story.inline: false`, so each auto-starting tour runs in its own frame.
 - Scroll Top (`nex-scroll-top`) is fixed to the page corner by default. With `[target]` set to a scrolling element, place it as that element's last child: it sticks to the element's bottom edge.
-- Effects (`src/stories/effects/`, sidebar Effects ▸ …) wrap projected content and paint behind it (Confetti and Cursor Trail paint over it, with `.nex-effect__canvas--front`); give them a height and a background. Hosts use the global `.nex-effect` and `.nex-effect__content` classes from theme.css.
+- Effects (`src/stories/effects/`, sidebar Effects ▸ …) wrap projected content and paint behind it (Confetti and Cursor Trail paint over it, with `.nex-effect__canvas--front`, and Grain lays its texture over it); give them a height and a background. Hosts use the global `.nex-effect` and `.nex-effect__content` classes from theme.css.
   Canvas effects extend `CanvasEffect` (`effects/canvas-effect.ts`, a `@Directive` that also adds the `nex-effect` host class) and implement `seed()` (state for the current size), `step(dt)` and `draw(ctx)`, plus optional `active()` (Confetti, Cursor Trail and Dot Grid return false when idle, so no loop runs) and `onPointerMove`/`onPointerDown`/`onPointerLeave`. Inputs read in `seed()` reseed and inputs read in `draw()` repaint automatically, so don't add effects for that. The base handles canvas size and DPR and the pointer, and runs requestAnimationFrame only while on screen, in a visible tab, without reduced motion (a still frame instead) and while `active()`; it starts in `afterNextRender`, so effects are SSR-safe. Colors: `textColor()` and `palette(colors, vars)` read theme variables through a cache that's refreshed on resize (no `getComputedStyle` per frame). Batch canvas drawing into a few paths (opacity or depth steps) rather than one stroke per item.
+  Meteors, Fireflies, Snow, Bubbles and Flickering Grid are canvas effects. Retro Grid (tilted grid in perspective),
+  Border Beam (a beam along the host's rounded border via `offset-path`; wrap a card), Ripple (pulsing rings), Light Rays
+  (blurred swaying bars) and Grain (SVG noise tile, drawn over the content) are pure CSS with no listeners.
   Spotlight and Aurora are pure CSS; their pointer listeners are plain `addEventListener` calls in `afterNextRender`, so pointer moves don't run change detection. Confetti's `fire(x?, y?)` bursts from code (`trigger="manual"`). Stories build their template with `demo(tag, { height, background, content })` from `effects/effect-story.ts`.
 - Particles (`nex-particles`): dots joined by lines within `linkDistance`, `count` per 1000×600 px (so density is size-independent), a pointer `interaction` grab (lines to the cursor) | repulse | attract | none, and `pushOnClick` adds dots. Without `color` it uses the text color (`--ui-primary` by default).
 - AnimateOnScroll is a wrapper component (`<nex-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.

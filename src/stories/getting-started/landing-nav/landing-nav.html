@@ -55,13 +55,20 @@
           @for (p of palettes; track p.key) {
             <button
               type="button"
-              role="menuitem"
+              role="menuitemradio"
               class="swatch"
+              [class.swatch--on]="p.key === palette()"
+              [attr.aria-checked]="p.key === palette()"
               [style.background]="'linear-gradient(135deg, ' + p.primary + ', ' + p.accent + ')'"
+              [style.--swatch]="p.primary"
               [attr.aria-label]="p.label"
               [title]="p.label"
               (click)="pickPalette(p.key)"
-            ></button>
+            >
+              @if (p.key === palette()) {
+                <nex-icon name="check" [size]="16" />
+              }
+            </button>
           }
         </div>
       }

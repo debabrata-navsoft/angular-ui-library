@@ -75,7 +75,7 @@ export class WelcomeComponent {
     { value: '2,000+', label: 'Icons' },
     { value: '35', label: 'Animations' },
     { value: '230+', label: 'Lottie files' },
-    { value: '9', label: 'Effects' },
+    { value: '19', label: 'Effects' },
   ];
 
   protected readonly features = [
