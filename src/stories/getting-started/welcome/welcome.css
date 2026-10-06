@@ -36,6 +36,16 @@
   user-select: none;
 }
 
+/* The banner's tagline (bottom band) turns light gray: the band removes the banner's color behind it */
+.hero__bg::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 24%;
+  backdrop-filter: grayscale(1) brightness(0.8);
+  mask: linear-gradient(to top, #000 55%, transparent);
+}
+
 /* Extra shade over the banner's wordmark (right of center) and tagline (bottom) so they stay in the background */
 .hero__bg::after {
   content: '';
@@ -66,7 +76,11 @@
     translate: -23% -46%;
   }
 
-  /* The wordmark and tagline are cropped out here: keep only the base wash, not the NP mark shaded */
+  /* The wordmark and tagline are cropped out here: keep only the base wash, not the NP mark shaded or gray */
+  .hero__bg::before {
+    display: none;
+  }
+
   .hero__bg::after {
     background: radial-gradient(ellipse 60% 55% at 50% 50%, rgb(2 6 23 / 0.6), rgb(2 6 23 / 0.25));
   }
@@ -665,6 +679,15 @@ h3 {
   color: var(--ui-text-subtle);
   font-size: 13px;
   text-align: center;
+}
+
+.footer__credit {
+  margin: 6px 0 0;
+
+  b {
+    color: var(--ui-text-muted);
+    font-weight: 600;
+  }
 }
 
 /* Grid items may shrink below their content (wide code, charts) instead of overflowing the page */

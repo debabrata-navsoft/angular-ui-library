@@ -1,10 +1,11 @@
 # nexprime
 
 NexPrime: one premium UI system for every framework. 85+ components (forms, tables, charts, dialogs, menus, chat,
-onboarding tours, background effects, Lottie), 1,500+ icons, CSS animations and a light/dark theme.
+onboarding tours, background effects, Lottie), 2,000+ icons, CSS animations and a light/dark theme.
 
-- **Angular 21**: standalone components with signal inputs, SSR-ready.
-- **React, Next.js, Vue, Svelte, plain HTML**: the same components as Web Components (`<np-button>`, `<np-chart>`, …).
+**Docs and live demos: [nexprime-dev.vercel.app](https://nexprime-dev.vercel.app/)**
+
+- **Angular, React, Next.js, Vue, Svelte and plain HTML**: the same components everywhere, as Web Components outside Angular (`<np-button>`, `<np-chart>`, …).
 
 Dark mode: set `data-theme="dark"` on `<html>`.
 
