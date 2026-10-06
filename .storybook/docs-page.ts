@@ -36,10 +36,10 @@ const LANGUAGE: Record<WebFramework, string> = {
   html: 'html',
 };
 
-/** Setup note under the generated code; Next.js snippets here use the NexPrime wrapper (Frameworks.mdx) */
+/** Setup note under the generated code; Next.js snippets here use the NexPrime wrapper (nexprime/react) */
 const note = (framework: WebFramework) =>
   framework === 'next'
-    ? 'Uses the NexPrime wrapper (components/nexprime.tsx). Load nexprime.js once in app/layout.tsx.'
+    ? 'npm install nexprime. Uses the NexPrime wrapper from nexprime/react, which loads the elements in the browser.'
     : setupNote(framework);
 
 const GUIDE = managerHref(PAGES.getStarted);

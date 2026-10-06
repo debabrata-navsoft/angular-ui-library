@@ -10,7 +10,7 @@ export const VERSION = `${pkg.name}@${pkg.version}`;
 export const PAGES = {
   welcome: '',
   catalog: 'components-overview',
-  getStarted: 'getting-started-use-in-react-vue-angular',
+  getStarted: 'getting-started-installation',
   icons: 'icons',
   animations: 'animations',
   lottie: 'nexlottie',

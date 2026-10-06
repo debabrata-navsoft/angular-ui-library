@@ -3,7 +3,7 @@
  * Storybook writes the Angular snippet at build time; these are built in the browser from the story's component
  * (selector, inputs and outputs via reflectComponentType), its args, and its template when it has one.
  * NexPrime components become their Web Components (<np-select> → <np-select>): strings, numbers and booleans are
- * attributes, arrays/objects/functions are properties, outputs are DOM events (see Frameworks.mdx).
+ * attributes, arrays/objects/functions are properties, outputs are DOM events (see Getting Started ▸ Installation).
  */
 import { reflectComponentType, type Type } from '@angular/core';
 
@@ -327,7 +327,7 @@ const cssToObject = (css: string) =>
   ) as Record<string, string>;
 
 // ---------------------------------------------------------------------------------------------------------------
-// React and Next.js (Next.js passes properties and events through the NexPrime wrapper, Frameworks.mdx)
+// React and Next.js (Next.js passes properties and events through the NexPrime wrapper from nexprime/react)
 // ---------------------------------------------------------------------------------------------------------------
 
 const JSX_NAMES: Record<string, string> = {
@@ -402,7 +402,7 @@ function toReact(nodes: Node[], next: boolean) {
   // Outside the component, so the values stay the same object on every render
   const top = hoisted.length ? hoisted.join('\n\n') + '\n\n' : '';
   const head = next
-    ? `${client ? "'use client';\n\n" : ''}import { NexPrime } from '@/components/nexprime';\n\n`
+    ? `${client ? "'use client';\n\n" : ''}import { NexPrime } from 'nexprime/react';\n\n`
     : '';
   return `${head}${top}export function Example() {\n  return (\n${jsx}\n  );\n}`;
 }

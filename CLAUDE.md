@@ -35,7 +35,10 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      page built from NexPrime components and effects), components-catalog/ ("View Components": every
                      component grouped like the sidebar, read at runtime from Storybook's index.json; story
                      Components/Overview, hidden from the sidebar), landing-nav/ (the site's top bar), landing.ts (PAGES,
-                     SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Frameworks.mdx,
+                     SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Installation.mdx (npm install
+                     nexprime per framework), Configuration.mdx (theme, dark mode, tokens, icons, Lottie, animations),
+                     playground/ (Getting Started ▸ Playground: pick a component from playground-data.ts, edit its
+                     inputs, live preview via NgComponentOutlet, code from elementCode() in np-framework-code),
                      framework-code/ (np-framework-code: Angular | React | Next.js | Vue | HTML tabs over copyable code
                      with a setup note; used by the Icons panel, Animations panel and NexLottie's Asset & Embed tab)
   components/        "Components": library components only, grouped like the sidebar (Components ▸ <Group> ▸ <Name>):
@@ -172,7 +175,9 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - `npm run build:elements` builds `src/elements/nexprime.ts` with Angular Elements. Every component is registered under its Angular selector (`np-<name>`). Components render `np-*` tags inside themselves too; Angular creates those (they carry `__ngContext__`), so the registered element skips its own start-up for them (`ownedByAngular()` in nexprime.ts) and nothing runs twice.
 - Outputs are DOM events (`event.detail`). camelCase outputs are also dispatched in kebab-case (`valueChange` and `value-change`) for Vue. Arrays, objects and functions must be set as properties.
 - Features that need `<ng-template>` or services have Web Component alternatives: Carousel uses its child elements as slides when there's no template, and `window.NexPrime.confirm()` wraps ConfirmationService. Icons load from `window.NEXPRIME_ICONS_URL` (default `icons/`).
-- The docs page is `src/stories/getting-started/Frameworks.mdx` (Getting Started). Storybook MDX has no GitHub table syntax, so write tables as HTML.
+- The docs pages are `src/stories/getting-started/Installation.mdx` and `Configuration.mdx` (Getting Started). Storybook MDX has no GitHub table syntax, so write tables as HTML.
+- Docs code blocks (MDX and "Show code") are dark (`#1e293b`) with a copy icon that shows on hover (docs-theme.css);
+  preview-head.html turns it into a check after copying.
 
 ## Lottie
 
@@ -251,6 +256,6 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 ## Adding a component
 
 1. Pick a group and create `src/stories/components/<group>/<name>/` with `<name>.component.ts`, `<name>.html`, `<name>.css` and `<name>.stories.ts`, following the conventions above.
-2. Add it to the `components` list in `src/elements/nexprime.ts` (and the element list in `getting-started/Frameworks.mdx`),
+2. Add it to the `components` list in `src/elements/nexprime.ts` (and the element list in `getting-started/Installation.mdx`),
    and export it from `src/public-api.ts` (the npm package).
 3. Run `npx ngc -p .storybook/tsconfig.json --noEmit`, then `npm run build-storybook` and `npm run build:elements`.
