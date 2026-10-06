@@ -235,6 +235,10 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Form (`np-form`) builds a validated form from `fields: FormField[]` (or multi-step `steps: FormStep[]`) and reuses the input components. Extra field types (rating, chips, multichips, cards, segmented, choice, color) render as `.option` buttons. It has an optional header (`title`, `subtitle`, `icon`, `tone`), `card`, `layout="inline"`, `loading`, and a success view (`successTitle`). Extra content goes in `[formBeforeActions]` (above the buttons) or the default slot (below the form). A field's `match` names another field it must equal (confirm password). The Form stories double as ready-made templates, with the account forms first in flow order (Login, Sign up, Forgot password, Reset password, then Contact, Feedback, Survey, Newsletter, Bug report, Feature request, Onboarding).
 - Chat (`np-chat`) appends what the user sends to `[(messages)]` (`ChatMessage[]`) and emits `send`; the consumer appends the replies. Voice Chat (`np-voice-chat`) reuses `ChatMessage`: its mic goes idle → listening → processing → speaking with the Web Speech API (a text box when recognition isn't available), emits `utterance`, and speaks the next `them` message.
 - Helpful (`np-helpful`) is the "Was this helpful?" vote widget.
+- Calendar (`np-calendar`) styles and extras: `variant` default | gradient (header on a gradient band) | glass (frosted)
+  | minimal (CALENDAR_VARIANTS); `presets` (`CalendarPreset[]`, values or functions evaluated on click; RANGE_PRESETS
+  ships Today … Last month) in a side list, the matching one highlighted; `marks` (`CalendarMark[]`: event dots, up
+  to 3 per day, labels added to the day's aria-label); `showWeekNumbers` (ISO week from each row's Thursday).
 - Stepper (`np-stepper`): `steps` are labels or `StepItem` ({ label, description, icon, error }); `variant` circles
   (default) | progress | dots | arrows | cards (STEPPER_VARIANTS), `vertical` (circles, dots, cards), `clickable` +
   `linear` (only finished steps) with `stepClick` and `[(activeStep)]` (a linkedSignal follows the input). Connectors
