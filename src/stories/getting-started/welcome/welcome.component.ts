@@ -25,7 +25,7 @@ import { PAGES, SECTIONS, VERSION, managerHref } from '../landing';
 type Snippet = 'angular' | 'elements';
 
 const SNIPPETS: Record<Snippet, string> = {
-  angular: `import { ToggleComponent } from './components/form/toggle/toggle.component';
+  angular: `import { ToggleComponent } from 'nexprime';
 
 @Component({
   imports: [ToggleComponent],
@@ -34,8 +34,8 @@ const SNIPPETS: Record<Snippet, string> = {
 export class Settings {
   dark = signal(false);
 }`,
-  elements: `<link rel="stylesheet" href="nexprime/styles.css" />
-<script type="module" src="nexprime/nexprime.js"></script>
+  elements: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nexprime/styles/theme.css" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/nexprime/elements/nexprime.js"></script>
 
 <np-toggle label="Dark mode"></np-toggle>
 <np-chart type="area"></np-chart>`,
@@ -139,7 +139,7 @@ export class WelcomeComponent {
     { value: 'elements', label: 'React, Vue & HTML' },
   ];
 
-  protected readonly install = 'git clone <repo> && npm install && npm run storybook';
+  protected readonly install = 'npm install nexprime';
   protected readonly snippet = signal<Snippet>('angular');
   protected readonly code = computed(() => SNIPPETS[this.snippet()]);
   protected readonly copied = signal('');
