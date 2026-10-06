@@ -775,6 +775,7 @@ small {
 
 .card-add small {
   font-size: 11px;
+  text-wrap: balance;
 }
 
 @keyframes pulse {
