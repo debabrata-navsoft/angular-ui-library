@@ -246,6 +246,18 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Tabs (`np-tabs`): `variant` pill (default) | underline | boxed | solid | minimal (TAB_VARIANTS), `vertical`, `stretch`;
   a `Tab` can have `icon`, `badge` and `disabled`. Arrow keys (Up/Down when vertical), Home and End move between the
   enabled tabs (roving tabindex, aria-controls/labelledby ids).
+- Chip (`np-chip`): `variant` default | soft | outlined | solid | gradient | glass | dot (CHIP_VARIANTS), `tone`, `size`,
+  `count`, `selectable` + `[(selected)]` (a transparent toggle button laid over the chip; the remove button sits above it).
+- Checkbox (`np-checkbox`): `variant` default | circle | card | chip | todo (CHECKBOX_VARIANTS), `[(indeterminate)]`,
+  `description`, `icon` (card, chip), `size`, `invalid`. The check is an SVG path drawn in with `pathLength="1"`.
+- Rating (`np-rating`): `variant` star | heart | emoji | number | bar (RATING_VARIANTS); star/heart are SVG shapes with
+  a clipped filled copy, so `allowHalf` can fill half. `labels`, `showValue`, `clearable`, arrow keys (roving tabindex).
+- Input OTP: `variant` box | underline | filled | circle | connected (OTP_VARIANTS), `placeholder`, `success`,
+  `resendSeconds` + `resend` (countdown started in afterNextRender). Input Number: `buttonLayout` stacked | inline |
+  horizontal | split | vertical (INPUT_NUMBER_LAYOUTS), field `variant`, `icon`, `meter` (needs min and max).
+- Form: `variant` default | glass | gradient | accent | glow (FORM_VARIANTS; all but default are cards), `fieldVariant`
+  (passed to text, select, textarea, number), `progress` bars | stepper (np-stepper), field `icon`, option `icon`, and the
+  field types `number` (min/max/step), `otp` (length) and `emoji` (option labels name the faces).
 - Onboarding lives in its own sidebar group (titles `Onboarding/Tour`, `Onboarding/Checklist`) instead of `Components/`. `np-onboarding` is a tour over `steps` (CSS selectors) with `mode` spotlight | beacon | welcome and `theme` light | dark | gradient | glass. Use `start(step?)`, or `autoStart` + `storageKey` to show it once. `np-onboarding-checklist` emits `showMe(task)` so the app can start a tour step. Tour stories use `docs.story.inline: false`, so each auto-starting tour runs in its own frame.
 - Scroll Top (`np-scroll-top`) is fixed to the page corner by default. With `[target]` set to a scrolling element, place it as that element's last child: it sticks to the element's bottom edge.
 - Effects (`src/stories/effects/`, sidebar Effects ▸ …) wrap projected content and paint behind it (Confetti and Cursor Trail paint over it, with `.np-effect__canvas--front`, and Grain lays its texture over it); give them a height and a background. Hosts use the global `.np-effect` and `.np-effect__content` classes from theme.css.
