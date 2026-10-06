@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { ButtonComponent } from '../../form/button/button.component';
-import { OverlayPanelComponent } from './overlay-panel.component';
+import { OVERLAY_PANEL_VARIANTS, OverlayPanelComponent } from './overlay-panel.component';
 import { OverlayPanelDemoComponent } from './overlay-panel-demo.component';
 import { appearanceStories } from '../../../utils/appearance-stories';
 
@@ -22,6 +22,7 @@ const meta: Meta<OverlayPanelComponent> = {
       },
     },
   },
+  argTypes: { variant: { control: 'select', options: OVERLAY_PANEL_VARIANTS } },
   args: { dismissable: true, showCloseIcon: false, onShow: fn(), onHide: fn() },
 };
 
@@ -46,6 +47,24 @@ export const Basic: Story = {
           Any content goes here. Click outside or press Escape to close.
         </p>
       </np-overlay-panel>
+    `,
+  }),
+};
+
+/** Every variant (default, glass, glow, gradient header band, minimal) with a `header` + `icon`, `width` and a `panelFooter` button */
+export const Variants: Story = {
+  render: (args) => ({
+    props: { ...args, variants: OVERLAY_PANEL_VARIANTS },
+    template: `
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        @for (v of variants; track v) {
+          <np-button [label]="v" size="small" (clicked)="op.toggle($event)" />
+          <np-overlay-panel #op [variant]="v" header="Upgrade to Pro" icon="sparkles" width="280px" ${bindings}>
+            <p style="margin: 0; line-height: 1.5">Unlimited projects, custom domains and priority support.</p>
+            <button panelFooter type="button" class="ui-btn ui-btn--primary ui-btn--sm">Upgrade</button>
+          </np-overlay-panel>
+        }
+      </div>
     `,
   }),
 };

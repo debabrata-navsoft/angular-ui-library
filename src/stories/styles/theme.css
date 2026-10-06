@@ -424,6 +424,7 @@ select.ui-control {
 
 /* Dialog/Card footer slots: the wrapper steps aside so its buttons are laid out (with gap) by the footer */
 [dialogFooter],
+[modalFooter],
 [cardFooter] {
   display: contents;
 }

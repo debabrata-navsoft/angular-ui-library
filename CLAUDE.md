@@ -223,7 +223,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Menus (Menu, Menubar, MegaMenu, PanelMenu, TieredMenu) take `[model]="MenuItem[]"` from `utils/types.ts`: `icon` is an icon file name, `command` runs on click, plus `url`, `items`, `separator`, `disabled`, `badge`. Popup menus expose `toggle(event)`, `show(event)`, `hide()`.
 - Drag and drop uses `@angular/cdk/drag-drop` (PickList). Style CDK states (`.cdk-drag-preview`, `.cdk-drag-placeholder`, `.cdk-drop-list-dragging`) in the component CSS. The preview is a clone of the item, so component styles still apply.
 - Badge is a standalone label; Overlay Badge (`<np-overlay-badge [value]="6">…</np-overlay-badge>`) wraps content and puts a count or dot on its corner.
-- Footer slots (`<div dialogFooter>`, `<div cardFooter>`) get `display: contents` from theme.css, so the component's footer lays out the buttons with its gap. Card's `footerAlign="stretch"` uses a grid to make them equal width.
+- Footer slots (`<div dialogFooter>`, `<div modalFooter>`, `<div cardFooter>`) get `display: contents` from theme.css, so the component's footer lays out the buttons with its gap. Card's `footerAlign="stretch"` uses a grid to make them equal width.
 - Tree and TreeTable take `TreeNode[]` from `utils/types.ts` (`key` is required and must be unique). Both have
   `selectionMode` single | checkbox (tri-state; `[(selection)]` is `TreeNode | TreeNode[] | null`), a filter and
   `expandAll()`/`collapseAll()`. Tree: `variant` (TREE_VARIANTS: default | lines | soft | cards | compact | glass),
@@ -242,6 +242,20 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   tone or any CSS color, as `--tl-c` on the root; line and markers fall back to the border / brand gradient).
 - ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/overlay/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
 - Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/utils/anchor-position.ts`.
+  Floating panels (Select, OverlayPanel, ConfirmPopup, popup Menu / TieredMenu) render as `popover="manual"` and call
+  `showPopover()` before measuring (menus: `[npMenuPopover]` in menu-item.component.ts): the top layer can't be moved
+  by Storybook's transformed docs blocks or clipped by `overflow: hidden`. Their CSS undoes the popover defaults
+  (`inset: auto; margin: 0; overflow: visible; color`).
+- Panel / overlay / menu looks (each a `*_VARIANTS` const): Accordion (`[(expanded)]`, `toggleIcon`, `iconPos`, item
+  `icon`/`subtitle`/`disabled`, height animates via grid rows), Card (`horizontal`, `overlay`, `badge`, `href` /
+  `clickable` + `cardClick`, `loading`), Inplace (`editable` + `[(value)]`, `icon`), Dialog (`tone`, `icon`, `subtitle`,
+  `draggable`, `blockScroll`), Modal (`size`, `closeOnBackdrop`, `closeOnEscape`, `[modalFooter]`), ConfirmDialog
+  (`variant`; confirm options `tone`, `confirmText` = type to confirm), OverlayPanel (`header`, `icon`, `[panelFooter]`,
+  `width`, `closeOnEscape`), ConfirmPopup (`tone`, `acceptLabel`, `rejectLabel`), Tooltip (`tone`, `heading`,
+  `shortcut`, `arrow`, `showDelay`/`hideDelay` in CSS), Breadcrumb (`separator` chevron|arrow|slash|dot, `home`,
+  `maxItems`), Menubar (`sticky`, `[(current)]`), MegaMenu (`stretch`, item `featured` promo card), Menu and TieredMenu
+  (shared MENU_VARIANTS via `.mi-look-*` in menu-item.css, `shortcuts` shows badges as kbd, Menu `[menuHeader]` /
+  `[menuFooter]`, TieredMenu `trigger` hover | click), PanelMenu (`[(collapsed)]` icon rail, `[(selected)]`).
 - All menus render rows with the internal `np-menu-item` (`components/menu/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.
 - ConfirmDialog renders `<np-dialog>` internally; its No/Yes are `.ui-btn--text` (Yes turns red with `acceptTone: 'danger'`).
 - `*-demo.component.ts` files (confirm-dialog, overlay-panel) are story-only helpers for examples that need injected services or icon buttons. They are not part of the library.
