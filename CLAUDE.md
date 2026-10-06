@@ -267,6 +267,13 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Tabs (`np-tabs`): `variant` pill (default) | underline | boxed | solid | minimal (TAB_VARIANTS), `vertical`, `stretch`;
   a `Tab` can have `icon`, `badge` and `disabled`. Arrow keys (Up/Down when vertical), Home and End move between the
   enabled tabs (roving tabindex, aria-controls/labelledby ids).
+- Select (`np-select`) is a custom listbox, not a native `<select>`: a `.ui-control` button (role combobox) opens a
+  `position: fixed` panel measured from the trigger (opens upwards without room; closes on outside click, scroll and
+  resize). The panel is a `popover="manual"` (top layer, so
+  Storybook's transformed docs blocks and overflow: hidden can't clip it). Options take `icon`, `image` (avatar), `color`
+  (swatch), `group` (heading), `description`, `disabled`; `filter` adds a search box; `multiple` + `[(values)]`
+  (checkboxes, chips in the trigger); `layout` list | grid (SELECT_LAYOUTS). Keys: arrows, Home/End,
+  Enter/Space, Escape, type-ahead.
 - Chip (`np-chip`): `variant` default | soft | outlined | solid | gradient | glass | dot (CHIP_VARIANTS), `tone`, `size`,
   `count`, `selectable` + `[(selected)]` (a transparent toggle button laid over the chip; the remove button sits above it).
 - Checkbox (`np-checkbox`): `variant` default | circle | card | chip | todo (CHECKBOX_VARIANTS), `[(indeterminate)]`,
