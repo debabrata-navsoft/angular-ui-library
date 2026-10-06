@@ -224,14 +224,34 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Drag and drop uses `@angular/cdk/drag-drop` (PickList). Style CDK states (`.cdk-drag-preview`, `.cdk-drag-placeholder`, `.cdk-drop-list-dragging`) in the component CSS. The preview is a clone of the item, so component styles still apply.
 - Badge is a standalone label; Overlay Badge (`<np-overlay-badge [value]="6">…</np-overlay-badge>`) wraps content and puts a count or dot on its corner.
 - Footer slots (`<div dialogFooter>`, `<div cardFooter>`) get `display: contents` from theme.css, so the component's footer lays out the buttons with its gap. Card's `footerAlign="stretch"` uses a grid to make them equal width.
-- Tree and TreeTable take `TreeNode[]` from `utils/types.ts` (`key` is required and must be unique).
+- Tree and TreeTable take `TreeNode[]` from `utils/types.ts` (`key` is required and must be unique). Both have
+  `selectionMode` single | checkbox (tri-state; `[(selection)]` is `TreeNode | TreeNode[] | null`), a filter and
+  `expandAll()`/`collapseAll()`. Tree: `variant` (TREE_VARIANTS: default | lines | soft | cards | compact | glass),
+  `highlight`, `showCounts`, `controls`; per-node `data.badge` and `data.description`; indent from `--level`.
+  TreeTable: `variant` (TREE_TABLE_VARIANTS: default | striped | bordered | lines | minimal | glass), `size`,
+  `scrollHeight` (sticky header), columns with `align` and `width`.
+- Table (`np-table`): `variant` (TABLE_VARIANTS: default | striped | bordered | minimal | cards | glass), `size`,
+  `scrollHeight` (sticky header), `selectable` + `[(selection)]` (rows matched by reference), `loading` (skeleton
+  rows), `rows` (pages with an internal np-pagination; the page resets when the filtered rows change); columns take
+  `align`, `tones` (value → Tone status pill) and `image` (avatar). Variants only set `--tbl-*` variables.
+- Pagination (`np-pagination`): `variant` (PAGINATION_VARIANTS: default | outlined | soft | glass | minimal | dots),
+  `size`, `totalRecords` + `[(rows)]`, `rowsOptions`, `showSummary`, `showFirstLast`, `showJump`, arrow keys.
+- Pick List: `variant` (PICK_LIST_VARIANTS: default | cards | compact | glass | minimal), `optionIcon`,
+  `optionDescription`, `targetLimit`. Timeline: `variant` (TIMELINE_VARIANTS: default | cards | outlined | gradient |
+  compact), `activeIndex` (done / active with a pulse / pending), `dateOpposite`, event `tag`.
 - ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/overlay/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
 - Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/utils/anchor-position.ts`.
 - All menus render rows with the internal `np-menu-item` (`components/menu/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.
 - ConfirmDialog renders `<np-dialog>` internally; its No/Yes are `.ui-btn--text` (Yes turns red with `acceptTone: 'danger'`).
 - `*-demo.component.ts` files (confirm-dialog, overlay-panel) are story-only helpers for examples that need injected services or icon buttons. They are not part of the library.
 - Chart (`np-chart`) is dependency-free SVG: `type` line | area | bar (`stacked`) | pie | doughnut, `labels` + `datasets: ChartDataset[]`. Series colors are the theme's `--ui-chart-1…8` (validated for color-blind separation; keep that order, don't add a 9th). It follows the data-viz rules: bars ≤ 24px with 2px gaps and 4px rounded tops, 2px lines, a legend only for 2+ series, a hover tooltip, and a visually hidden data table. SVG colors are set with `[style.fill]`/`[style.stroke]` because presentation attributes can't use `var()`.
-- Carousel (`np-carousel`) renders a projected `<ng-template let-item let-i="index">` per item; `numVisible`, `numScroll`, `circular`, `autoplayInterval` (pauses on hover/focus), `[(page)]`, arrow keys and swipe.
+  More types: radar, radial (progress rings), gauge (first value; both use `max`) and sparkline (no axes, own range);
+  `gradient` (fades fills), `showValues` (bar labels; stacked shows totals), `animate` (draw-in, off with reduced motion).
+  New types reuse the scales, tooltip, legend and hidden table.
+- Carousel (`np-carousel`) renders a projected `<ng-template let-item let-i="index">` per item; `numVisible`, `numScroll`, `circular`, `autoplayInterval` (pauses on hover/focus; the countdown restarts on every page change), `[(page)]`, arrow keys and swipe.
+  `variant` (CAROUSEL_VARIANTS: default | peek | coverflow (each slide gets `--offset`) | fade | glass), `indicator`
+  (CAROUSEL_INDICATORS: dots | bars (fills over the autoplay interval) | numbers | progress), `vertical` + `height`.
+  Slides are sized by `.carousel__track > ::ng-deep *` so the Web Component's child-element slides get the variants too.
 - Form (`np-form`) builds a validated form from `fields: FormField[]` (or multi-step `steps: FormStep[]`) and reuses the input components. Extra field types (rating, chips, multichips, cards, segmented, choice, color) render as `.option` buttons. It has an optional header (`title`, `subtitle`, `icon`, `tone`), `card`, `layout="inline"`, `loading`, and a success view (`successTitle`). Extra content goes in `[formBeforeActions]` (above the buttons) or the default slot (below the form). A field's `match` names another field it must equal (confirm password). The Form stories double as ready-made templates, with the account forms first in flow order (Login, Sign up, Forgot password, Reset password, then Contact, Feedback, Survey, Newsletter, Bug report, Feature request, Onboarding).
 - Chat (`np-chat`) appends what the user sends to `[(messages)]` (`ChatMessage[]`) and emits `send`; the consumer appends the replies. Voice Chat (`np-voice-chat`) reuses `ChatMessage`: its mic goes idle → listening → processing → speaking with the Web Speech API (a text box when recognition isn't available), emits `utterance`, and speaks the next `them` message.
 - Helpful (`np-helpful`) is the "Was this helpful?" vote widget.

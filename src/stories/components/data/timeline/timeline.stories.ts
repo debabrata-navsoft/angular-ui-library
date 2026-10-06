@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
-import { TimelineComponent, type TimelineEvent } from './timeline.component';
+import { TIMELINE_VARIANTS, TimelineComponent, type TimelineEvent } from './timeline.component';
 import { appearanceStories } from '../../../utils/appearance-stories';
 
 const step = (...[status, date, icon, description, tone]: string[]) =>
@@ -20,8 +20,9 @@ const meta: Meta<TimelineComponent> = {
   argTypes: {
     align: { control: 'select', options: ['left', 'right', 'alternate'] },
     layout: { control: 'select', options: ['vertical', 'horizontal'] },
+    variant: { control: 'select', options: TIMELINE_VARIANTS },
   },
-  args: { value: orderEvents, align: 'left', layout: 'vertical' },
+  args: { value: orderEvents, align: 'left', layout: 'vertical', variant: 'default' },
 };
 
 export default meta;
@@ -66,6 +67,42 @@ export const CustomContent: Story = {
           </div>
         </ng-template>
       </np-timeline>
+    `,
+  }),
+};
+
+/** `activeIndex` fills the line up to the current event, pulses its marker and dims the pending ones */
+export const Progress: Story = { args: { variant: 'gradient', activeIndex: 2 } };
+
+/** `dateOpposite` puts each date across the line from its content (here with cards) */
+export const DateOpposite: Story = { args: { dateOpposite: true, variant: 'cards' } };
+
+/** A release log: compact rows with `tag` labels colored by `tone` */
+export const Changelog: Story = {
+  args: {
+    variant: 'compact',
+    value: [
+      {
+        ...step('Dark mode', 'Oct 2026', 'sparkles', 'Every component follows the theme.'),
+        tag: 'v2.4',
+      },
+      { ...step('Faster tables', 'Sep 2026', 'zap', '', 'success'), tag: 'v2.3' },
+      { ...step('Fixed focus trap', 'Aug 2026', 'bug', '', 'warning'), tag: 'Fix' },
+      { ...step('Removed legacy grid', 'Jul 2026', 'git-merge', '', 'danger'), tag: 'Breaking' },
+    ],
+  },
+};
+
+/** Every variant side by side */
+export const Variants: Story = {
+  render: (args) => ({
+    props: { ...args, variants: TIMELINE_VARIANTS },
+    template: `
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px">
+        @for (v of variants; track v) {
+          <div><b style="text-transform: capitalize">{{ v }}</b><np-timeline [value]="value" [variant]="v" /></div>
+        }
+      </div>
     `,
   }),
 };
