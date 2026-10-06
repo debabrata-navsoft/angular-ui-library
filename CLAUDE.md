@@ -83,8 +83,9 @@ src/styles.css       Imports stories/styles/theme.css for the app
 public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→violet connector, violet P, glass edges, two
                      glowing nodes) on a midnight tile; the favicon of the app and Storybook (staticDirs). Also
                      nexprime-logo{,-dark,-mono}.svg (mark + wordmark), nexprime-icon-mono.svg, nexprime-brand-{light,dark}.svg
-                     (Storybook sidebar: the same lockup as the site's top bar, tile icon + "Nex" regular + "Prime" bold), nexprime-hero.svg (1600×900 banner / social card) and nexprime-mark.svg (the NP mark
-                     without a tile: the Welcome hero's centerpiece, a glass app icon with a turning gradient border, glow, pulse rings and rays). Wordmark and tagline are
+                     (Storybook sidebar: the same lockup as the site's top bar, tile icon + "Nex" regular + "Prime" bold), nexprime-hero.svg (1600×900 banner / social card; also
+                     the Welcome hero's background, dimmed, zoomed onto the NP mark on phones) and nexprime-mark.svg (the NP
+                     mark without a tile). Wordmark and tagline are
                      Manrope (OFL) converted to outlines, so the files need no font
 .storybook/          Storybook config; preview.ts imports src/stories/styles/theme.css
                      preview-head.html adds a plain-JS "back to top" button to every page (docs scroll in the preview frame),

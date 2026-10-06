@@ -27,8 +27,8 @@
   position: relative;
 }
 
-/* ---- hero background: a soft light cone from the top (onto the logo) over a grid that fades out from the center.
-   Under the particles and the text */
+/* ---- hero background: the NexPrime banner (public/nexprime-hero.svg: NP mark, wordmark, tagline, light rays),
+   filling the hero behind the particles, with a dark wash so the title and buttons read on top of it */
 .hero__bg {
   position: absolute;
   inset: 0;
@@ -37,198 +37,30 @@
   user-select: none;
 }
 
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgb(255 255 255 / 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.1) 1px, transparent 1px);
-  background-position: center;
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 55% 60% at 50% 45%, #000 15%, transparent 75%);
-}
-
-.hero__beam {
-  position: absolute;
-  top: -10%;
-  left: 50%;
-  width: 1200px;
-  height: 120%;
-  translate: -50% 0;
-  background: conic-gradient(
-    from 180deg at 50% 0%,
-    transparent 152deg,
-    rgb(165 180 252 / 0.22) 170deg,
-    rgb(224 204 255 / 0.36) 180deg,
-    rgb(165 180 252 / 0.22) 190deg,
-    transparent 208deg
-  );
-  filter: blur(10px);
-  mask-image: linear-gradient(#000 35%, transparent 85%);
-}
-
-/* ---- logo in the hero background, centered behind the text: the NexPrime mark as the app icon on a glowing halo, as a solid colored tile. Its border is a turning conic
-   gradient (--logo-angle), a blurred copy of the same colors spins behind it, two rings pulse out and faint rays turn */
-@property --logo-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-/* Centered behind the text, scaled up and see-through, so the title and buttons read on top of it */
-.logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  place-items: center;
-  width: 240px;
-  height: 240px;
-  translate: -50% -50%;
-  scale: 1.8;
-  opacity: 0.8;
-}
-
-/* Background behind the icon: a soft glowing disc with two faint concentric rings */
-.logo__halo {
-  position: absolute;
-  inset: -110px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 37%, rgb(196 181 253 / 0.22) 37.3%, transparent 37.6%),
-    radial-gradient(circle, transparent 49%, rgb(196 181 253 / 0.14) 49.3%, transparent 49.6%),
-    radial-gradient(circle, rgb(129 140 248 / 0.5), rgb(168 85 247 / 0.22) 35%, transparent 68%);
-}
-
-.logo__rays {
-  position: absolute;
-  inset: -170px;
-  border-radius: 50%;
-  background: repeating-conic-gradient(
-    rgb(255 255 255 / 0.09) 0deg 1.5deg,
-    transparent 1.5deg 12deg
-  );
-  mask-image: radial-gradient(circle, #000 18%, transparent 62%);
-  animation: logo-spin 60s linear infinite;
-}
-
-.logo__glow {
-  position: absolute;
-  inset: 20px;
-  border-radius: 50%;
-  background: conic-gradient(#6366f1, #a855f7, #ec4899, #0ea5e9, #6366f1);
-  filter: blur(36px);
-  opacity: 1;
-  animation: logo-spin 6s linear infinite;
-}
-
-.logo__pulse {
-  position: absolute;
-  inset: 45px;
-  border: 1px solid rgb(196 181 253 / 0.6);
-  border-radius: 46px;
-  animation: logo-pulse 3.6s ease-out infinite;
-}
-
-.logo__pulse + .logo__pulse {
-  animation-delay: 1.8s;
-}
-
-.logo__tile {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 150px;
-  height: 150px;
-  border-radius: 42px;
-  /* Solid NexPrime tile: deep indigo to midnight, like the app icon */
-  background: linear-gradient(160deg, #262b6b, #0d1030);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.25),
-    0 24px 56px rgb(2 6 23 / 0.6);
-  animation: logo-float 6s ease-in-out infinite;
-}
-
-/* Glass sheen across the top half */
-.logo__tile::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 50%;
-  border-radius: 40px 40px 50% 50% / 40px 40px 22px 22px;
-  background: linear-gradient(rgb(255 255 255 / 0.16), transparent);
-}
-
-/* The turning gradient border, on its own layer (masked to a 2px ring) */
-.logo__tile::after {
+.hero__bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  padding: 2px;
-  border-radius: inherit;
-  background: conic-gradient(from var(--logo-angle), #818cf8, #c084fc, #f472b6, #38bdf8, #818cf8);
-  mask:
-    linear-gradient(#000 0 0) content-box exclude,
-    linear-gradient(#000 0 0);
-  animation: logo-border 4s linear infinite;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, rgb(2 6 23 / 0.6), rgb(2 6 23 / 0.25));
 }
 
-.logo__tile img {
-  position: relative;
-  width: 104px;
-  height: 104px;
-  filter: drop-shadow(0 6px 20px rgb(124 58 237 / 0.75));
+.hero__banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-@keyframes logo-spin {
-  to {
-    rotate: 360deg;
-  }
-}
-
-@keyframes logo-border {
-  to {
-    --logo-angle: 360deg;
-  }
-}
-
-@keyframes logo-pulse {
-  from {
-    opacity: 0.9;
-    scale: 1;
-  }
-  to {
-    opacity: 0;
-    scale: 1.75;
-  }
-}
-
-@keyframes logo-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -6px;
-  }
-}
-
+/* Phones only see a narrow slice: zoom in on the NP mark (at 23% / 46% of the banner) so the wordmark and tagline
+   fall outside, instead of showing half of them */
 @media (max-width: 640px) {
-  .logo {
-    scale: 1.15;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo__rays,
-  .logo__glow,
-  .logo__pulse,
-  .logo__tile,
-  .logo__tile::after {
-    animation: none;
-  }
-
-  .logo__pulse {
-    opacity: 0;
+  .hero__banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    max-width: none;
+    height: 180%;
+    translate: -23% -46%;
   }
 }
 
@@ -269,9 +101,29 @@
   --np-anim-delay: 0.08s;
 }
 
-/* Brighter gradient on the dark hero */
-.hero__title .gradient-text {
-  background-image: linear-gradient(120deg, #a5b4fc, #f0abfc 55%, #7dd3fc);
+/* White title with one band of gradient color that sweeps from the first word to the last, then starts again at the
+   first. The image is 3× the text's width with the band in its middle: at 100% the band sits just left of the text,
+   at 0% just right of it, so each pass enters at "Build" and leaves after "faster". On an inner span, so the h1's
+   fade-up entrance animation stays; the band crosses the line break as one */
+.hero__shine {
+  background: linear-gradient(90deg, #fff 40%, #a5b4fc 44%, #f0abfc 50%, #7dd3fc 56%, #fff 60%) 100%
+    50% / 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero-shine 4s linear infinite;
+}
+
+@keyframes hero-shine {
+  to {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__shine {
+    animation: none;
+  }
 }
 
 .hero__lead {
