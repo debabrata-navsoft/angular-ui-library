@@ -36,11 +36,15 @@
   user-select: none;
 }
 
+/* Extra shade over the banner's wordmark (right of center) and tagline (bottom) so they stay in the background */
 .hero__bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 55% at 50% 50%, rgb(2 6 23 / 0.6), rgb(2 6 23 / 0.25));
+  background:
+    radial-gradient(ellipse 58% 32% at 68% 47%, rgb(2 6 23 / 0.72), transparent 80%),
+    linear-gradient(to top, rgb(2 6 23 / 0.78), transparent 24%),
+    radial-gradient(ellipse 60% 55% at 50% 50%, rgb(2 6 23 / 0.6), rgb(2 6 23 / 0.25));
 }
 
 .hero__banner {
@@ -60,6 +64,11 @@
     max-width: none;
     height: 180%;
     translate: -23% -46%;
+  }
+
+  /* The wordmark and tagline are cropped out here: keep only the base wash, not the NP mark shaded */
+  .hero__bg::after {
+    background: radial-gradient(ellipse 60% 55% at 50% 50%, rgb(2 6 23 / 0.6), rgb(2 6 23 / 0.25));
   }
 }
 
