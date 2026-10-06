@@ -503,6 +503,17 @@ h3 {
   text-decoration: none;
 }
 
+.quickstart__text code {
+  padding: 2px 7px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-surface);
+  color: var(--ui-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
 .code {
   overflow: hidden;
   border: 1px solid #1e293b;
