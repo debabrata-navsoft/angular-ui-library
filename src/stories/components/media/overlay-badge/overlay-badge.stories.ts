@@ -5,6 +5,7 @@ import { SIZES, TONES } from '../../../utils/types';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { IconComponent } from '../icon/icon.component';
 import { OverlayBadgeComponent } from './overlay-badge.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const POSITIONS = ['top-right', 'top-left', 'bottom-right', 'bottom-left'];
 const bound = `[max]="max" [dot]="dot" [showZero]="showZero" [hidden]="hidden" [severity]="severity" [position]="position" [size]="size"`;
@@ -70,3 +71,8 @@ export const OnAvatarAndButton: Story = row(`
     <button type="button" class="ui-btn"><np-icon name="shopping-cart" [size]="16" /> Cart</button>
   </np-overlay-badge>
 `);
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

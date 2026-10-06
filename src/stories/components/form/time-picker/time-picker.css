@@ -45,7 +45,7 @@
   height: 32px;
   padding: 0;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
   background: none;
   color: var(--ui-text-muted);
   cursor: pointer;

@@ -101,9 +101,26 @@
     var(--ui-surface-muted);
 }
 
-/* Form fields and wide components get a sensible width in the preview */
-.preview > :not(np-button, np-badge, np-tag, np-avatar, np-icon, np-spinner, np-chip, np-toggle, np-checkbox) {
+/* Holds the component and the appearance classes. Compact components (buttons, badges) sit at their own size;
+   form fields and bars get a sensible width (the component itself is created at runtime, so scoped CSS can't reach it) */
+.preview__item {
+  display: flex;
+  justify-content: center;
+}
+
+.preview__item--wide {
+  display: block;
   width: min(100%, 420px);
+}
+
+.appearance {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px dashed var(--ui-border-strong);
+  border-radius: var(--ui-radius-lg);
+  background: var(--ui-surface-muted);
 }
 
 .controls {

@@ -5,6 +5,7 @@ import { fn } from 'storybook/test';
 import type { MenuItem } from '../../../utils/types';
 import { ButtonComponent } from '../../form/button/button.component';
 import { MenuComponent } from './menu.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const grouped: MenuItem[] = [
   {
@@ -61,3 +62,8 @@ export const WithIconsAndBadges: Story = {
     ],
   },
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { TabsComponent } from './tabs.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<TabsComponent> = {
   title: 'Components/Panel/Tabs',
@@ -23,3 +24,8 @@ type Story = StoryObj<TabsComponent>;
 export const Default: Story = { args: { activeTab: 'profile' } };
 
 export const SecondTabActive: Story = { args: { activeTab: 'account' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

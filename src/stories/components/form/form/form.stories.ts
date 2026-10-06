@@ -9,6 +9,7 @@ import { fn } from 'storybook/test';
 
 import { IconComponent } from '../../media/icon/icon.component';
 import { FormComponent, type FormField, type FormOption } from './form.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const options = (...labels: string[]): FormOption[] =>
   labels.map((label) => ({ value: label.toLowerCase().replace(/\s+/g, '-'), label }));
@@ -580,3 +581,8 @@ export const Prefilled: Story = {
 export const Loading: Story = { args: { ...ContactUs.args, loading: true } };
 
 export const Disabled: Story = { args: { ...SignUp.args, disabled: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Login example */
+const appearance = appearanceStories(meta, Login);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

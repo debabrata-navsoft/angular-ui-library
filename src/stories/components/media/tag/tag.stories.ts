@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { TAG_SEVERITIES, TagComponent } from './tag.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<TagComponent> = {
   title: 'Components/Media/Tag',
@@ -43,3 +44,8 @@ export const WithIcon: Story = {
 };
 
 export const Rounded: Story = { args: { value: 'Rounded', rounded: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

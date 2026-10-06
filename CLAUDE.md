@@ -109,9 +109,14 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      Landing-page links (`managerHref(PAGES.x)`) are short URLs that preview.ts opens in place
                      (SELECT_STORY), without reloading Storybook
                      docs-page.ts is every component's docs page (parameters.docs.page in preview.ts): Storybook's layout,
-                     but "Show code" has Angular | React | Next.js | Vue | HTML tabs. Angular is Storybook's snippet; the
-                     others come from framework-snippets.ts (story args + template → Web Component code; Angular-only
-                     templates fall back to the args). Plain .ts with createElement: the builder doesn't serve .tsx
+                     but "Show code" has Angular | React | Next.js | Vue | HTML tabs, all from framework-snippets.ts.
+                     Angular (angularSnippet): a standalone component importing from 'nexprime', with the story's
+                     template as written (or the component with its args) and the values it uses as fields (signals
+                     as signal()). The others: story args + template → Web Component code; @for/@if/@switch/@let are
+                     expanded with the story's values, #refs become ids (Vue refs), `(clicked)="menu.toggle($event)"`
+                     and `(clicked)="visible = true"` (set on the element bound to `visible`) become real handlers,
+                     and a Carousel <ng-template> becomes one child per item. Left as a "Simplified" note: other
+                     <ng-template>s and element refs passed as inputs. Plain .ts with createElement: the builder doesn't serve .tsx
                      manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
                      icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
                      Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts
@@ -151,6 +156,12 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Selected/active states use `background: var(--ui-gradient)` with white text. Hover changes color, background, border or shadow only (e.g. `--ui-primary-soft`). Never move elements on hover (no `translateY` lift). `:focus-visible` uses `box-shadow: var(--ui-ring)`.
 - Alert and Toast show a round tone icon: `<span class="ui-tone-icon">{{ icons[type()] }}</span>` with `TONE_ICONS`.
 - Color variants: add the class `tone-<tone>` and read `--tone-bg`, `--tone-fg`, `--tone-border`, `--tone-solid`. Type the input as `Tone` from `utils/types.ts` (`info | success | warning | danger | neutral`).
+- Appearance classes (theme.css) work on every component: `np-color-<primary|secondary|success|info|warning|danger|help|contrast>`
+  overrides `--ui-primary`/`--ui-accent` (and re-declares `--ui-gradient`, `--ui-primary-soft`, the ring, which are
+  computed where declared) and `np-shape-<pill|rounded|square>` overrides `--ui-radius-sm/-/-lg/-full`. So components
+  must take colors and radii from the tokens: fully round parts use `var(--ui-radius-full)`, never `999px`.
+- Button (`np-button`) has `severity` (BUTTON_SEVERITIES), `variant` solid | outlined | text | soft, `shape` pill |
+  rounded | square, `icon` + `iconPos`, `loading`, `disabled`; each severity sets `--btn`/`--btn-fg` in button.css.
 - Form fields: wrap in `.ui-field`, with `.ui-label`, `.ui-control` (on input/select/textarea), `.ui-hint` and `.ui-error`. `aria-invalid="true"` on a `.ui-control` gives it a red border.
 - Buttons inside components use the shared `.ui-btn` classes: `.ui-btn--primary` (gradient), `--danger`, `--text` (combine with `--danger` for red text), `--sm`, `--icon`. Don't write component-local button CSS.
 - Close buttons use `.ui-close`. Screen-reader-only text uses `.ui-visually-hidden`.
@@ -253,6 +264,12 @@ export const Disabled: Story = { args: { disabled: true } };      // keep short 
 - Use a `render` template when the component needs projected content, a trigger button (Modal, Toast), or several instances in one story (`AllTypes`/`AllVariants`).
 - Overlays (Modal, Toast) set `parameters.docs.story = { inline: false, height }` so they render inside the docs page.
 - To reuse another component in a story template, add `decorators: [moduleMetadata({ imports: [ButtonComponent] })]`.
+- Every component's docs page shows its examples first and the API table (Controls) last (`.storybook/docs-page.ts`).
+- Each component's stories end with the appearance examples, built from its main (or a checked/filled) story:
+  `const appearance = appearanceStories(meta, Default); export const AppearanceColors = appearance.colors;
+  export const AppearanceShapes = appearance.shapes;` (`utils/appearance-stories.ts`: one copy per `np-color-*` /
+  `np-shape-*` class). Left out where copies would stack: fixed overlays (Toast, Dialog, Modal, Bottom Sheet, Scroll
+  Top), Page, Lottie, the hidden Menu Item, and Button (it has its own Severities/Variants/Shapes stories).
 
 ## Adding a component
 

@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import type { TreeNode } from '../../../utils/types';
 import { TreeComponent } from './tree.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const files: TreeNode[] = [
   {
@@ -91,3 +92,8 @@ export const ExpandCollapseAll: Story = {
     `,
   }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

@@ -3,6 +3,7 @@ import { moduleMetadata } from '@storybook/angular-vite';
 
 import { ButtonComponent } from '../../form/button/button.component';
 import { TooltipComponent } from './tooltip.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<TooltipComponent> = {
   title: 'Components/Overlay/Tooltip',
@@ -40,3 +41,8 @@ export const Bottom: Story = { args: { position: 'bottom' } };
 export const Left: Story = { args: { position: 'left' } };
 
 export const Right: Story = { args: { position: 'right' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Top example */
+const appearance = appearanceStories(meta, Top);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

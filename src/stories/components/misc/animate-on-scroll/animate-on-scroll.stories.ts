@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { AnimateOnScrollComponent, SCROLL_ANIMATIONS } from './animate-on-scroll.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const scroller =
   'height: 400px; overflow-y: auto; padding: 0 24px; border: 1px solid var(--ui-border); border-radius: var(--ui-radius-lg); background: var(--ui-surface-muted)';
@@ -62,3 +63,8 @@ export const AllAnimations: Story = {
 
 /** With once=false the animation replays every time a card scrolls back into view */
 export const Replay: Story = { args: { once: false, animation: 'zoom-in' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

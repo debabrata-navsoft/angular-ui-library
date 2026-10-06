@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { TableComponent } from './table.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<TableComponent> = {
   title: 'Components/Data/Table',
@@ -46,3 +47,8 @@ export const Empty: Story = {
     emptyMessage: 'No users found',
   },
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

@@ -23,7 +23,7 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-gradient);
   color: #fff;
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
@@ -51,7 +51,7 @@
   width: 2px;
   min-height: 24px;
   margin: 6px 0;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-border);
 }
 

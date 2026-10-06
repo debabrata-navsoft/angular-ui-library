@@ -3,7 +3,12 @@ import type { Type } from '@angular/core';
 
 import { CheckboxComponent } from '../../components/form/checkbox/checkbox.component';
 import { ChipComponent } from '../../components/form/chip/chip.component';
-import { ButtonComponent } from '../../components/form/button/button.component';
+import {
+  BUTTON_SEVERITIES,
+  BUTTON_SHAPES,
+  BUTTON_VARIANTS,
+  ButtonComponent,
+} from '../../components/form/button/button.component';
 import { SearchInputComponent } from '../../components/form/search-input/search-input.component';
 import { TextInputComponent } from '../../components/form/text-input/text-input.component';
 import { TextareaComponent } from '../../components/form/textarea/textarea.component';
@@ -36,6 +41,8 @@ export interface PlaygroundItem {
   component: Type<unknown>;
   /** Class name for the Angular import */
   className: string;
+  /** Shown at its own size in the preview (buttons, badges); the others (fields, bars, alerts) get a fixed width */
+  compact?: boolean;
   controls: Control[];
 }
 
@@ -52,11 +59,22 @@ const select = (name: string, options: readonly string[], value: string, fallbac
 export const PLAYGROUND: PlaygroundItem[] = [
   {
     tag: 'button',
+    compact: true,
     label: 'Button',
     group: 'Form',
     component: ButtonComponent,
     className: 'ButtonComponent',
-    controls: [text('label', 'Get started', 'Button'), bool('primary', true), select('size', SIZES, 'medium')],
+    controls: [
+      text('label', 'Get started', 'Button'),
+      select('severity', ['', ...BUTTON_SEVERITIES], 'primary', ''),
+      select('variant', BUTTON_VARIANTS, 'solid'),
+      select('shape', BUTTON_SHAPES, 'pill'),
+      select('size', SIZES, 'medium'),
+      text('icon', 'arrow-right'),
+      select('iconPos', ['left', 'right'], 'right', 'left'),
+      bool('loading'),
+      bool('disabled'),
+    ],
   },
   {
     tag: 'text-input',
@@ -89,6 +107,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'toggle',
+    compact: true,
     label: 'Toggle',
     group: 'Form',
     component: ToggleComponent,
@@ -97,6 +116,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'checkbox',
+    compact: true,
     label: 'Checkbox',
     group: 'Form',
     component: CheckboxComponent,
@@ -105,6 +125,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'chip',
+    compact: true,
     label: 'Chip',
     group: 'Form',
     component: ChipComponent,
@@ -121,6 +142,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'badge',
+    compact: true,
     label: 'Badge',
     group: 'Media',
     component: BadgeComponent,
@@ -129,6 +151,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'tag',
+    compact: true,
     label: 'Tag',
     group: 'Media',
     component: TagComponent,
@@ -142,6 +165,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'avatar',
+    compact: true,
     label: 'Avatar',
     group: 'Media',
     component: AvatarComponent,
@@ -154,6 +178,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'icon',
+    compact: true,
     label: 'Icon',
     group: 'Media',
     component: IconComponent,
@@ -191,6 +216,7 @@ export const PLAYGROUND: PlaygroundItem[] = [
   },
   {
     tag: 'spinner',
+    compact: true,
     label: 'Spinner',
     group: 'Feedback',
     component: SpinnerComponent,

@@ -75,6 +75,54 @@ The theme menu in this Storybook's toolbar tries the built-in palettes: Indigo (
 Violet, Purple, Fuchsia, Pink, Rose, Red, Orange, Amber, Green, Emerald, Teal, Cyan, Sky, Blue, Slate, Navy,
 Midnight, Plum, Wine, Brown, Forest, Ocean and Graphite.
 
+## Color and shape per component
+
+Add an appearance class to **any** component (or a wrapper around several) to recolor or reshape it and everything
+inside it. It works the same in Angular, React (`className`), Vue and HTML:
+
+```html
+<np-select class="np-color-success np-shape-rounded" label="Status" />
+<np-button class="np-color-danger" primary label="Delete" />
+<div class="np-shape-square">… every component in here has square corners …</div>
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Values</th>
+      <th>What it changes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>np-color-*</code>
+      </td>
+      <td>
+        <code>primary</code>{' '}<code>secondary</code>{' '}<code>success</code>{' '}<code>info</code>{' '}<code>warning</code>{' '}
+        <code>danger</code>{' '}<code>help</code>{' '}<code>contrast</code>
+      </td>
+      <td>The brand color: selected states, focus ring, gradient, checked toggles and checkboxes, progress, links</td>
+    </tr>
+    <tr>
+      <td>
+        <code>np-shape-*</code>
+      </td>
+      <td>
+        <code>pill</code>{' '}<code>rounded</code>{' '}<code>square</code>
+      </td>
+      <td>The corner radius of fields, buttons, chips, badges, tracks and cards</td>
+    </tr>
+  </tbody>
+</table>
+
+Components with their own color input (Badge and Alert `variant`, Tag `severity`, Button `severity`) keep that color.
+The **Playground** has a color and shape picker that works on every component.
+
+**Button** also has its own options: `severity` (the 8 colors above), `variant` (`solid` | `outlined` | `text` |
+`soft`), `shape` (`pill` | `rounded` | `square`), `icon` with `iconPos`, `loading` and `disabled`.
+
 ## Design tokens
 
 All of them can be overridden on `:root` (or on any element, to restyle one area):
@@ -110,7 +158,7 @@ All of them can be overridden on `:root` (or on any element, to restyle one area
     <tr>
       <td>Status</td>
       <td>
-        <code>--ui-success</code>{' '}<code>--ui-warning</code>{' '}<code>--ui-danger</code>
+        <code>--ui-success</code>{' '}<code>--ui-warning</code>{' '}<code>--ui-danger</code>{' '}<code>--ui-info</code>{' '}<code>--ui-help</code>
       </td>
     </tr>
     <tr>

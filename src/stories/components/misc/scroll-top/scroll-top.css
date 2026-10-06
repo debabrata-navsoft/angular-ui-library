@@ -38,7 +38,7 @@
   height: 52px;
   padding: 0;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-gradient);
   box-shadow: var(--ui-shadow-lg);
   color: #fff;

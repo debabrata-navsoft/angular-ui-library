@@ -135,7 +135,7 @@ small {
   width: 56px;
   height: 56px;
   margin-bottom: 6px;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-primary-soft);
   color: var(--ui-primary);
 }

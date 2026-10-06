@@ -3,7 +3,7 @@
   display: inline-flex;
   gap: 4px;
   padding: 4px;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-surface-sunken);
   box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06);
 }
@@ -11,7 +11,7 @@
 .tab {
   padding: 8px 18px;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: none;
   color: var(--ui-text-muted);
   font: inherit;

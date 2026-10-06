@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { HelpfulComponent } from './helpful.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<HelpfulComponent> = {
   title: 'Components/Feedback/Helpful',
@@ -33,3 +34,8 @@ export const CustomLabels: Story = {
     noCount: 0,
   },
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

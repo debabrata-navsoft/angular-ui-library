@@ -6,10 +6,15 @@ import { SelectComponent } from '../../components/form/select/select.component';
 import { TextInputComponent } from '../../components/form/text-input/text-input.component';
 import { ToggleComponent } from '../../components/form/toggle/toggle.component';
 import { FRAMEWORKS, elementCode, type Framework } from '../../utils/framework-code';
+import { APPEARANCE_COLORS, APPEARANCE_SHAPES } from '../../utils/types';
 import { FrameworkCodeComponent } from '../framework-code/framework-code.component';
 import { PLAYGROUND, type Control, type PlaygroundItem } from './playground-data';
 
 type Values = Record<string, string | number | boolean>;
+
+/** Select options; the empty value (no choice) gets `empty` as its label */
+const toOptions = (values: readonly string[], empty: string) =>
+  values.map((value) => ({ value, label: value || empty }));
 
 const startValues = (item: PlaygroundItem): Values =>
   Object.fromEntries(item.controls.map((c) => [c.name, c.value]));
@@ -37,8 +42,21 @@ export class PlaygroundComponent {
   protected readonly selected = signal(PLAYGROUND[0]);
   protected readonly values = signal<Values>(startValues(PLAYGROUND[0]));
 
-  /** Inputs for the live component */
-  protected readonly inputs = computed(() => this.values());
+  /** Appearance classes (theme.css) that recolor and reshape any component; no class is the theme's own */
+  protected readonly colorOptions = toOptions(
+    ['', ...APPEARANCE_COLORS.filter((c) => c !== 'primary')],
+    '(theme)',
+  );
+  protected readonly shapeOptions = toOptions(['', ...APPEARANCE_SHAPES], '(default)');
+  protected readonly color = signal('');
+  protected readonly shape = signal('');
+  protected readonly appearance = computed(() =>
+    [this.color() && 'np-color-' + this.color(), this.shape() && 'np-shape-' + this.shape()]
+      .filter(Boolean)
+      .join(' '),
+  );
+
+  protected readonly wide = computed(() => !this.selected().compact);
 
   /** The component as code, with only the inputs that differ from its defaults */
   protected readonly code = computed(() => {
@@ -53,7 +71,10 @@ export class PlaygroundComponent {
       inputs[control.name] = value === false ? 'false' : value;
     }
     return Object.fromEntries(
-      FRAMEWORKS.map(({ value: framework }) => [framework, elementCode(framework, { tag: item.tag, inputs })]),
+      FRAMEWORKS.map(({ value: framework }) => [
+        framework,
+        elementCode(framework, { tag: item.tag, inputs, classes: this.appearance() }),
+      ]),
     ) as Record<Framework, string>;
   });
 
@@ -64,6 +85,8 @@ export class PlaygroundComponent {
 
   protected reset() {
     this.values.set(startValues(this.selected()));
+    this.color.set('');
+    this.shape.set('');
   }
 
   protected set(name: string, value: string | number | boolean | null) {
@@ -84,6 +107,6 @@ export class PlaygroundComponent {
   }
 
   protected options(control: Control & { type: 'select' }) {
-    return control.options.map((value) => ({ value, label: value || '(none)' }));
+    return toOptions(control.options, '(none)');
   }
 }

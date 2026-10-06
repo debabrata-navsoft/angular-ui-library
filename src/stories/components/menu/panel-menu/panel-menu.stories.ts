@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import type { MenuItem } from '../../../utils/types';
 import { PanelMenuComponent } from './panel-menu.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const items: MenuItem[] = [
   {
@@ -55,3 +56,8 @@ type Story = StoryObj<PanelMenuComponent>;
 export const Default: Story = {};
 
 export const Multiple: Story = { args: { multiple: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

@@ -62,7 +62,7 @@
 .pick-list-count {
   min-width: 24px;
   padding: 3px 9px;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-surface);
   box-shadow: inset 0 0 0 1px var(--ui-border);
   color: var(--ui-primary);

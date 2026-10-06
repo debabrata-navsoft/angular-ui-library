@@ -39,14 +39,18 @@ export interface ElementCode {
   inputs: Record<string, string | number | boolean | null | undefined>;
   /** Inline styles, e.g. { color: '#f43f5e' } */
   style?: Record<string, string>;
+  /** CSS classes, e.g. the appearance classes 'np-color-success np-shape-rounded' (className in JSX) */
+  classes?: string;
 }
 
 export const kebab = (name: string) => name.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 export const camel = (name: string) => name.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** A NexPrime component as Angular markup or as its Web Component (React, Next.js, Vue, HTML) */
-export function elementCode(framework: Framework, { tag, inputs, style = {} }: ElementCode) {
+export function elementCode(framework: Framework, { tag, inputs, style = {}, classes = '' }: ElementCode) {
   const element = `np-${tag}`;
+  const jsx = framework === 'react' || framework === 'next';
+  const classAttr = classes ? [`${jsx ? 'className' : 'class'}="${classes}"`] : [];
   const set = Object.entries(inputs).filter(
     (entry): entry is [string, string | number | true] => entry[1] !== false && entry[1] != null,
   );
@@ -54,14 +58,14 @@ export function elementCode(framework: Framework, { tag, inputs, style = {} }: E
     const attrs = set.map(([k, v]) =>
       v === true ? k : typeof v === 'number' ? `[${k}]="${v}"` : `${k}="${v}"`,
     );
-    return `<${[element, ...attrs, ...cssAttribute(style)].join(' ')} />`;
+    return `<${[element, ...classAttr, ...attrs, ...cssAttribute(style)].join(' ')} />`;
   }
   const attrs = set.map(([k, v]) => (v === true ? kebab(k) : `${kebab(k)}="${v}"`));
-  if (framework === 'react' || framework === 'next') {
-    return `<${[element, ...attrs, jsxStyle(style)].filter(Boolean).join(' ')} />`;
+  if (jsx) {
+    return `<${[element, ...classAttr, ...attrs, jsxStyle(style)].filter(Boolean).join(' ')} />`;
   }
   // Custom elements can't self-close in HTML; Vue templates allow it
-  const open = [element, ...attrs, ...cssAttribute(style)].join(' ');
+  const open = [element, ...classAttr, ...attrs, ...cssAttribute(style)].join(' ');
   return framework === 'vue' ? `<${open} />` : `<${open}></${element}>`;
 }
 

@@ -25,7 +25,25 @@
   </header>
 
   <div class="preview">
-    <ng-container *ngComponentOutlet="selected().component; inputs: inputs()" />
+    <div class="preview__item" [class.preview__item--wide]="wide()" [class]="appearance()">
+      <ng-container *ngComponentOutlet="selected().component; inputs: values()" />
+    </div>
+  </div>
+
+  <!-- Works on every component: the np-color-* and np-shape-* classes from theme.css -->
+  <div class="appearance">
+    <np-select
+      label="color (any component)"
+      [options]="colorOptions"
+      [value]="color()"
+      (valueChange)="color.set($event)"
+    />
+    <np-select
+      label="shape (any component)"
+      [options]="shapeOptions"
+      [value]="shape()"
+      (valueChange)="shape.set($event)"
+    />
   </div>
 
   <div class="controls">

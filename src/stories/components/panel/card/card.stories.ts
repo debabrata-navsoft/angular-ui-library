@@ -3,6 +3,7 @@ import { moduleMetadata } from '@storybook/angular-vite';
 
 import { IconComponent } from '../../media/icon/icon.component';
 import { CardComponent } from './card.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const text =
   'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae ' +
@@ -97,3 +98,8 @@ export const ImageOnly: Story = {
   args: { image: 'https://picsum.photos/seed/aurora-mountains/760/400', imageAlt: 'Mountains' },
   render: (args) => ({ props: args, template: card(args, 'A quiet morning in the mountains.') }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

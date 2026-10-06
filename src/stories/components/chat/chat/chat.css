@@ -179,7 +179,7 @@
 
 .chat__send {
   flex: none;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
 }
 
 @keyframes chat-in {

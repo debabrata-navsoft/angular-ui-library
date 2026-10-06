@@ -4,6 +4,7 @@ import { fn } from 'storybook/test';
 
 import { TextInputComponent } from '../../form/text-input/text-input.component';
 import { InplaceComponent } from './inplace.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 /** Wraps display + content markup in an <np-inplace> bound to the story args */
 const inplace = (display: string, content: string) => `
@@ -63,3 +64,8 @@ export const Image: Story = {
 export const Closable: Story = { args: { closable: true } };
 
 export const Disabled: Story = { args: { disabled: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

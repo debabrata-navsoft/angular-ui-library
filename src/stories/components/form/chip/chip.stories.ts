@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { ChipComponent } from './chip.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<ChipComponent> = {
   title: 'Components/Form/Chip',
@@ -41,3 +42,8 @@ export const Group: Story = {
     `,
   }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

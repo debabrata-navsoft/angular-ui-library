@@ -2,6 +2,7 @@ import { argsToTemplate, type Meta, type StoryObj } from '@storybook/angular-vit
 import { fn } from 'storybook/test';
 
 import { CarouselComponent } from './carousel.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const products = [
   { name: 'Aurora Headphones', price: 199, tag: 'New', seed: 'headphones' },
@@ -80,3 +81,8 @@ export const ImageSlider: Story = {
 
 /** Dots only, no arrows */
 export const IndicatorsOnly: Story = { args: { showNavigators: false, numVisible: 2 } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

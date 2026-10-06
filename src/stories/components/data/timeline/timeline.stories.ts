@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { TimelineComponent, type TimelineEvent } from './timeline.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const step = (...[status, date, icon, description, tone]: string[]) =>
   ({ status, date, icon, description, tone }) as TimelineEvent;
@@ -68,3 +69,8 @@ export const CustomContent: Story = {
     `,
   }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

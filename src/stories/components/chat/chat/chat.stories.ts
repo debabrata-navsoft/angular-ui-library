@@ -8,6 +8,7 @@ import {
 import { fn } from 'storybook/test';
 
 import { ChatComponent, type ChatMessage } from './chat.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const at = (minutesAgo: number) => new Date(Date.now() - minutesAgo * 60_000);
 
@@ -103,3 +104,8 @@ export const Group: Story = {
 export const Typing: Story = { args: { typing: true } };
 
 export const Empty: Story = { args: { messages: [], height: '320px' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

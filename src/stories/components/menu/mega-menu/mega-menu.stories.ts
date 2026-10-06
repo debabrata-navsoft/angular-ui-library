@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import type { MenuItem } from '../../../utils/types';
 import { MegaMenuComponent } from './mega-menu.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 /** Build a column of sections, each a heading + links */
 const column = (...sections: [string, string[]][]): MenuItem => ({
@@ -57,3 +58,8 @@ type Story = StoryObj<MegaMenuComponent>;
 export const Horizontal: Story = {};
 
 export const Vertical: Story = { args: { orientation: 'vertical' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Horizontal example */
+const appearance = appearanceStories(meta, Horizontal);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

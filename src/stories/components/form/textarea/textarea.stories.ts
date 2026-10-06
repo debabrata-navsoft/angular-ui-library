@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { TextareaComponent } from './textarea.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<TextareaComponent> = {
   title: 'Components/Form/Textarea',
@@ -22,3 +23,8 @@ export const Default: Story = {};
 export const WithCounter: Story = { args: { maxLength: 200 } };
 
 export const Disabled: Story = { args: { value: 'This textarea is disabled.', disabled: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

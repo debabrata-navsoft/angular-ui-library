@@ -5,6 +5,7 @@ import { fn } from 'storybook/test';
 import type { MenuItem } from '../../../utils/types';
 import { SearchInputComponent } from '../../form/search-input/search-input.component';
 import { MenubarComponent } from './menubar.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const items: MenuItem[] = [
   { label: 'Home', icon: 'house' },
@@ -72,3 +73,8 @@ export const Narrow: Story = {
     componentWrapperDecorator((story) => `<div style="max-width: 420px">${story}</div>`),
   ],
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

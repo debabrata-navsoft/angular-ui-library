@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { TONES } from '../../../utils/types';
 import { ProgressBarComponent } from './progress-bar.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<ProgressBarComponent> = {
   title: 'Components/Feedback/Progress Bar',
@@ -24,3 +25,8 @@ export const Complete: Story = { args: { value: 100, variant: 'success' } };
 export const Warning: Story = { args: { value: 75, variant: 'warning' } };
 
 export const WithoutLabel: Story = { args: { value: 60, showLabel: false } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

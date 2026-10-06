@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { ImageUploadComponent } from './image-upload.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<ImageUploadComponent> = {
   title: 'Components/Form/Image Upload',
@@ -22,3 +23,8 @@ export const Circle: Story = { args: { shape: 'circle', width: '140px', label: '
 export const WithImage: Story = { args: { value: 'https://picsum.photos/400' } };
 
 export const Disabled: Story = { args: { disabled: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

@@ -46,7 +46,7 @@
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-surface-sunken);
   color: var(--ui-text-muted);
   font-size: 12px;

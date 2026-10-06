@@ -1,7 +1,7 @@
 /**
  * Autodocs page for every component: Storybook's usual layout (title, description, primary story, controls,
- * stories), but each story's "Show code" has framework tabs. Angular is Storybook's own snippet; React, Next.js,
- * Vue and HTML come from framework-snippets.ts. Set in preview.ts (parameters.docs.page).
+ * stories), but each story's "Show code" has framework tabs, all built by framework-snippets.ts: Angular (a
+ * component importing from 'nexprime'), React, Next.js, Vue and HTML. Set in preview.ts (parameters.docs.page).
  * Plain .ts with createElement: the Angular Vite builder doesn't serve .tsx files.
  */
 import {
@@ -27,9 +27,14 @@ import {
 
 import { PAGES, managerHref } from '../src/stories/getting-started/landing';
 import { FRAMEWORKS, setupNote, type Framework } from '../src/stories/utils/framework-code';
-import { frameworkSnippets, type StoryLike, type WebFramework } from './framework-snippets';
+import {
+  angularSnippet,
+  frameworkSnippets,
+  type StoryLike,
+} from './framework-snippets';
 
-const LANGUAGE: Record<WebFramework, string> = {
+const LANGUAGE: Record<Framework, string> = {
+  angular: 'typescript',
   react: 'tsx',
   next: 'tsx',
   vue: 'html',
@@ -37,10 +42,24 @@ const LANGUAGE: Record<WebFramework, string> = {
 };
 
 /** Setup note under the generated code; Next.js snippets here use the NexPrime wrapper (nexprime/react) */
-const note = (framework: WebFramework) =>
-  framework === 'next'
-    ? 'npm install nexprime. Uses the NexPrime wrapper from nexprime/react, which loads the elements in the browser.'
-    : setupNote(framework);
+const NOTES: Partial<Record<Framework, string>> = {
+  angular: 'npm install nexprime, and load nexprime/styles/theme.css once.',
+  next: 'npm install nexprime. Uses the NexPrime wrapper from nexprime/react, which loads the elements in the browser.',
+};
+const note = (framework: Framework) => NOTES[framework] ?? setupNote(framework);
+
+/** Every framework's code for a story (null for a framework that can't be built), once "Show code" opens */
+function buildSnippets(story: PreparedStory): Partial<Record<Framework, string | null>> {
+  const attempt = <T>(build: () => T) => {
+    try {
+      return build();
+    } catch (error) {
+      console.warn('NexPrime docs: could not build a code snippet', error);
+      return null;
+    }
+  };
+  return { angular: attempt(() => angularSnippet(story)), ...attempt(() => frameworkSnippets(story)) };
+}
 
 const GUIDE = managerHref(PAGES.getStarted);
 
@@ -86,16 +105,12 @@ type PreparedStory = StoryLike & {
 function StoryCode({ story }: { story: PreparedStory }) {
   const [open, setOpen] = useState(false);
   const framework = useSyncExternalStore(subscribe, () => current);
-  const snippets = useMemo(() => {
-    try {
-      return frameworkSnippets(story);
-    } catch (error) {
-      console.warn('NexPrime docs: could not build framework snippets', error);
-      return null;
-    }
-  }, [story]);
+  // Built on first open, not for every story on the page
+  const snippets = useMemo(() => (open ? buildSnippets(story) : {}), [open, story]);
   // Only Angular when the component has no Web Component
-  const shown: Framework = snippets ? framework : 'angular';
+  const web = !!snippets.html;
+  const shown: Framework = web ? framework : 'angular';
+  const code = snippets[shown];
 
   const toggle = h(
     'button',
@@ -110,7 +125,7 @@ function StoryCode({ story }: { story: PreparedStory }) {
   );
   const tabs =
     open &&
-    snippets &&
+    web &&
     h(
       'div',
       { className: 'np-code__tabs', role: 'tablist', 'aria-label': 'Framework' },
@@ -129,27 +144,28 @@ function StoryCode({ story }: { story: PreparedStory }) {
         ),
       ),
     );
-  const code =
+  const panel =
     open &&
-    (shown === 'angular' || !snippets
-      ? h(Source, { of: story.moduleExport as never, dark: true })
-      : h(
+    (code
+      ? h(
           Fragment,
           null,
-          h(Source, { code: snippets[shown], language: LANGUAGE[shown] as never, dark: true }),
+          h(Source, { code, language: LANGUAGE[shown] as never, dark: true }),
           h(
             'p',
             { className: 'np-code__note' },
             note(shown) + ' ',
             h('a', { href: GUIDE, target: '_top' }, 'Setup guide'),
           ),
-        ));
+        )
+      : // Storybook's own snippet, when ours can't be built
+        h(Source, { of: story.moduleExport as never, dark: true }));
 
   return h(
     'div',
     { className: 'np-code' },
     h('div', { className: 'np-code__bar' }, toggle, tabs),
-    code,
+    panel,
   );
 }
 
@@ -173,6 +189,7 @@ export function NexDocsPage() {
   ).filter((story) => !story.parameters?.['docs']?.disable);
   const [primary, ...rest] = stories;
 
+  // Like PrimeNG's docs: every example first, the API (inputs and outputs table) at the end
   return h(
     Fragment,
     null,
@@ -180,13 +197,14 @@ export function NexDocsPage() {
     h(Subtitle),
     h(Description, { of: 'meta' }),
     primary && h(StoryBlock, { story: primary, primary: true }),
-    h(Controls),
     rest.length > 0 &&
       h(
         Fragment,
         null,
-        h(Heading, null, 'Stories'),
+        h(Heading, null, 'Examples'),
         rest.map((story) => h(StoryBlock, { key: story.id, story })),
       ),
+    h(Heading, null, 'API'),
+    h(Controls),
   );
 }

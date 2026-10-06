@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import { SIZES } from '../../../utils/types';
 import { InputOtpComponent } from './input-otp.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<InputOtpComponent> = {
   title: 'Components/Form/Input OTP',
@@ -54,3 +55,8 @@ export const Invalid: Story = {
 };
 
 export const Disabled: Story = { args: { value: '12', disabled: true } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

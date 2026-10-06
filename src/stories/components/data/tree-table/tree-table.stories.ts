@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import type { TreeNode } from '../../../utils/types';
 import { TreeTableComponent } from './tree-table.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const folder = (
   key: string,
@@ -78,3 +79,8 @@ type Story = StoryObj<TreeTableComponent>;
 
 export const Default: Story = {};
 export const Selection: Story = { args: { selectionMode: 'single' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

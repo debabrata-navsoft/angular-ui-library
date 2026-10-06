@@ -22,7 +22,7 @@
 
 .carousel__nav {
   flex: none;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-full);
 }
 
 .carousel__viewport {
@@ -54,7 +54,7 @@
   height: 8px;
   padding: 0;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: var(--ui-border-strong);
   cursor: pointer;
   transition:

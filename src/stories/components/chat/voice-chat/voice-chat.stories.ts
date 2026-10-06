@@ -9,6 +9,7 @@ import { fn } from 'storybook/test';
 
 import type { ChatMessage } from '../chat/chat.component';
 import { VoiceChatComponent } from './voice-chat.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const greeting: ChatMessage[] = [
   { from: 'them', text: 'Hello! Tap the microphone and start speaking.' },
@@ -105,3 +106,8 @@ export const States: Story = {
     `,
   }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

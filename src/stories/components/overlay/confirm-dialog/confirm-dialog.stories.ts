@@ -6,6 +6,7 @@ import {
   type ConfirmDemoAction,
   ConfirmDialogDemoComponent,
 } from './confirm-dialog-demo.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<ConfirmDialogComponent> = {
   title: 'Components/Overlay/Confirm Dialog',
@@ -74,3 +75,8 @@ export const CustomLabels: Story = {
     },
   ]),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

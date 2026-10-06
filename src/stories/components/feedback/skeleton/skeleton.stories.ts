@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { SkeletonComponent } from './skeleton.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 /** <np-skeleton> with the given attributes, following the story's animation arg */
 const sk = (attrs: string) => `<np-skeleton ${attrs} [animation]="animation" />`;
@@ -104,3 +105,8 @@ export const TableLoading: Story = {
 };
 
 export const Pulse: Story = { args: { animation: 'pulse', height: '2rem' } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

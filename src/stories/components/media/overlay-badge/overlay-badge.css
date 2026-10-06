@@ -13,7 +13,7 @@
   min-width: var(--badge-size);
   height: var(--badge-size);
   padding: 0 5px;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-full);
   background: var(--tone-solid);
   /* Ring in the surface color separates the badge from the content under it */
   box-shadow: 0 0 0 2px var(--ui-surface);

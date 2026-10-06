@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { CHART_TYPES, ChartComponent, type ChartDataset } from './chart.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -90,3 +91,8 @@ export const Currency: Story = {
     ariaLabel: 'Monthly recurring revenue by plan',
   },
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Line example */
+const appearance = appearanceStories(meta, Line);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

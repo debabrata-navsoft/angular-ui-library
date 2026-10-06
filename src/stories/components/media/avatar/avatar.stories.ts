@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 
 import { SIZES } from '../../../utils/types';
 import { AvatarComponent } from './avatar.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const meta: Meta<AvatarComponent> = {
   title: 'Components/Media/Avatar',
@@ -40,3 +41,8 @@ export const Group: Story = {
     `,
   }),
 };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Initials example */
+const appearance = appearanceStories(meta, Initials);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

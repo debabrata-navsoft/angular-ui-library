@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { CalendarComponent } from './calendar.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 const today = new Date();
 const inDays = (n: number) => new Date(today.getFullYear(), today.getMonth(), today.getDate() + n);
@@ -89,3 +90,8 @@ export const TwoMonths: Story = {
 };
 
 export const Disabled: Story = { args: { disabled: true, value: today } };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;

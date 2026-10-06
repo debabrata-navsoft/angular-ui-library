@@ -2,6 +2,7 @@ import { argsToTemplate, type Meta, type StoryObj } from '@storybook/angular-vit
 import { fn } from 'storybook/test';
 
 import { PickListComponent } from './pick-list.component';
+import { appearanceStories } from '../../../utils/appearance-stories';
 
 interface Product {
   name: string;
@@ -72,3 +73,8 @@ export const WithFilter: Story = { args: { filter: true, filterPlaceholder: 'Sea
 
 /** Without a projected template each item shows its `optionLabel` property */
 export const PlainLabels: Story = { render: (args) => pickList(args) };
+
+/** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
+const appearance = appearanceStories(meta, Default);
+export const AppearanceColors = appearance.colors;
+export const AppearanceShapes = appearance.shapes;
