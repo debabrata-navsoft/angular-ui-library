@@ -19,7 +19,7 @@ npm run build:lib         # npm package "nexprime" (ng build nexprime-lib, ng-pa
                           # then build:elements; packaging/package-lib.mjs adds elements/ (nexprime/elements, for
                           # React/Vue/HTML) and react/ (nexprime/react: <NexPrime> wrapper, JSX types) from packaging/.
                           # packaging/ is outside src/ so the app's tsconfigs don't type-check its React typings
-npm run pack:lib          # build:lib + npm pack -> dist/nexprime-lib/nexprime-<version>.tgz; publish with
+npm run pack:lib          # build:lib + npm pack -> dist/nexprime-lib/nexprime-<version>.tgz. npm run publish:lib builds and publishes; or
                           # `cd dist/nexprime-lib && npm publish`. New components: export them in src/public-api.ts
 npm test                  # Vitest unit tests (*.spec.ts)
 npx ngc -p .storybook/tsconfig.json --noEmit   # Type-check all components + stories (incl. templates)
