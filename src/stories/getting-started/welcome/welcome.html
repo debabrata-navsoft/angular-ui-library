@@ -1,11 +1,6 @@
 <div class="welcome">
   <!-- Hero: the NexPrime banner as the background, with a particle network on top -->
-  <np-aurora
-    class="hero"
-    [colors]="['#6366f1', '#a855f7', '#ec4899', '#0ea5e9']"
-    [opacity]="0.55"
-    [blur]="90"
-  >
+  <section class="hero">
     <!-- Background: the NexPrime banner (public/nexprime-hero.svg), dimmed so the text reads on top -->
     <div class="hero__bg" aria-hidden="true">
       <img class="hero__banner" src="nexprime-hero.svg" alt="" width="1600" height="900" />
@@ -59,7 +54,7 @@
         </div>
       </div>
     </np-particles>
-  </np-aurora>
+  </section>
 
   <!-- Stats, floating over the hero's bottom edge -->
   <div class="stats">

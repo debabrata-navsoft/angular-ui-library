@@ -16,7 +16,6 @@ import { IconComponent } from '../../components/media/icon/icon.component';
 import { LottieComponent } from '../../components/media/lottie/lottie.component';
 import { TagComponent } from '../../components/media/tag/tag.component';
 import { AnimateOnScrollComponent } from '../../components/misc/animate-on-scroll/animate-on-scroll.component';
-import { AuroraComponent } from '../../effects/aurora/aurora.component';
 import { ParticlesComponent } from '../../effects/particles/particles.component';
 import { StarfieldComponent } from '../../effects/starfield/starfield.component';
 import { copyToClipboard } from '../../utils/clipboard';
@@ -46,7 +45,6 @@ export class Settings {
   selector: 'np-welcome-page',
   imports: [
     AnimateOnScrollComponent,
-    AuroraComponent,
     AvatarComponent,
     BadgeComponent,
     ButtonToggleComponent,

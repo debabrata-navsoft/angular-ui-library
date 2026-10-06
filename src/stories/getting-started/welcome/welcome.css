@@ -19,12 +19,11 @@
   min-height: 600px;
 }
 
+/* The dark gradient shows until the banner has loaded */
 .hero {
-  background: radial-gradient(ellipse at top, #1e1b4b 0%, #0b1020 60%, #020617 100%);
-}
-
-.hero__particles {
   position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at top, #1e1b4b 0%, #0b1020 60%, #020617 100%);
 }
 
 /* ---- hero background: the NexPrime banner (public/nexprime-hero.svg: NP mark, wordmark, tagline, light rays),
