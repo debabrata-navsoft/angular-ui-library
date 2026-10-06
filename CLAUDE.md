@@ -238,7 +238,8 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   `size`, `totalRecords` + `[(rows)]`, `rowsOptions`, `showSummary`, `showFirstLast`, `showJump`, arrow keys.
 - Pick List: `variant` (PICK_LIST_VARIANTS: default | cards | compact | glass | minimal), `optionIcon`,
   `optionDescription`, `targetLimit`. Timeline: `variant` (TIMELINE_VARIANTS: default | cards | outlined | gradient |
-  compact), `activeIndex` (done / active with a pulse / pending), `dateOpposite`, event `tag`.
+  compact), `activeIndex` (done / active with a pulse / pending), `dateOpposite`, event `tag`, `lineColor` (a
+  tone or any CSS color, as `--tl-c` on the root; line and markers fall back to the border / brand gradient).
 - ConfirmDialog and ConfirmPopup share `ConfirmationService` (`components/overlay/confirm-dialog/confirmation.service.ts`, `providedIn: 'root'`). Call `confirm({ message, header, accept, reject })`. Pass `target: event.currentTarget` for the popup; confirms without a target open the dialog.
 - Anchored overlays (OverlayPanel, ConfirmPopup) and popup menus share `src/stories/utils/anchor-position.ts`.
 - All menus render rows with the internal `np-menu-item` (`components/menu/menu-item/`, global CSS, tuned per menu via `--mi-*` variables). Its story is hidden from the sidebar with `tags: ['!dev']`.

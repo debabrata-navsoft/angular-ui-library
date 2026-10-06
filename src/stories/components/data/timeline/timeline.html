@@ -1,6 +1,15 @@
 <ol
   class="timeline"
-  [class]="'timeline--' + layout() + ' timeline--' + align() + ' timeline--' + variant()"
+  [class]="
+    'timeline--' +
+    layout() +
+    ' timeline--' +
+    align() +
+    ' timeline--' +
+    variant() +
+    (lineTone() ? ' tone-' + lineTone() : '')
+  "
+  [style.--tl-c]="lineTone() ? 'var(--tone-solid)' : lineColor() || null"
   [class.timeline--opposite]="dateOpposite()"
 >
   @for (event of value(); track $index) {

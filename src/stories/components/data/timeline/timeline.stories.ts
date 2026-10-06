@@ -21,6 +21,10 @@ const meta: Meta<TimelineComponent> = {
     align: { control: 'select', options: ['left', 'right', 'alternate'] },
     layout: { control: 'select', options: ['vertical', 'horizontal'] },
     variant: { control: 'select', options: TIMELINE_VARIANTS },
+    lineColor: {
+      control: 'select',
+      options: ['', 'success', 'info', 'warning', 'danger', 'neutral', '#16a34a'],
+    },
   },
   args: { value: orderEvents, align: 'left', layout: 'vertical', variant: 'default' },
 };
@@ -91,6 +95,26 @@ export const Changelog: Story = {
       { ...step('Removed legacy grid', 'Jul 2026', 'git-merge', '', 'danger'), tag: 'Breaking' },
     ],
   },
+};
+
+const tracking: TimelineEvent[] = [
+  ['Order placed', '09 Aug 2025, 10:00 am'],
+  ['Order confirmed', '09 Aug 2025, 10:30 am'],
+  ['Packed', '09 Aug 2025, 12:00 pm'],
+  ['Arrived at the warehouse', '10 Aug 2025, 02:00 pm'],
+  ['At the courier facility', '10 Aug 2025, 03:00 pm'],
+  ['Out for delivery', '12 Aug 2025, 05:00 pm'],
+  ['Delivered', '12 Aug 2025, 09:00 pm'],
+].map(([status, date]) => step(status, date));
+
+/** `lineColor` (a tone or any CSS color) colors the line and markers; with `activeIndex`, only up to the current step */
+export const LineColor: Story = {
+  args: { value: tracking, lineColor: 'success', activeIndex: 4, variant: 'compact' },
+};
+
+/** Horizontal order tracking with a custom CSS color */
+export const LineColorHorizontal: Story = {
+  args: { layout: 'horizontal', lineColor: '#16a34a', activeIndex: 2, dateOpposite: true },
 };
 
 /** Every variant side by side */
