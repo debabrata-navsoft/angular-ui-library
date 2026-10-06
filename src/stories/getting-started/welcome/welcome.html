@@ -1,11 +1,28 @@
 <div class="welcome">
-  <!-- Hero: aurora blobs with a particle network on top -->
+  <!-- Hero: aurora blobs, a particle network and the NexPrime logo as the centerpiece above the title -->
   <np-aurora
     class="hero"
     [colors]="['#6366f1', '#a855f7', '#ec4899', '#0ea5e9']"
     [opacity]="0.55"
     [blur]="90"
   >
+    <!-- Background, behind the text: a light cone and a fading grid, with the NexPrime logo in the center -->
+    <div class="hero__bg" aria-hidden="true">
+      <span class="hero__grid"></span>
+      <span class="hero__beam"></span>
+      <!-- The NexPrime app icon, big in the center, behind all of the hero text: a turning
+           gradient border, a spinning glow, a halo, pulse rings and slow light rays -->
+      <div class="logo">
+        <span class="logo__halo"></span>
+        <span class="logo__rays"></span>
+        <span class="logo__glow"></span>
+        <span class="logo__pulse"></span>
+        <span class="logo__pulse"></span>
+        <div class="logo__tile">
+          <img src="nexprime-mark.svg" alt="" width="100" height="100" />
+        </div>
+      </div>
+    </div>
     <np-particles
       class="hero__particles"
       color="rgb(255 255 255 / 0.75)"
