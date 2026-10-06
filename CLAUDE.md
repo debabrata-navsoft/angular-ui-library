@@ -212,6 +212,10 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   history. Its TitleStrategy emits `SITE_ROUTE` ({ page, title }); manager.ts shows that page's short URL and title.
 - Page links stay `managerHref()` anchors with `target="_top"`: the site routes its own pages (`SITE_PAGES`), and
   preview.ts opens the others in Storybook (SELECT_STORY). Both use `clickedPage()`, so new-tab clicks keep the link.
+- Site search (`getting-started/site-search/`, in the landing nav; Ctrl/⌘ K or /): a modal `<dialog>` over pages,
+  components and their stories (index.json, sidebar entries only), icons (with tags.json keywords), animations and
+  Lottie files, loaded on first open. Site pages open in the router with `?q=` (the galleries' `q` input pre-fills
+  their search via withComponentInputBinding; the URL sent to the manager drops the query); other pages via SELECT_STORY.
 - The galleries' data is in `icons/icons-data.ts`, `animations/animations-data.ts` and `nexlottie/lottie-data.ts`,
   given to the pages by route resolvers. preview.ts preloads it after the first page renders (`preloadSiteData()`).
 - Long grids (Icons, NexLottie) render in batches as they're scrolled with `renderInBatches()` (`utils/render-in-batches.ts`).
