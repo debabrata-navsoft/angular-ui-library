@@ -269,7 +269,19 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   Slides are sized by `.carousel__track > ::ng-deep *` so the Web Component's child-element slides get the variants too.
 - Form (`np-form`) builds a validated form from `fields: FormField[]` (or multi-step `steps: FormStep[]`) and reuses the input components. Extra field types (rating, chips, multichips, cards, segmented, choice, color) render as `.option` buttons. It has an optional header (`title`, `subtitle`, `icon`, `tone`), `card`, `layout="inline"`, `loading`, and a success view (`successTitle`). Extra content goes in `[formBeforeActions]` (above the buttons) or the default slot (below the form). A field's `match` names another field it must equal (confirm password). The Form stories double as ready-made templates, with the account forms first in flow order (Login, Sign up, Forgot password, Reset password, then Contact, Feedback, Survey, Newsletter, Bug report, Feature request, Onboarding).
 - Chat (`np-chat`) appends what the user sends to `[(messages)]` (`ChatMessage[]`) and emits `send`; the consumer appends the replies. Voice Chat (`np-voice-chat`) reuses `ChatMessage`: its mic goes idle → listening → processing → speaking with the Web Speech API (a text box when recognition isn't available), emits `utterance`, and speaks the next `them` message.
-- Helpful (`np-helpful`) is the "Was this helpful?" vote widget.
+- Helpful (`np-helpful`) is the "Was this helpful?" vote widget: `variant`, `mode` thumbs | emoji | stars with
+  `[(rating)]` + `rated`, `followUp` comment box (`commented`), `thanks`.
+- Feedback / media / misc looks (each a `*_VARIANTS` const): Alert (`icon`, `compact`, `closable`, `[alertActions]`),
+  Toast (TOAST_POSITIONS adds top-/bottom-center, `title`, `action` + `actionClick`, `pauseOnHover`, `swipeable`),
+  Progress Bar (looks are `look` / PROGRESS_BAR_VARIANTS because `variant` was already its tone; `circular` ring,
+  `indeterminate`, `buffer`, `segments`, `labelPosition`, `size`), Skeleton (`preset` text | avatar | list | card |
+  table, `lines`, `columns`, `duration`), Tag (`size`, `count`, `removable` + `remove`), Avatar (`icon`, `more` +N,
+  `stacked` overlap, status `busy`), Overlay Badge (`pulse`, `icon`, `circular`), Lottie (`direction` forward | reverse
+  | bounce, `controls` bar, `seek()`, `loopComplete`; the per-frame listener exists only with `controls`), Chat
+  (`suggestions`, `reactions` + `react` via a popover="auto" picker, `dateSeparators`), Voice Chat (`mode` toggle |
+  push, `caption`, `muteButton` + `[(muted)]`), Animate On Scroll (blur-in, blur-up, tilt, `stagger`, `scrub` via
+  animation-timeline: view()), Header (`brand`, `links`, `[(active)]`, `sticky`, `avatar`), Scroll Top (`label`,
+  `percent`, `smart`).
 - Calendar (`np-calendar`) styles and extras: `variant` default | gradient (header on a gradient band) | glass (frosted)
   | minimal (CALENDAR_VARIANTS); `presets` (`CalendarPreset[]`, values or functions evaluated on click; RANGE_PRESETS
   ships Today … Last month) in a side list, the matching one highlighted; `marks` (`CalendarMark[]`: event dots, up
