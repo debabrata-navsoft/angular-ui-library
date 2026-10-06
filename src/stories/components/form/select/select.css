@@ -2,3 +2,65 @@
   display: inline-block;
   min-width: 200px;
 }
+
+/* The select with its leading icon laid over it */
+.select-box {
+  position: relative;
+  display: block;
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  color: var(--ui-text-subtle);
+  pointer-events: none;
+  translate: 0 -50%;
+  transition: color var(--ui-ease);
+}
+
+.select-box:focus-within .select-icon {
+  color: var(--ui-primary);
+}
+
+.select--icon .ui-control {
+  padding-left: 42px;
+}
+
+option {
+  color: var(--ui-text);
+}
+
+/* Underline: no side padding, so the icon and arrow hug the line's ends */
+.ui-field--underline {
+  .select-icon {
+    left: 2px;
+  }
+
+  &.select--icon .ui-control {
+    padding-left: 30px;
+  }
+
+  .ui-control {
+    padding-right: 28px;
+    background-position: right 2px center;
+  }
+}
+
+/* Floating: the label stands in for the placeholder until the field is focused or has a value */
+.ui-field--floating:not(:focus-within, .ui-field--has-value) .ui-control {
+  color: transparent;
+}
+
+.ui-field--floating.select--icon > .ui-label {
+  left: 38px;
+  transition:
+    top var(--ui-ease),
+    left var(--ui-ease),
+    font-size var(--ui-ease),
+    color var(--ui-ease);
+}
+
+.ui-field--floating.select--icon:is(:focus-within, .ui-field--has-value) > .ui-label {
+  left: 11px;
+}

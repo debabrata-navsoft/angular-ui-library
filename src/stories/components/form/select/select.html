@@ -1,20 +1,30 @@
-<label class="ui-field">
+<label
+  class="ui-field"
+  [class]="'ui-field--' + variant()"
+  [class.ui-field--has-value]="!!value()"
+  [class.select--icon]="!!icon()"
+>
   @if (label()) {
     <span class="ui-label">{{ label() }}</span>
   }
-  <select
-    class="ui-control"
-    [value]="value()"
-    [disabled]="disabled()"
-    (change)="value.set($any($event.target).value)"
-  >
-    @if (placeholder()) {
-      <option value="" disabled [selected]="!value()">{{ placeholder() }}</option>
+  <span class="select-box">
+    @if (icon()) {
+      <np-icon class="select-icon" [name]="icon()" [size]="18" />
     }
-    @for (option of options(); track option.value) {
-      <option [value]="option.value" [selected]="option.value === value()">
-        {{ option.label }}
-      </option>
-    }
-  </select>
+    <select
+      class="ui-control"
+      [value]="value()"
+      [disabled]="disabled()"
+      (change)="value.set($any($event.target).value)"
+    >
+      @if (placeholder()) {
+        <option value="" disabled [selected]="!value()">{{ placeholder() }}</option>
+      }
+      @for (option of options(); track option.value) {
+        <option [value]="option.value" [selected]="option.value === value()">
+          {{ option.label }}
+        </option>
+      }
+    </select>
+  </span>
 </label>

@@ -327,6 +327,76 @@ select.ui-control {
   font-weight: 500;
 }
 
+/* Field styles, as a class on .ui-field (outlined is the default above): ui-field--filled, ui-field--underline and
+   ui-field--floating (the label sits inside the control and floats up on focus, or when the component adds
+   ui-field--has-value). background-color only, so the select arrow image stays */
+.ui-field--filled .ui-control {
+  border-color: transparent;
+  background-color: var(--ui-surface-sunken);
+  box-shadow: none;
+}
+
+.ui-field--filled .ui-control:hover:not(:disabled) {
+  border-color: transparent;
+  background-color: color-mix(in srgb, var(--ui-surface-sunken) 70%, var(--ui-border-strong));
+}
+
+.ui-field--filled .ui-control:focus {
+  border-color: var(--ui-primary);
+  background-color: var(--ui-surface);
+}
+
+.ui-field--underline .ui-control {
+  padding-inline: 2px;
+  border-width: 0 0 2px;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.ui-field--underline .ui-control:focus {
+  box-shadow: none;
+}
+
+.ui-field--floating {
+  position: relative;
+}
+
+.ui-field--floating > .ui-label {
+  position: absolute;
+  top: 21px;
+  left: 11px;
+  z-index: 1;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--ui-surface);
+  color: var(--ui-text-subtle);
+  font-size: 14px;
+  font-weight: 400;
+  pointer-events: none;
+  translate: 0 -50%;
+  transition:
+    top var(--ui-ease),
+    font-size var(--ui-ease),
+    color var(--ui-ease);
+}
+
+.ui-field--floating:is(:focus-within, .ui-field--has-value) > .ui-label {
+  top: 0;
+  color: var(--ui-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ui-field--floating:focus-within > .ui-label {
+  color: var(--ui-primary);
+}
+
+/* The placeholder only shows once the label has moved out of the way */
+.ui-field--floating:not(:focus-within) .ui-control::placeholder {
+  color: transparent;
+}
+
 /* Close (×) button used by Alert, Modal and Toast */
 .ui-close {
   display: inline-grid;

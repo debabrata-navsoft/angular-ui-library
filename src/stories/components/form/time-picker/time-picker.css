@@ -171,3 +171,12 @@
   border: none;
   box-shadow: none;
 }
+
+/* Underline field: the clock button hugs the line's end */
+.ui-field--underline .time-picker-trigger {
+  right: -4px;
+}
+
+.ui-field--underline .time-picker-field .ui-control {
+  padding-right: 36px;
+}

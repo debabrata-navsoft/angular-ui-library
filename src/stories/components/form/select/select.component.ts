@@ -1,5 +1,8 @@
 import { Component, booleanAttribute, input, model } from '@angular/core';
 
+import { IconComponent } from '../../media/icon/icon.component';
+import type { FieldVariant } from '../../../utils/types';
+
 export interface SelectOption {
   value: string;
   label: string;
@@ -7,6 +10,7 @@ export interface SelectOption {
 
 @Component({
   selector: 'np-select',
+  imports: [IconComponent],
   templateUrl: './select.html',
   styleUrl: './select.css',
 })
@@ -25,4 +29,10 @@ export class SelectComponent {
 
   /** Is the dropdown disabled? */
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  /** Field style: outlined, filled, underline or floating (label inside the field) */
+  readonly variant = input<FieldVariant>('outlined');
+
+  /** Icon file name shown at the start of the dropdown (e.g. 'user') */
+  readonly icon = input('');
 }
