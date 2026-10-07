@@ -206,6 +206,38 @@ h2 span {
   color: var(--ui-primary);
 }
 
+/* Placeholder cards while the list loads: grey shapes that pulse */
+.card--loading {
+  pointer-events: none;
+}
+
+.card--loading .thumb {
+  background: var(--ui-surface-sunken);
+}
+
+.card--loading .name {
+  width: 45%;
+  height: 16px;
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-surface-sunken);
+}
+
+.card--loading :is(.thumb, .name) {
+  animation: catalog-loading 1.2s var(--ui-ease) infinite alternate;
+}
+
+@keyframes catalog-loading {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--loading :is(.thumb, .name) {
+    animation: none;
+  }
+}
+
 .empty {
   padding: 48px 0;
   color: var(--ui-text-muted);

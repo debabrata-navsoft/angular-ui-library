@@ -198,9 +198,12 @@ export class ComponentsCatalogComponent {
           };
         }),
       );
+      this.loaded.set(true);
     });
   }
 
+  /** False until index.json has been read: the page shows placeholder cards instead of "no match" */
+  protected readonly loaded = signal(false);
   protected readonly total = computed(() => this.items().length);
 
   protected readonly groups = computed(() => {

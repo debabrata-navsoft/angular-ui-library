@@ -37,8 +37,13 @@
             <span class="thumb" aria-hidden="true">
               @let preview = view() === 'list' ? undefined : previews()[item.folder];
               @if (preview) {
+                <!-- Each effect starts when its card scrolls into view, so the page doesn't run all of them at once -->
                 <span class="thumb__effect" [style.background]="preview.background">
-                  <ng-container *ngComponentOutlet="preview.component; inputs: preview.inputs" />
+                  @defer (on viewport) {
+                    <ng-container *ngComponentOutlet="preview.component; inputs: preview.inputs" />
+                  } @placeholder {
+                    <span></span>
+                  }
                 </span>
               }
               @if (!preview || preview.idle) {
@@ -58,6 +63,18 @@
       </div>
     </section>
   } @empty {
-    <p class="empty">No {{ config().root.toLowerCase() }} match "{{ query() }}".</p>
+    @if (loaded()) {
+      <p class="empty">No {{ config().root.toLowerCase() }} match "{{ query() }}".</p>
+    } @else {
+      <!-- Placeholder cards while index.json loads -->
+      <div class="cards" [class]="'cards--' + view()" aria-hidden="true">
+        @for (n of [1, 2, 3, 4, 5, 6, 7, 8]; track n) {
+          <span class="card card--loading">
+            <span class="thumb"></span>
+            <span class="name"></span>
+          </span>
+        }
+      </div>
+    }
   }
 </div>
