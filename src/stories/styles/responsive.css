@@ -66,7 +66,7 @@ video {
 
   /* ---- Components catalog ---- */
   :root np-components-catalog .hero {
-    padding: 64px 0 56px;
+    padding: 64px 0 40px;
   }
 
   :root np-components-catalog .cards--grid {
@@ -230,7 +230,7 @@ video {
     width: 100%;
   }
 
-  :root np-components-catalog .group {
+  :root np-components-catalog .group:not(.hero + *) {
     margin-top: 40px;
   }
 
