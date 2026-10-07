@@ -105,7 +105,7 @@
   }
 
   .te__tool:hover:not(:disabled),
-  .te__palette-reset:hover {
+  .te__menu-item:hover {
     background: var(--ui-primary-soft);
     color: var(--ui-primary);
   }
@@ -116,12 +116,12 @@
     color: #fff;
   }
 
-  :is(.te__tool, .te__heading, .te__palette-reset, .te__swatch):focus-visible {
+  :is(.te__tool, .te__select, .te__menu-item, .te__swatch, .te__cell):focus-visible {
     outline: none;
     box-shadow: var(--ui-ring);
   }
 
-  :is(.te__tool, .te__heading):disabled {
+  :is(.te__tool, .te__select):disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
@@ -140,7 +140,7 @@
     box-shadow: 0 0 0 1px #fff;
   }
 
-  .te__heading {
+  .te__select {
     height: 32px;
     padding: 0 8px;
     border: 1px solid var(--ui-border);
@@ -152,12 +152,12 @@
     cursor: pointer;
   }
 
-  .te__heading:hover:not(:disabled) {
+  .te__select:hover:not(:disabled) {
     border-color: var(--ui-primary);
   }
 
-  /* Link bar, under the toolbar */
-  .te__link {
+  /* The bar under the toolbar: a link or image address, or find & replace */
+  .te__bar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -167,19 +167,40 @@
     background: var(--ui-surface-muted);
   }
 
-  .te__link-icon {
+  .te__bar-icon {
     color: var(--ui-text-muted);
   }
 
-  .te__link label:focus-within {
+  .te__bar label:focus-within {
     box-shadow: var(--ui-ring);
   }
 
-  .te__link-input {
+  .te__bar-input {
     flex: 1 1 180px;
     width: auto;
     padding: 6px 10px;
     font-size: 13px;
+  }
+
+  .te__matches {
+    min-width: 72px;
+    color: var(--ui-text-muted);
+    font-size: 12px;
+  }
+
+  /* Under the editor: the hint, and the word / character count on the right */
+  .te__footer {
+    display: flex;
+    gap: 12px;
+  }
+
+  .te__count {
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .te__count--full {
+    color: var(--ui-warning);
   }
 
   /* Editing area: grows from min-height to max-height, then scrolls */
@@ -200,174 +221,6 @@
     flex-direction: column;
     font-family: var(--ui-font);
     font-size: 15px;
-  }
-
-  /* Quill's own rules (quill.core.css), only the ones this editor uses */
-  .ql-editor {
-    --te-pad: 16px;
-    flex: 1;
-    box-sizing: border-box;
-    padding: 14px var(--te-pad);
-    outline: none;
-    line-height: 1.6;
-    tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    counter-reset: list-0;
-
-    > * {
-      margin: 0 0 0.6em;
-      cursor: text;
-    }
-
-    > :last-child {
-      margin-bottom: 0;
-    }
-
-    :is(p, h1, h2, h3) {
-      counter-set: list-0;
-    }
-
-    :is(h1, h2, h3) {
-      margin-top: 0.4em;
-      font-weight: 700;
-      line-height: 1.25;
-    }
-
-    h1 {
-      font-size: 1.75em;
-    }
-
-    h2 {
-      font-size: 1.4em;
-    }
-
-    h3 {
-      font-size: 1.15em;
-    }
-
-    a {
-      color: var(--ui-primary);
-      text-decoration: underline;
-    }
-
-    blockquote {
-      padding: 4px 0 4px 14px;
-      border-left: 3px solid var(--ui-primary);
-      color: var(--ui-text-muted);
-    }
-
-    .ql-code-block-container {
-      padding: 12px 14px;
-      overflow-x: auto;
-      border-radius: var(--ui-radius-sm);
-      background: var(--ui-surface-sunken);
-      font-family: var(--te-mono);
-      font-size: 13px;
-    }
-
-    .ql-code-block {
-      margin: 0;
-    }
-
-    /* Quill 2 renders both list types as <ol> with data-list items, and draws the marker in .ql-ui */
-    ol {
-      padding-left: 0.5em;
-    }
-
-    li {
-      position: relative;
-      padding-left: 1.5em;
-      list-style-type: none;
-    }
-
-    .ql-ui {
-      position: absolute;
-    }
-
-    li > .ql-ui::before {
-      display: inline-block;
-      width: 1.2em;
-      margin: 0 0.3em 0 -1.5em;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    li[data-list='bullet'] > .ql-ui::before {
-      content: '\2022';
-    }
-
-    li[data-list='ordered'] {
-      counter-increment: list-0;
-    }
-
-    li[data-list='ordered'] > .ql-ui::before {
-      content: counter(list-0, decimal) '. ';
-    }
-
-    /* Checklist: a checkbox (Quill toggles it on click); done items are struck through */
-    li:is([data-list='checked'], [data-list='unchecked']) > .ql-ui {
-      cursor: pointer;
-
-      &::before {
-        content: '';
-        box-sizing: border-box;
-        width: 15px;
-        height: 15px;
-        margin-right: calc(1.5em - 15px);
-        border: 1.5px solid var(--ui-border-strong);
-        border-radius: 4px;
-        background: var(--ui-surface);
-        vertical-align: -2px;
-      }
-    }
-
-    li[data-list='checked'] {
-      color: var(--ui-text-muted);
-      text-decoration: line-through;
-    }
-
-    li[data-list='checked'] > .ql-ui::before {
-      content: '✓';
-      border-color: transparent;
-      background: var(--ui-gradient);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 12px;
-      text-align: center;
-    }
-
-    code {
-      padding: 1px 5px;
-      border-radius: 4px;
-      background: var(--ui-surface-sunken);
-      font-family: var(--te-mono);
-      font-size: 0.88em;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--ui-radius-sm);
-      vertical-align: middle;
-    }
-
-    hr {
-      margin: 1.2em 0;
-      border: none;
-      border-top: 1px solid var(--ui-border-strong);
-    }
-
-    &.ql-blank::before {
-      content: attr(data-placeholder);
-      position: absolute;
-      left: var(--te-pad);
-      right: var(--te-pad);
-      color: var(--ui-text-subtle);
-      pointer-events: none;
-    }
   }
 
   /* Disabled: dimmed, no editing. Read-only: no toolbar, content looks normal */
@@ -421,11 +274,11 @@
     }
   }
 
-  /* Color palette popover (top layer): undo the popover defaults */
-  .te__palette {
+  /* Toolbar menus (colors, alignment, table) are popovers (top layer): undo the popover defaults */
+  .te__menu {
     position: fixed;
     inset: auto;
-    width: 212px;
+    min-width: 180px;
     margin: 0;
     padding: 10px;
     overflow: visible;
@@ -436,20 +289,63 @@
     color: var(--ui-text);
   }
 
-  .te__palette-reset {
+  .te__menu-item {
     display: flex;
     align-items: center;
     gap: 6px;
     width: 100%;
-    margin-bottom: 8px;
-    padding: 6px 8px;
+    padding: 7px 8px;
     border: none;
     border-radius: var(--ui-radius-sm);
     background: none;
-    color: var(--ui-text-muted);
+    color: var(--ui-text);
     font: inherit;
-    font-size: 12px;
+    font-size: 13px;
+    text-align: left;
     cursor: pointer;
+  }
+
+  .te__menu-item--active {
+    color: var(--ui-primary);
+    font-weight: 600;
+  }
+
+  .te__menu-title {
+    display: block;
+    padding: 4px 8px;
+    color: var(--ui-text-subtle);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .te__menu--color {
+    width: 212px;
+
+    .te__swatches {
+      margin: 4px 0 8px;
+    }
+  }
+
+  /* The table size picker: 6 rows × 8 columns of cells, lit up to the one under the pointer */
+  .te__grid {
+    display: grid;
+    grid-template-columns: repeat(8, 18px);
+    gap: 3px;
+    padding: 4px 8px 6px;
+  }
+
+  .te__cell {
+    height: 18px;
+    padding: 0;
+    border: 1px solid var(--ui-border-strong);
+    border-radius: 3px;
+    background: var(--ui-surface);
+    cursor: pointer;
+  }
+
+  .te__cell--on {
+    border-color: var(--ui-primary);
+    background: var(--ui-primary-soft);
   }
 
   .te__swatches {
@@ -476,7 +372,7 @@
 
   /* Up to small laptops (where the full toolbar doesn't fit): one row that scrolls sideways, instead of rows of
      buttons above the text */
-  @media (max-width: 1180px) {
+  @media (max-width: 1279px) {
     .te__toolbar {
       flex-wrap: nowrap;
       overflow-x: auto;

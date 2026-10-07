@@ -37,7 +37,8 @@ const MODES: ToggleOption<Mode>[] = [
 ];
 
 /** Where the document is kept between visits (this browser only) */
-const STORAGE_KEY = 'np-text-editor-document';
+// v2: the sample shows every feature, so documents saved with the first sample are set aside once
+const STORAGE_KEY = 'np-text-editor-document-v2';
 /** Zoom levels in percent */
 const ZOOM_STEPS = [50, 75, 90, 100, 110, 125, 150, 200];
 
@@ -71,6 +72,7 @@ const htmlFile = (title: string, body: string, word = false) => `<!doctype html>
   li[data-list='unchecked']::before { content: '☐ '; }
   li[data-list='checked']::before { content: '☑ '; }
   li[data-list='checked'] { color: #64748b; text-decoration: line-through; }
+  .ql-indent-1 { padding-left: 2em; } .ql-indent-2 { padding-left: 4em; } .ql-indent-3 { padding-left: 6em; }
 </style>
 </head>
 <body>

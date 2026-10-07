@@ -349,6 +349,11 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   Tab leaves the editor (Quill's Tab bindings are cleared). `variant` default | document (a wide surface with a centered text column, `zoom`);
   `[editorToolbarStart]` / `[editorToolbarEnd]` project extra toolbar controls (class `te__tool`, `data-tool` joins
   the toolbar's arrow keys; the roving tabindex is set on the DOM, so projected controls take part). `theme` light | dark re-declares the neutral tokens.
+  Also: font size (px, a style), indent (3 levels, class ql-indent-N; lists nest in the HTML), alignment and color
+  menus, tables (Quill's table module; size picker, row/column menu; cells get inline borders in the HTML), find &
+  replace (Ctrl/⌘ F, CSS Custom Highlight API), markdown and typography shortcuts (text-editor-quill.ts; Enter
+  shortcuts go before Quill's own Enter handler), `showCount` / `maxLength`. Two stylesheets, each under the 10 kB
+  budget: text-editor.css (frame, toolbar, menus) and text-editor-content.css (the content's look).
   Unit tests: `text-editor.component.spec.ts`.
 - AnimateOnScroll is a wrapper component (`<np-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 

@@ -302,6 +302,9 @@
 
 :host(.demo--preview) .doc ::ng-deep .te__toolbar {
   position: static;
+  /* A picture: one row, cut off at the edge */
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 :host(.demo--preview) .doc ::ng-deep .te__scroll {

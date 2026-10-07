@@ -7,7 +7,10 @@ import type Quill from 'quill';
 import { TextEditorComponent } from './text-editor.component';
 
 /** Render, then wait for Quill (loaded on first use) */
-async function ready<T>(fixture: ComponentFixture<T>, editor: () => TextEditorComponent): Promise<Quill> {
+async function ready<T>(
+  fixture: ComponentFixture<T>,
+  editor: () => TextEditorComponent,
+): Promise<Quill> {
   const quill = new Promise<Quill>((resolve) => editor().ready.subscribe(resolve));
   fixture.detectChanges();
   await fixture.whenStable();
@@ -78,10 +81,206 @@ describe('TextEditorComponent', () => {
 
   describe('content tools', () => {
     const click = (label: string) =>
-      (fixture.nativeElement.querySelector(`button[aria-label="${label}"]`) as HTMLButtonElement).click();
+      (
+        fixture.nativeElement.querySelector(`button[aria-label="${label}"]`) as HTMLButtonElement
+      ).click();
 
     beforeEach(() => {
       Range.prototype.getBoundingClientRect ??= () => new DOMRect();
+    });
+
+    /** A key pressed in the editing area (Quill's keyboard bindings) */
+    const press = (quill: Quill, key: string, init: KeyboardEventInit = {}) =>
+      quill.root.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key,
+          shiftKey: '>*~'.includes(key),
+          bubbles: true,
+          ...init,
+        }),
+      );
+    /** Types text at the cursor (jsdom doesn't move the cursor itself) */
+    const typeAtCursor = (quill: Quill, text: string) => {
+      const index = quill.getSelection(true).index;
+      quill.insertText(index, text, 'user');
+      quill.setSelection(index + text.length, 0);
+    };
+    /** Types text, then presses the shortcut's last key */
+    const typeThen = (quill: Quill, text: string, key: string) => {
+      typeAtCursor(quill, text);
+      press(quill, key);
+    };
+    /** Opens a toolbar menu, then picks an item in it */
+    const pick = (menu: string, item: string) => {
+      click(menu);
+      fixture.detectChanges();
+      const button = [...document.querySelectorAll<HTMLButtonElement>('.te__menu button')].find(
+        (b) => b.textContent?.trim() === item || b.getAttribute('aria-label') === item,
+      );
+      button!.click();
+      fixture.detectChanges();
+    };
+
+    it('turns markdown at the start of a line into headings, quotes, code blocks, lists and dividers', async () => {
+      const quill = await ready(fixture, () => editor);
+      const cases: [typed: string, key: string, html: string][] = [
+        ['#', ' ', '<h1>x</h1>'],
+        ['###', ' ', '<h3>x</h3>'],
+        ['>', ' ', '<blockquote>x</blockquote>'],
+        ['-', ' ', '<ul><li>x</li></ul>'],
+        ['1.', ' ', '<ol><li>x</li></ol>'],
+        ['[]', ' ', '<ul><li data-list="unchecked">x</li></ul>'],
+      ];
+      for (const [typed, key, html] of cases) {
+        quill.setText('', 'user');
+        quill.setSelection(0, 0);
+        typeThen(quill, typed, key);
+        typeAtCursor(quill, 'x');
+        expect(editor.value(), typed).toBe(html);
+      }
+      quill.setText('', 'user');
+      quill.setSelection(0, 0);
+      typeThen(quill, '```', 'Enter');
+      expect(quill.getFormat()['code-block']).toBeTruthy();
+
+      quill.setText('', 'user');
+      quill.setSelection(0, 0);
+      typeThen(quill, '---', 'Enter');
+      typeAtCursor(quill, 'after');
+      expect(editor.value()).toBe('<hr><p>after</p>');
+    });
+
+    it('turns **bold**, *italic*, `code` and ~~strike~~ into formatting, but not 2 * 3 * 4', async () => {
+      const quill = await ready(fixture, () => editor);
+      const cases: [typed: string, key: string, html: string][] = [
+        ['a **b*', '*', '<p>a <strong>b</strong>z</p>'],
+        ['a *b', '*', '<p>a <em>b</em>z</p>'],
+        ['a `b', '`', '<p>a <code>b</code>z</p>'],
+        ['a ~~b~', '~', '<p>a <s>b</s>z</p>'],
+      ];
+      for (const [typed, key, html] of cases) {
+        quill.setText('', 'user');
+        quill.setSelection(0, 0);
+        typeThen(quill, typed, key);
+        typeAtCursor(quill, 'z');
+        expect(editor.value(), typed).toBe(html);
+      }
+      quill.setText('', 'user');
+      quill.setSelection(0, 0);
+      typeThen(quill, '2 * 3 ', '*');
+      expect(editor.value()).toBe('<p>2 * 3 </p>');
+
+      fixture.componentRef.setInput('markdown', false);
+      quill.setText('', 'user');
+      quill.setSelection(0, 0);
+      typeThen(quill, '#', ' ');
+      typeAtCursor(quill, 'x');
+      expect(editor.value()).toBe('<p>#x</p>');
+    });
+
+    it('sets the font size as an inline style', async () => {
+      fixture.componentRef.setInput('value', '<p>Big text</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(0, 3);
+      const select = fixture.nativeElement.querySelector(
+        'select[aria-label="Font size"]',
+      ) as HTMLSelectElement;
+      select.value = '24px';
+      select.dispatchEvent(new Event('change'));
+      expect(editor.value()).toBe('<p><span style="font-size: 24px;">Big</span> text</p>');
+    });
+
+    it('indents up to 3 levels, nesting list items in the HTML', async () => {
+      fixture.componentRef.setInput('value', '<ol><li>One</li><li>Two</li></ol><p>Para</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(5, 0);
+      click('Increase indent');
+      expect(editor.value()).toBe('<ol><li>One<ol><li>Two</li></ol></li></ol><p>Para</p>');
+      quill.setSelection(9, 0);
+      for (let i = 0; i < 5; i++) click('Increase indent');
+      expect(editor.value()).toContain('<p class="ql-indent-3">Para</p>');
+      click('Decrease indent');
+      expect(editor.value()).toContain('<p class="ql-indent-2">Para</p>');
+    });
+
+    it('aligns from the alignment menu and colors from the color menu', async () => {
+      fixture.componentRef.setInput('value', '<p>Hello</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(0, 5);
+      pick('Align', 'Center');
+      expect(editor.value()).toBe('<p style="text-align: center;">Hello</p>');
+      quill.setSelection(0, 5);
+      pick('Text and highlight color', 'Highlight: Light yellow');
+      expect(editor.value()).toContain('background-color: rgb(254, 240, 138)');
+    });
+
+    it('inserts a table from the size picker, edits it, and reads it back', async () => {
+      fixture.componentRef.setInput('value', '<p>Start</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(5, 0);
+      pick('Table', '2 by 3 table');
+      const cells = () => root(fixture).querySelectorAll('td').length;
+      expect(cells()).toBe(6);
+      expect(editor.value()).toContain('<table style="width: 100%; border-collapse: collapse;">');
+      expect(editor.value()).toContain('style="border: 1px solid #cbd5e1; padding: 6px 10px;"');
+
+      const firstCell = (quill.scroll as unknown as { find(n: Node): never }).find(
+        root(fixture).querySelector('td')!,
+      );
+      quill.setSelection(quill.getIndex(firstCell), 0);
+      editor['formats'].set(quill.getFormat());
+      pick('Table', 'Insert row below');
+      expect(cells()).toBe(9);
+
+      const html = editor.value();
+      editor.writeValue('<p>x</p>');
+      editor.writeValue(html);
+      await fixture.whenStable();
+      expect(cells()).toBe(9);
+    });
+
+    it('finds and replaces, keeping the formatting', async () => {
+      fixture.componentRef.setInput('value', '<p>cat <strong>Cat</strong> dog cat</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(0, 0);
+      press(quill, 'f', { ctrlKey: true });
+      fixture.detectChanges();
+      const [find, replaceInput] = fixture.nativeElement.querySelectorAll(
+        '.te__bar .te__bar-input',
+      ) as NodeListOf<HTMLInputElement>;
+      find.value = 'cat';
+      find.dispatchEvent(new Event('input'));
+      replaceInput.value = 'fox';
+      replaceInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.te__matches').textContent.trim()).toBe('1 of 3');
+      (
+        fixture.nativeElement.querySelector('[aria-label="Next match"]') as HTMLButtonElement
+      ).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.te__matches').textContent.trim()).toBe('2 of 3');
+      [...fixture.nativeElement.querySelectorAll('.te__bar button')]
+        .find((b: HTMLButtonElement) => b.textContent?.trim() === 'Replace')
+        .click();
+      expect(editor.value()).toBe('<p>cat <strong>fox</strong> dog cat</p>');
+      [...fixture.nativeElement.querySelectorAll('.te__bar button')]
+        .find((b: HTMLButtonElement) => b.textContent?.trim() === 'All')
+        .click();
+      expect(editor.value()).toBe('<p>fox <strong>fox</strong> dog fox</p>');
+    });
+
+    it('counts words and characters, and stops at maxLength', async () => {
+      fixture.componentRef.setInput('maxLength', 10);
+      const quill = await ready(fixture, () => editor);
+      quill.insertText(0, 'one two', 'user');
+      fixture.detectChanges();
+      const count = () =>
+        fixture.nativeElement.querySelector('.te__count').textContent.replace(/\s+/g, ' ').trim();
+      expect(count()).toBe('2 words · 7 / 10 characters');
+      quill.insertText(7, ' three four', 'user');
+      fixture.detectChanges();
+      expect(editor.value()).toBe('<p>one two th</p>');
+      expect(count()).toBe('3 words · 10 / 10 characters');
     });
 
     it('applies inline code, superscript and subscript', async () => {
@@ -138,19 +337,21 @@ describe('TextEditorComponent', () => {
       const openBar = () => {
         click('Image');
         fixture.detectChanges();
-        return fixture.nativeElement.querySelector('.te__link') as HTMLFormElement;
+        return fixture.nativeElement.querySelector('.te__bar') as HTMLFormElement;
       };
 
       quill.setSelection(1, 0);
       const file = openBar().querySelector('input[type=file]') as HTMLInputElement;
-      Object.defineProperty(file, 'files', { value: [new File(['x'], 'a.png', { type: 'image/png' })] });
+      Object.defineProperty(file, 'files', {
+        value: [new File(['x'], 'a.png', { type: 'image/png' })],
+      });
       file.dispatchEvent(new Event('change'));
       await vi.waitFor(() =>
         expect(editor.value()).toBe('<p>A<img src="https://cdn.example.com/a.png">B</p>'),
       );
 
       const form = openBar();
-      const url = form.querySelector('.te__link-input') as HTMLInputElement;
+      const url = form.querySelector('.te__bar-input') as HTMLInputElement;
       url.value = 'example.com/b.jpg';
       url.dispatchEvent(new Event('input'));
       fixture.detectChanges();
@@ -166,7 +367,9 @@ describe('TextEditorComponent', () => {
       fixture.componentRef.setInput('value', '<p>a -</p>');
       const quill = await ready(fixture, () => editor);
       const type = (key: string) =>
-        quill.root.dispatchEvent(new KeyboardEvent('keydown', { key, shiftKey: key === '>', bubbles: true }));
+        quill.root.dispatchEvent(
+          new KeyboardEvent('keydown', { key, shiftKey: key === '>', bubbles: true }),
+        );
       quill.setSelection(3, 0);
       type('>');
       expect(editor.value()).toBe('<p>a →</p>');
@@ -206,13 +409,17 @@ describe('TextEditorComponent', () => {
     fixture.componentRef.setInput('value', '<h2><strong>Title</strong></h2><p>Next</p>');
     const quill = await ready(fixture, () => editor);
     quill.setSelection(2, 0);
-    (fixture.nativeElement.querySelector('[aria-label="Clear formatting"]') as HTMLButtonElement).click();
+    (
+      fixture.nativeElement.querySelector('[aria-label="Clear formatting"]') as HTMLButtonElement
+    ).click();
     expect(editor.value()).toBe('<p>Title</p><p>Next</p>');
 
     // The last line too, without adding an empty line after it
     quill.setSelection(7, 0);
     quill.formatLine(7, 1, 'header', 3, 'user');
-    (fixture.nativeElement.querySelector('[aria-label="Clear formatting"]') as HTMLButtonElement).click();
+    (
+      fixture.nativeElement.querySelector('[aria-label="Clear formatting"]') as HTMLButtonElement
+    ).click();
     expect(editor.value()).toBe('<p>Title</p><p>Next</p>');
   });
 
@@ -223,11 +430,11 @@ describe('TextEditorComponent', () => {
     quill.setSelection(4, 0);
     (fixture.nativeElement.querySelector('[aria-label="Link"]') as HTMLButtonElement).click();
     fixture.detectChanges();
-    const url = fixture.nativeElement.querySelector('.te__link-input') as HTMLInputElement;
+    const url = fixture.nativeElement.querySelector('.te__bar-input') as HTMLInputElement;
     url.value = 'example.com';
     url.dispatchEvent(new Event('input'));
     fixture.detectChanges();
-    (fixture.nativeElement.querySelector('.te__link') as HTMLFormElement).requestSubmit();
+    (fixture.nativeElement.querySelector('.te__bar') as HTMLFormElement).requestSubmit();
     expect(editor.value()).toContain('<a href="https://example.com"');
     expect(editor.value()).toContain('>example.com</a>');
   });
@@ -316,9 +523,13 @@ describe('TextEditorComponent', () => {
       editor.registerOnTouched(onTouched);
       await ready(fixture, () => editor);
       const bold = fixture.nativeElement.querySelector('[aria-label="Bold"]');
-      root(fixture).dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: bold }));
+      root(fixture).dispatchEvent(
+        new FocusEvent('focusout', { bubbles: true, relatedTarget: bold }),
+      );
       expect(onTouched).not.toHaveBeenCalled();
-      root(fixture).dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
+      root(fixture).dispatchEvent(
+        new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }),
+      );
       expect(onTouched).toHaveBeenCalledTimes(1);
     });
 
@@ -349,7 +560,8 @@ class FormsHost {
 describe('TextEditorComponent in forms', () => {
   let fixture: ComponentFixture<FormsHost>;
   let quills: Quill[];
-  const editorEl = (id: string) => fixture.nativeElement.querySelector(`#${id} .ql-editor`) as HTMLElement;
+  const editorEl = (id: string) =>
+    fixture.nativeElement.querySelector(`#${id} .ql-editor`) as HTMLElement;
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(FormsHost);
@@ -381,7 +593,9 @@ describe('TextEditorComponent in forms', () => {
   });
 
   it('marks the FormControl touched when focus leaves', () => {
-    editorEl('reactive').dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
+    editorEl('reactive').dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }),
+    );
     expect(fixture.componentInstance.control.touched).toBe(true);
   });
 

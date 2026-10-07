@@ -1,4 +1,10 @@
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
@@ -31,10 +37,17 @@ const meta: Meta<TextEditorComponent> = {
     docs: {
       description: {
         component: `A rich text editor built on [Quill 2](https://quilljs.com) with a NexPrime toolbar: undo / redo,
-text styles (paragraph, H1–H3), bold, italic, underline, strike, inline code, superscript and subscript, text and
-highlight colors, numbered, bulleted and check lists, alignment, links, images (upload, address, paste or drop),
-quotes, code blocks, dividers and clear formatting. Typing \`->\`, \`--\`, \`...\` or \`(c)\` gives →, —, … and ©
-(\`typography\`). The value is **HTML** (\`''\` when empty).
+text style (paragraph, H1–H3) and font size, bold, italic, underline, strike, inline code, superscript and
+subscript, text and highlight colors, numbered, bulleted and check lists, indent (3 levels), alignment, links,
+images (upload, address, paste or drop), tables (size picker; insert or delete rows and columns), quotes, code
+blocks, dividers, find & replace (Ctrl/⌘ F) and clear formatting. The value is **HTML** (\`''\` when empty).
+
+**Typing shortcuts**: markdown (\`#\` + space for headings, \`-\` / \`1.\` / \`[]\` for lists, \`>\` quote,
+three backticks for code, \`---\` + Enter divider, \`**bold**\`, \`*italic*\`, backticks around \`code\`, \`~~strike~~\`; \`markdown\`
+turns it off) and typography (\`->\` →, \`--\` —, \`...\` …, \`(c)\` ©; \`typography\`).
+
+**Count and limit**: \`showCount\` shows words and characters under the editor; \`maxLength\` stops at a
+number of characters (and shows the count).
 
 **Images**: set \`uploadImage\` to a function that uploads a file and returns its URL; without it, images are
 inlined as \`data:\` URLs in the HTML.
@@ -128,12 +141,26 @@ export const CustomHeight: Story = {
   },
 };
 
+/** `showCount` and `maxLength`: a word and character count under the editor, and a limit */
+export const WordCount: Story = {
+  args: {
+    label: 'Post',
+    minHeight: '120px',
+    maxLength: 280,
+    hint: 'Up to 280 characters.',
+    tools: ['bold', 'italic', 'link', 'bullet', 'clean'],
+  },
+};
+
 /** Reactive forms (`formControlName`) with a required validator, and template-driven forms (`[(ngModel)]`) */
 export const FormIntegration: Story = {
   decorators: [moduleMetadata({ imports: [ReactiveFormsModule, FormsModule] })],
   render: () => {
     const form = new FormGroup({
-      description: new FormControl('<p>Initial <strong>HTML</strong> from the form control.</p>', Validators.required),
+      description: new FormControl(
+        '<p>Initial <strong>HTML</strong> from the form control.</p>',
+        Validators.required,
+      ),
     });
     const control = form.controls.description;
     return {
@@ -166,6 +193,8 @@ export const FormIntegration: Story = {
 };
 
 /** The appearance classes from theme.css (np-color-*, np-shape-*) on the With Content example */
-const appearance = appearanceStories(meta, { args: { ...WithContent.args, minHeight: '120px', maxHeight: '200px' } });
+const appearance = appearanceStories(meta, {
+  args: { ...WithContent.args, minHeight: '120px', maxHeight: '200px' },
+});
 export const AppearanceColors = appearance.colors;
 export const AppearanceShapes = appearance.shapes;
