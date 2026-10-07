@@ -60,7 +60,8 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      flickering-grid/, light-rays/, grain/, dot-wave/, dot-ribbon/
     canvas-effect.ts   Shared engine of the canvas effects (base class CanvasEffect)
     effect-story.ts    Story-only helpers (hero copy, dark backgrounds) for the Effects pages
-  text-editor/       np-text-editor (Quill 2; docs at Components ▸ Form ▸ Text Editor, spec file) and page/: the site's
+  text-editor/       np-text-editor (Quill 2; docs at Components ▸ Form ▸ Text Editor, spec file; toolbar config in
+                     text-editor-tools.ts, Quill setup and shortcuts in text-editor-quill.ts) and page/: the site's
                      "Text Editor" page (sidebar entry after Effects, /text-editor): Document (variant="document",
                      zoom, import .html/.txt/.md, export Word/HTML/PDF, autosave in localStorage) | Simple (live
                      HTML) | Comments modes; text-editor-preview is the Welcome card's picture (no Quill)

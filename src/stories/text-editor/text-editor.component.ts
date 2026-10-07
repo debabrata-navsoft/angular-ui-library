@@ -24,194 +24,35 @@ import type { Range as QuillRange } from 'quill';
 
 import { anchorPosition } from '../utils/anchor-position';
 import { IconComponent } from '../components/media/icon/icon.component';
+import { addShortcuts, dataUrl, editorHtml, loadQuill, normalizeUrl } from './text-editor-quill';
+import {
+  TEXT_EDITOR_COLORS,
+  TEXT_EDITOR_HEADINGS,
+  TEXT_EDITOR_TOOLS,
+  type TextEditorTheme,
+  type TextEditorTool,
+  type TextEditorVariant,
+  type ToolItem,
+  toolbarItems,
+} from './text-editor-tools';
 
-/** Toolbar tools, in toolbar order. Pass a subset to `tools` to show fewer */
-export const TEXT_EDITOR_TOOLS = [
-  'undo',
-  'redo',
-  'heading',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'code',
-  'superscript',
-  'subscript',
-  'color',
-  'background',
-  'ordered',
-  'bullet',
-  'check',
-  'align',
-  'link',
-  'image',
-  'blockquote',
-  'code-block',
-  'divider',
-  'clean',
-] as const;
-export type TextEditorTool = (typeof TEXT_EDITOR_TOOLS)[number];
-
-/** default: a bordered field. document: a wide writing surface with a centered text column (zoom with `zoom`) */
-export const TEXT_EDITOR_VARIANTS = ['default', 'document'] as const;
-export type TextEditorVariant = (typeof TEXT_EDITOR_VARIANTS)[number];
-
-/** auto follows the page (data-theme on <html>); light and dark force one look on this editor only */
-export const TEXT_EDITOR_THEMES = ['auto', 'light', 'dark'] as const;
-export type TextEditorTheme = (typeof TEXT_EDITOR_THEMES)[number];
-
-/** Text and highlight colors. They're written into the HTML (style="color: …"), so they're fixed values, not tokens */
-export const TEXT_EDITOR_COLORS: readonly { name: string; value: string }[] = Object.entries({
-  Black: '#0f172a',
-  Gray: '#64748b',
-  Red: '#e11d48',
-  Orange: '#ea580c',
-  Yellow: '#ca8a04',
-  Green: '#16a34a',
-  Teal: '#0d9488',
-  Blue: '#2563eb',
-  Indigo: '#4f46e5',
-  Purple: '#9333ea',
-  Pink: '#db2777',
-  'Light yellow': '#fef08a',
-  'Light green': '#bbf7d0',
-  'Light blue': '#bfdbfe',
-  'Light purple': '#e9d5ff',
-  'Light pink': '#fbcfe8',
-}).map(([name, value]) => ({ name, value }));
-
-export const TEXT_EDITOR_HEADINGS = [
-  { label: 'Paragraph', value: '' },
-  { label: 'Heading 1', value: '1' },
-  { label: 'Heading 2', value: '2' },
-  { label: 'Heading 3', value: '3' },
-] as const;
-
-/** One toolbar control: the Quill `format` it sets (to `value` if given, else on/off) */
-interface ToolItem {
-  tool: TextEditorTool;
-  label: string;
-  icon: string;
-  format: string;
-  value?: string;
-  /** Keyboard shortcut, shown in the tooltip */
-  keys?: string;
-}
-
-const tool = (
-  t: TextEditorTool,
-  label: string,
-  icon: string,
-  more: Partial<ToolItem> = {},
-): ToolItem => ({
-  tool: t,
-  label,
-  icon,
-  format: t,
-  ...more,
-});
-const align = (value: string, label: string): ToolItem =>
-  tool('align', label, `align-${value || 'left'}`, { value });
-
-/** Toolbar groups, with a divider between them */
-const GROUPS: ToolItem[][] = [
-  [
-    tool('undo', 'Undo', 'undo-2', { keys: 'Ctrl+Z' }),
-    tool('redo', 'Redo', 'redo-2', { keys: 'Ctrl+Shift+Z' }),
-  ],
-  [tool('heading', 'Text style', 'heading', { format: 'header' })],
-  [
-    tool('bold', 'Bold', 'bold', { keys: 'Ctrl+B' }),
-    tool('italic', 'Italic', 'italic', { keys: 'Ctrl+I' }),
-    tool('underline', 'Underline', 'underline', { keys: 'Ctrl+U' }),
-    tool('strike', 'Strikethrough', 'strikethrough'),
-    tool('code', 'Inline code', 'code', { keys: 'Ctrl+E' }),
-  ],
-  [
-    tool('superscript', 'Superscript', 'superscript', { format: 'script', value: 'super' }),
-    tool('subscript', 'Subscript', 'subscript', { format: 'script', value: 'sub' }),
-  ],
-  [tool('color', 'Text color', 'baseline'), tool('background', 'Highlight color', 'highlighter')],
-  [
-    tool('ordered', 'Numbered list', 'list-ordered', { format: 'list', value: 'ordered' }),
-    tool('bullet', 'Bulleted list', 'list', { format: 'list', value: 'bullet' }),
-    tool('check', 'Checklist', 'list-todo', { format: 'list', value: 'unchecked' }),
-  ],
-  [
-    align('', 'Align left'),
-    align('center', 'Align center'),
-    align('right', 'Align right'),
-    align('justify', 'Justify'),
-  ],
-  [
-    tool('link', 'Link', 'link', { keys: 'Ctrl+K' }),
-    tool('image', 'Image', 'image-plus'),
-    tool('blockquote', 'Quote', 'text-quote'),
-    tool('code-block', 'Code block', 'code-xml'),
-    tool('divider', 'Divider', 'separator-horizontal'),
-  ],
-  [tool('clean', 'Clear formatting', 'remove-formatting')],
-];
-
-/**
- * The formats this editor uses, in their own Quill registry, so Quill instances elsewhere on the page keep their own
- * setup. Alignment is a style (style="text-align: center"), so the HTML looks right without Quill's CSS.
- */
-let quillLoader: Promise<{ Quill: typeof Quill; registry: unknown }> | null = null;
-function loadQuill() {
-  return (quillLoader ??= import('quill').then(({ default: Quill, Parchment }) => {
-    const registry = new Parchment.Registry();
-    const blots = 'block block/embed break container cursor embed inline scroll text';
-    const formats =
-      'header bold italic underline strike code script color background link image blockquote code-block list';
-    type Definition = { blotName?: string; requiredContainer?: Definition };
-    const definitions = [
-      ...blots.split(' ').map((b) => `blots/${b}`),
-      ...formats.split(' ').map((f) => `formats/${f}`),
-      'attributors/style/align',
-    ].map((name) => Quill.import(name) as Definition);
-    // A horizontal rule (<hr>), which Quill doesn't have
-    const BlockEmbed = Quill.import('blots/block/embed') as new (...args: never[]) => object;
-    class Divider extends BlockEmbed {
-      static blotName = 'divider';
-      static tagName = 'HR';
-    }
-    // Lists and code blocks need their container blots too; abstract base blots can't be registered
-    for (const definition of [
-      ...definitions,
-      ...definitions.flatMap((d) => d.requiredContainer ?? []),
-      Divider as Definition,
-    ])
-      if (definition.blotName !== 'abstract') registry.register(definition as never);
-    return { Quill, registry };
-  }));
-}
-
-/** Quill 2.0 writes every space as &nbsp;. Keep single spaces plain (so text wraps), and runs of spaces visible */
-const normalizeSpaces = (html: string) =>
-  html.replace(/(?:&nbsp;)+/g, (run) => ' ' + '&nbsp;'.repeat(run.length / 6 - 1));
-
-/** Typed shortcuts and the symbols that replace them as you type */
-const TYPOGRAPHY = '-> → <- ← => ⇒ -- — ... … <= ≤ >= ≥ != ≠ (c) © (r) ® (tm) ™ 1/2 ½';
-
-/** A file as a data: URL (images are inlined unless `uploadImage` is set) */
-const dataUrl = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
-
-/** Adds https:// to bare addresses (example.com); keeps mailto:, tel:, other schemes, relative and # links */
-const normalizeUrl = (url: string) =>
-  /^([a-z][a-z\d+.-]*:|[/#?.])/i.test(url) ? url : `https://${url}`;
+export {
+  TEXT_EDITOR_COLORS,
+  TEXT_EDITOR_HEADINGS,
+  TEXT_EDITOR_THEMES,
+  TEXT_EDITOR_TOOLS,
+  TEXT_EDITOR_VARIANTS,
+  type TextEditorTheme,
+  type TextEditorTool,
+  type TextEditorVariant,
+} from './text-editor-tools';
 
 let nextId = 0;
 
 /**
  * Rich text editor (Quill 2) with a NexPrime toolbar. The value is HTML. Works with [(value)], [(ngModel)] and
  * formControlName. Quill loads on first use, only in the browser (SSR-safe: afterNextRender doesn't run on the server).
+ * The toolbar's tools are in text-editor-tools.ts, the Quill setup in text-editor-quill.ts.
  */
 @Component({
   selector: 'np-text-editor',
@@ -291,38 +132,17 @@ export class TextEditorComponent implements ControlValueAccessor {
   protected readonly headings = TEXT_EDITOR_HEADINGS;
   protected readonly colors = TEXT_EDITOR_COLORS;
   protected readonly id = `np-text-editor-${nextId++}`;
-
-  /** Toolbar controls for `tools`; the first of each group after the first gets a divider */
-  protected readonly items = computed(() => {
-    const tools = new Set(this.tools());
-    return GROUPS.map((group) => group.filter((item) => tools.has(item.tool)))
-      .filter((group) => group.length)
-      .flatMap((group, g) =>
-        group.map((item, i) => {
-          const color = item.tool === 'color' || item.tool === 'background';
-          const action = ['clean', 'undo', 'redo', 'image', 'divider'].includes(item.tool);
-          return {
-            ...item,
-            color,
-            divider: g > 0 && i === 0,
-            title: item.keys ? `${item.label} (${item.keys})` : item.label,
-            // Toggles report aria-pressed; the color buttons open a palette and Link a dialog
-            pressable: !color && !action,
-            popup: color ? 'true' : item.tool === 'link' || item.tool === 'image' ? 'dialog' : null,
-          };
-        }),
-      );
-  });
+  protected readonly items = computed(() => toolbarItems(this.tools()));
 
   /** Disabled by the input or by a form control (setDisabledState) */
   private readonly formDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
 
+  /** Formats at the cursor, for the toolbar's pressed states and text style */
+  protected readonly formats = signal<Record<string, unknown>>({});
+  protected readonly heading = computed(() => String(this.formats()['header'] ?? ''));
   /** Whether there's something to undo / redo */
   protected readonly history = signal({ undo: false, redo: false });
-
-  /** Formats at the cursor, for the toolbar's pressed states */
-  protected readonly formats = signal<Record<string, unknown>>({});
   /** Color palette popover: the format it sets and the button that opened it */
   protected readonly palette = signal<{
     format: string;
@@ -352,6 +172,7 @@ export class TextEditorComponent implements ControlValueAccessor {
       if (destroyRef.destroyed) return;
       const quill = new Quill(this.editorEl().nativeElement, {
         registry: registry as never,
+        placeholder: this.placeholder(),
         // Pasted and dropped images go through `uploadImage` too
         modules: {
           toolbar: false,
@@ -359,53 +180,25 @@ export class TextEditorComponent implements ControlValueAccessor {
             handler: (range: QuillRange, files: File[]) => this.insertImages(range, files),
           },
         },
-        placeholder: this.placeholder(),
       });
-      // Tab leaves the editor (no keyboard trap) instead of inserting a tab or indenting
-      quill.keyboard.bindings['Tab'] = [];
-      quill.keyboard.addBinding({ key: 'k', shortKey: true }, () => (this.openBar('link'), false));
-      quill.keyboard.addBinding(
-        { key: 'e', shortKey: true },
-        (_: QuillRange, { format }: { format: Record<string, unknown> }) => (
-          quill.format('code', !format['code'], 'user'),
-          false
-        ),
-      );
-      // Typography: the shortcut's last key, after the rest of it; not in code, where -> means ->
-      for (const [, before, key, symbol] of TYPOGRAPHY.matchAll(/(\S*)(\S) (\S+)/g))
-        quill.keyboard.addBinding(
-          {
-            key,
-            shiftKey: null,
-            prefix: new RegExp(`${before.replace(/[.()]/g, '\\$&')}$`, 'i'),
-            format: { 'code-block': false, code: false },
-          },
-          (range: QuillRange) => {
-            if (!this.typography()) return true;
-            const start = range.index - before.length;
-            quill.deleteText(start, before.length, 'user');
-            quill.insertText(start, symbol, 'user');
-            quill.setSelection(start + 1, 0, 'silent');
-            return false;
-          },
-        );
+      addShortcuts(quill, () => this.openBar('link'), this.typography);
       quill.on('text-change', (_delta, _old, source) => {
         if (source !== 'user') return;
-        const html = quill.getLength() <= 1 ? '' : normalizeSpaces(quill.getSemanticHTML());
-        this.lastHtml = html;
-        this.value.set(html);
-        this.onChange(html);
+        this.lastHtml = editorHtml(quill);
+        this.value.set(this.lastHtml);
+        this.onChange(this.lastHtml);
       });
       quill.on('editor-change', () => {
         const range = quill.getSelection();
         if (range) this.formats.set(quill.getFormat(range));
-        this.updateHistory(quill);
+        const { undo, redo } = quill.history.stack;
+        this.history.set({ undo: undo.length > 0, redo: redo.length > 0 });
       });
       this.quill.set(quill);
       this.ready.emit(quill);
     });
 
-    // Value -> editor (input, writeValue). Changes typed in the editor are already there
+    // Value -> editor (input, writeValue). Changes typed in the editor are already there; loaded content can't be undone
     effect(() => {
       const html = this.value() ?? '';
       const quill = this.quill();
@@ -414,7 +207,7 @@ export class TextEditorComponent implements ControlValueAccessor {
         this.lastHtml = html;
         quill.setContents(quill.clipboard.convert({ html }), 'api');
         quill.history.clear();
-        this.updateHistory(quill);
+        this.history.set({ undo: false, redo: false });
       });
     });
 
@@ -499,13 +292,9 @@ export class TextEditorComponent implements ControlValueAccessor {
     if (!this.host.contains(event.relatedTarget as Node | null)) this.onTouched();
   }
 
-  private updateHistory({ history: { stack } }: Quill) {
-    this.history.set({ undo: stack.undo.length > 0, redo: stack.redo.length > 0 });
-  }
-
   /** Is there nothing for an undo / redo button to do? */
-  protected isIdle(item: ToolItem): boolean {
-    return (item.tool === 'undo' || item.tool === 'redo') && !this.history()[item.tool];
+  protected isIdle({ tool }: ToolItem): boolean {
+    return (tool === 'undo' || tool === 'redo') && !this.history()[tool];
   }
 
   /** Is the control's format on at the cursor? (for value tools: set to its value; left align is no value) */
@@ -513,10 +302,6 @@ export class TextEditorComponent implements ControlValueAccessor {
     const current = this.formats()[item.format];
     if (item.tool === 'check') return current === 'checked' || current === 'unchecked';
     return item.value === undefined ? !!current : (current ?? '') === item.value;
-  }
-
-  protected heading(): string {
-    return String(this.formats()['header'] ?? '');
   }
 
   /** The Quill instance, unless the editor is disabled or read-only */
@@ -533,31 +318,25 @@ export class TextEditorComponent implements ControlValueAccessor {
   }
 
   protected run(item: ToolItem, button: HTMLElement) {
-    if (item.tool === 'color' || item.tool === 'background')
+    const { tool } = item;
+    if (tool === 'color' || tool === 'background')
       return this.palette.set({ format: item.format, label: item.label, button });
-    if (item.tool === 'link' || item.tool === 'image') return this.openBar(item.tool);
-    const step = item.tool;
-    if (step === 'undo' || step === 'redo') return this.edit((quill) => quill.history[step]());
+    if (tool === 'link' || tool === 'image') return this.openBar(tool);
+    if (tool === 'undo' || tool === 'redo') return this.edit((quill) => quill.history[tool]());
     this.edit((quill, range) => {
-      if (item.tool === 'divider') {
+      const [line, offset] = quill.getLine(range.index);
+      if (tool === 'divider') {
         // Before the line when the cursor is at its start (or it's empty), else after the whole line
-        const [line, offset] = quill.getLine(range.index);
         const at = range.index - offset + (offset && line ? line.length() : 0);
         if (at >= quill.getLength()) quill.insertText(at - 1, '\n', 'user');
         quill.insertEmbed(at, 'divider', true, 'user');
         quill.setSelection(at + 1, 0, 'user');
-      } else if (item.tool !== 'clean')
-        quill.format(
-          item.format,
-          !this.isActive(item) && (item.value || item.value === undefined),
-          'user',
-        );
-      else if (range.length) quill.removeFormat(range.index, range.length, 'user');
-      else {
-        // No selection: clear the line the cursor is on (its text; Quill clears the line's own formats with it)
-        const [line, offset] = quill.getLine(range.index);
-        if (line) quill.removeFormat(range.index - offset, line.length() - 1, 'user');
-      }
+      } else if (tool !== 'clean') {
+        const on = !this.isActive(item) && (item.value || item.value === undefined);
+        quill.format(item.format, on, 'user');
+      } else if (range.length) quill.removeFormat(range.index, range.length, 'user');
+      // No selection: clear the cursor's line (its text; Quill clears the line's own formats with it)
+      else if (line) quill.removeFormat(range.index - offset, line.length() - 1, 'user');
       this.formats.set(quill.getFormat(quill.getSelection() ?? range));
     });
   }
@@ -568,9 +347,8 @@ export class TextEditorComponent implements ControlValueAccessor {
 
   /** Closed without a pick (Escape, a click outside): back to the color button */
   protected closePalette() {
-    const palette = this.palette();
+    this.palette()?.button.focus();
     this.palette.set(null);
-    palette?.button.focus();
   }
 
   protected pickColor(format: string, color: string | false) {
@@ -593,9 +371,8 @@ export class TextEditorComponent implements ControlValueAccessor {
   }
 
   protected applyBar() {
-    const url = this.barUrl().trim();
     if (this.bar() === 'link') this.applyLink();
-    else this.insertImages(null, [normalizeUrl(url)]);
+    else this.insertImages(null, [normalizeUrl(this.barUrl().trim())]);
   }
 
   /** Inserts images (addresses, or files: uploaded with `uploadImage`, else inlined) at the range or the cursor */
@@ -654,13 +431,15 @@ export class TextEditorComponent implements ControlValueAccessor {
   /** Toolbar keys (WAI-ARIA toolbar): arrows, Home and End move between controls; Tab leaves the toolbar */
   protected onToolbarKey(event: KeyboardEvent) {
     const controls = this.toolbarControls().filter((c) => !(c as HTMLButtonElement).disabled);
-    const i = controls.indexOf(event.target as HTMLElement);
-    const n = controls.length;
-    const next = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[
-      event.key
-    ];
-    if (next === undefined || !n) return;
+    const [i, n] = [controls.indexOf(event.target as HTMLElement), controls.length];
+    const keys: Record<string, number> = {
+      ArrowRight: i + 1,
+      ArrowLeft: i - 1 + n,
+      Home: 0,
+      End: n - 1,
+    };
+    if (!(event.key in keys) || !n) return;
     event.preventDefault();
-    controls[next].focus();
+    controls[keys[event.key] % n].focus();
   }
 }
