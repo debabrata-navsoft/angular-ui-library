@@ -9,6 +9,7 @@
     { "input": "stories/styles", "glob": "{theme,animations}.css", "output": "styles" },
     { "input": "stories/icons/svg", "glob": "**/*.svg", "output": "icons" },
     { "input": "stories/icons/svg", "glob": "LICENSE-lucide.txt", "output": "icons" },
-    { "input": "stories/nexlottie/files", "glob": "**/*.json", "output": "lottie" }
+    { "input": "stories/nexlottie/files", "glob": "**/*.json", "output": "lottie" },
+    { "input": ".", "glob": "LICENSE", "output": "." }
   ]
 }

@@ -15,7 +15,7 @@ npm run build             # Production app build with SSR -> dist/nexprime-ui/{b
 npm run serve:ssr:nexprime-ui          # Run the built SSR server (node, port 4000)
 npm run build:elements    # Web Components for React/Vue/HTML -> dist/nexprime-elements/browser/ (nexprime.js, styles.css, icons/)
 npm run build:lib         # npm package "nexprime" (ng build nexprime-lib, ng-packagr) -> dist/nexprime-lib/ (entry src/public-api.ts,
-                          # config src/ng-package.json + src/package.json, README src/README.md, tsconfig.lib.json),
+                          # config src/ng-package.json + src/package.json, README src/README.md, LICENSE src/LICENSE = a copy of the root LICENSE, tsconfig.lib.json),
                           # then build:elements; packaging/package-lib.mjs adds elements/ (nexprime/elements, for
                           # React/Vue/HTML) and react/ (nexprime/react: <NexPrime> wrapper, JSX types) from packaging/.
                           # packaging/ is outside src/ so the app's tsconfigs don't type-check its React typings
