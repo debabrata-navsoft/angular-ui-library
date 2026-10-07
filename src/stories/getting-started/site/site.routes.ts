@@ -11,11 +11,14 @@ import {
 } from '@angular/router';
 import { addons } from 'storybook/preview-api';
 
+import { AboutComponent } from '../about/about.component';
 import { AnimationGalleryComponent } from '../../animations/animation-gallery.component';
 import { IconGalleryComponent } from '../../icons/icon-gallery.component';
 import { LottieGalleryComponent } from '../../nexlottie/lottie-gallery.component';
 import { ComponentsCatalogComponent } from '../components-catalog/components-catalog.component';
+import { ContactComponent } from '../contact/contact.component';
 import { PAGES, SITE_ROUTE } from '../landing';
+import { LegalComponent } from '../legal/legal.component';
 import { WelcomeComponent } from '../welcome/welcome.component';
 
 // The galleries' data is big (~2,000 SVGs, 236 Lottie files), so it loads on its own, not with Welcome
@@ -50,6 +53,10 @@ const routes: Routes = [
     component: LottieGalleryComponent,
     resolve: { animations: () => lottie().then((m) => m.ANIMATIONS) },
   },
+  { path: PAGES.about, title: 'About', component: AboutComponent },
+  { path: PAGES.contact, title: 'Contact us', component: ContactComponent },
+  { path: PAGES.privacy, title: 'Privacy policy', component: LegalComponent, data: { doc: 'privacy' } },
+  { path: PAGES.terms, title: 'Terms of service', component: LegalComponent, data: { doc: 'terms' } },
   { path: '**', redirectTo: '' },
 ];
 

@@ -17,6 +17,10 @@ export const PAGES = {
   lottie: 'nexlottie',
   effects: 'effects-particles--hero',
   onboarding: 'onboarding-tour',
+  about: 'about',
+  contact: 'contact',
+  privacy: 'privacy',
+  terms: 'terms',
 };
 
 /**
@@ -44,6 +48,24 @@ export const SITE_PAGES = [
   PAGES.icons,
   PAGES.animations,
   PAGES.lottie,
+  PAGES.about,
+  PAGES.contact,
+  PAGES.privacy,
+  PAGES.terms,
+];
+
+/** How to reach the NexPrime team: shown by the site footer, About and Contact */
+export const CONTACT = {
+  email: 'debabratadas711@gmail.com',
+  location: 'Kolkata, India',
+  x: 'https://twitter.com/nexprime',
+  npm: 'https://www.npmjs.com/package/nexprime',
+};
+
+/** The creators, with their LinkedIn profiles (replace the placeholder URLs with the real ones) */
+export const AUTHORS = [
+  { name: 'Debabrata Das', role: 'Co-creator', linkedin: 'https://www.linkedin.com/in/your-id' },
+  { name: 'Salman Ali', role: 'Co-creator', linkedin: 'https://www.linkedin.com/in/their-id' },
 ];
 
 /** Channel event: the site's page changed ({ page, title }); manager.ts shows it in the address bar and tab */

@@ -200,7 +200,13 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Clicking a card opens `lottie-detail` (a `np-dialog`, LottieFiles-style): preview with play/speed/background, tabs Download (dotLottie / JSON, plain and optimized, with real sizes) | Asset & Embed | Details, and related animations.
   "Other export formats" are built in the browser by `lottie-export.ts`: MP4/WebM/MOV via WebCodecs (`mediabunny`), GIF via `gifenc` (types in `gifenc.d.ts`), SVG/PNG from the frame on screen. Both packages are devDependencies, imported on click. Frames come from lottie-web's canvas renderer, which must be loaded **without** a `container` or it draws nothing offscreen.
 
-## Site (Welcome, Components, Icons, Animations, NexLottie)
+## Site (Welcome, Components, Icons, Animations, NexLottie, About, Contact, Privacy, Terms)
+
+- About (`getting-started/about/`), Contact (`contact/`: an np-form that opens a mailto: link, the site has no backend)
+  and Privacy / Terms (`legal/`: one LegalComponent, `doc` set by route data, text in `legal-data.ts`) are site pages
+  with hidden stories (`!dev`) at /about, /contact, /privacy, /terms. They're wrapped in `np-site-page` (`site-page/`: hero
+  with `heading`/`intro`/`note`, projected content, footer; `.site-card` and `.site-icon` in gallery-page.css). They and Welcome end with `np-site-footer`
+  (`getting-started/site-footer/`); contact details and the creators (LinkedIn URLs) are CONTACT and AUTHORS in landing.ts.
 
 - The five pages are one Angular app, `np-site` (`getting-started/site/`): the landing nav plus `<router-outlet>`, with
   Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
