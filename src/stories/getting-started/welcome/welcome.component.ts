@@ -111,6 +111,45 @@ export class WelcomeComponent {
 
   protected readonly sections = SECTIONS;
 
+  protected readonly year = new Date().getFullYear();
+
+  /** Footer link columns: Storybook pages (short URLs) or external `url`s */
+  protected readonly footerLinks: { title: string; links: { label: string; page?: string; url?: string }[] }[] = [
+    {
+      title: 'Components',
+      links: [
+        { label: 'Button', page: 'components-form-button' },
+        { label: 'Select', page: 'components-form-select' },
+        { label: 'Form', page: 'components-form-form' },
+        { label: 'Table', page: 'components-data-table' },
+        { label: 'Chart', page: 'components-data-chart' },
+        { label: 'Dialog', page: 'components-overlay-dialog' },
+        { label: 'All components', page: PAGES.catalog },
+      ],
+    },
+    {
+      title: 'Documentation',
+      links: [
+        { label: 'Installation', page: PAGES.getStarted },
+        { label: 'Configuration', page: 'getting-started-configuration' },
+        { label: 'Playground', page: 'getting-started-playground' },
+        { label: 'Icons', page: PAGES.icons },
+        { label: 'Animations', page: PAGES.animations },
+        { label: 'NexLottie', page: PAGES.lottie },
+        { label: 'Effects', page: PAGES.effects },
+      ],
+    },
+    {
+      title: 'Project',
+      links: [
+        { label: 'npm package', url: 'https://www.npmjs.com/package/nexprime' },
+        { label: 'Releases', url: 'https://www.npmjs.com/package/nexprime?activeTab=versions' },
+        { label: 'License', url: 'https://cdn.jsdelivr.net/npm/nexprime/LICENSE' },
+        { label: 'Onboarding', page: PAGES.onboarding },
+      ],
+    },
+  ];
+
   protected readonly previewIcons = 'house heart bell rocket camera music cloud star'.split(' ');
   protected readonly iconVariants = ['outline', 'duotone', 'gradient', 'soft'] as const;
 
