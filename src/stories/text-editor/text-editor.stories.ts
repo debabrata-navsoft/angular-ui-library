@@ -30,9 +30,14 @@ const meta: Meta<TextEditorComponent> = {
   parameters: {
     docs: {
       description: {
-        component: `A rich text editor built on [Quill 2](https://quilljs.com) with a NexPrime toolbar: text styles
-(paragraph, H1–H3), bold, italic, underline, strike, text and highlight colors, numbered and bulleted lists,
-alignment, links, quotes, code blocks and clear formatting. The value is **HTML** (\`''\` when empty).
+        component: `A rich text editor built on [Quill 2](https://quilljs.com) with a NexPrime toolbar: undo / redo,
+text styles (paragraph, H1–H3), bold, italic, underline, strike, inline code, superscript and subscript, text and
+highlight colors, numbered, bulleted and check lists, alignment, links, images (upload, address, paste or drop),
+quotes, code blocks, dividers and clear formatting. Typing \`->\`, \`--\`, \`...\` or \`(c)\` gives →, —, … and ©
+(\`typography\`). The value is **HTML** (\`''\` when empty).
+
+**Images**: set \`uploadImage\` to a function that uploads a file and returns its URL; without it, images are
+inlined as \`data:\` URLs in the HTML.
 
 **Installation**: \`npm install nexprime\` brings Quill along (a dependency). Nothing else to set up: Quill loads
 on first use, only in the browser, so pages that don't show an editor don't load it, and server rendering works.

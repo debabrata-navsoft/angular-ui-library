@@ -23,6 +23,13 @@ quarters of launch.</p>
 <li>Account settings: profile, team members, security</li>
 </ul>
 <blockquote>Out of scope: the public marketing site and the mobile apps, which follow in a later phase.</blockquote>
+<h3>Launch checklist</h3>
+<ul>
+<li data-list="checked">Kick-off with stakeholders</li>
+<li data-list="checked">User interviews (12 customers)</li>
+<li data-list="unchecked">Design review</li>
+<li data-list="unchecked">Beta sign-up page</li>
+</ul>
 <h2>4. Timeline</h2>
 <p>Discovery takes <u>three weeks</u>, design <u>four weeks</u> and build <u>eight weeks</u>, followed by a two-week
 beta with selected customers. See the <a href="https://example.com/roadmap">roadmap</a> for dates.</p>
@@ -30,7 +37,13 @@ beta with selected customers. See the <a href="https://example.com/roadmap">road
 <p>The portal reads account data from the existing API:</p>
 <pre>GET /api/v2/accounts/{id}/summary
 Authorization: Bearer &lt;token&gt;</pre>
-<h2>6. Approval</h2>
+<h2>6. Writing tools</h2>
+<p>This editor handles the details: <strong>superscript</strong> (x<sup>2</sup>) and <strong>subscript</strong>
+(H<sub>2</sub>O), <code>inline code</code>, and typographic shortcuts: type <code>-&gt;</code> for an arrow →,
+<code>--</code> for a dash — and <code>(c)</code> for ©. Add images by upload, address, paste or drag and drop:</p>
+<p><img src="nexprime-hero.svg" alt="NexPrime"></p>
+<hr>
+<h2>7. Approval</h2>
 <p>Please review and comment by <strong>Friday</strong>. Replace this text with your own: everything on this page is
 editable, and your changes are saved in this browser.</p>`;
 

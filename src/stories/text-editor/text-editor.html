@@ -66,27 +66,45 @@
       </div>
     }
 
-    @if (linkOpen()) {
-      <form class="te__link" role="dialog" aria-label="Insert link" (submit)="$event.preventDefault(); applyLink()">
-        <np-icon name="link" size="16" class="te__link-icon" />
+    @if (bar(); as kind) {
+      <form
+        class="te__link"
+        role="dialog"
+        [attr.aria-label]="kind === 'link' ? 'Insert link' : 'Insert image'"
+        (submit)="$event.preventDefault(); applyBar()"
+      >
+        <np-icon [name]="kind === 'link' ? 'link' : 'image'" size="16" class="te__link-icon" />
         <input
-          #linkInput
+          #barInput
           class="ui-control te__link-input"
           type="text"
           inputmode="url"
-          aria-label="Link address"
-          placeholder="https://example.com"
-          [value]="linkUrl()"
-          (input)="linkUrl.set($any($event.target).value)"
-          (keydown.escape)="$event.preventDefault(); closeLink()"
+          [attr.aria-label]="kind === 'link' ? 'Link address' : 'Image address'"
+          [placeholder]="kind === 'link' ? 'https://example.com' : 'https://example.com/photo.jpg'"
+          [value]="barUrl()"
+          (input)="barUrl.set($any($event.target).value)"
+          (keydown.escape)="$event.preventDefault(); closeBar()"
         />
-        <button type="submit" class="ui-btn ui-btn--primary ui-btn--sm" [disabled]="!linkUrl().trim()">Apply</button>
-        @if (formats()['link']) {
+        <button type="submit" class="ui-btn ui-btn--primary ui-btn--sm" [disabled]="!barUrl().trim()">
+          {{ kind === 'link' ? 'Apply' : 'Insert' }}
+        </button>
+        @if (kind === 'image') {
+          <label class="ui-btn ui-btn--sm">
+            <np-icon name="upload" size="14" /> Upload
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              class="ui-visually-hidden"
+              (change)="insertImages(null, [].slice.call($any($event.target).files))"
+            />
+          </label>
+        } @else if (formats()['link']) {
           <button type="button" class="ui-btn ui-btn--text ui-btn--danger ui-btn--sm" (click)="applyLink(true)">
             Remove
           </button>
         }
-        <button type="button" class="ui-btn ui-btn--text ui-btn--sm" (click)="closeLink()">Cancel</button>
+        <button type="button" class="ui-btn ui-btn--text ui-btn--sm" (click)="closeBar()">Cancel</button>
       </form>
     }
 

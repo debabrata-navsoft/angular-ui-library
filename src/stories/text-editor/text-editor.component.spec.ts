@@ -76,6 +76,109 @@ describe('TextEditorComponent', () => {
     expect(editor.value()).toBe('<p><strong>Make</strong> me bold</p>');
   });
 
+  describe('content tools', () => {
+    const click = (label: string) =>
+      (fixture.nativeElement.querySelector(`button[aria-label="${label}"]`) as HTMLButtonElement).click();
+
+    beforeEach(() => {
+      Range.prototype.getBoundingClientRect ??= () => new DOMRect();
+    });
+
+    it('applies inline code, superscript and subscript', async () => {
+      fixture.componentRef.setInput('value', '<p>x2 H2O code</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(1, 1);
+      click('Superscript');
+      quill.setSelection(4, 1);
+      click('Subscript');
+      quill.setSelection(7, 4);
+      click('Inline code');
+      expect(editor.value()).toBe('<p>x<sup>2</sup> H<sub>2</sub>O <code>code</code></p>');
+    });
+
+    it('makes a checklist and keeps checked items', async () => {
+      fixture.componentRef.setInput('value', '<p>Todo</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(1, 0);
+      click('Checklist');
+      expect(editor.value()).toBe('<ul><li data-list="unchecked">Todo</li></ul>');
+      editor.writeValue('<ul><li data-list="checked">Done</li></ul>');
+      await fixture.whenStable();
+      expect(root(fixture).querySelector('li')?.getAttribute('data-list')).toBe('checked');
+    });
+
+    it('inserts a divider under the cursor line, then types below it, and reads <hr> back', async () => {
+      fixture.componentRef.setInput('value', '<p>Above</p>');
+      const quill = await ready(fixture, () => editor);
+      quill.setSelection(5, 0); // end of the last line
+      click('Divider');
+      quill.insertText(quill.getSelection()!.index, 'Below', 'user');
+      expect(editor.value()).toBe('<p>Above</p><hr><p>Below</p>');
+
+      quill.setSelection(2, 0); // middle of a line: the line stays whole
+      click('Divider');
+      expect(editor.value()).toBe('<p>Above</p><hr><hr><p>Below</p>');
+
+      editor.writeValue('<p>a</p><p><br></p><p>b</p>');
+      await fixture.whenStable();
+      quill.setSelection(2, 0); // an empty line: the divider takes its place, the cursor stays on it
+      click('Divider');
+      quill.insertText(quill.getSelection()!.index, 'x', 'user');
+      expect(editor.value()).toBe('<p>a</p><hr><p>x</p><p>b</p>');
+      editor.writeValue('<p>a</p><hr><p>b</p>');
+      await fixture.whenStable();
+      expect(root(fixture).querySelector('hr')).toBeTruthy();
+    });
+
+    it('inserts images at the cursor: uploaded from the image bar, or by address', async () => {
+      const upload = vi.fn(async () => 'https://cdn.example.com/a.png');
+      fixture.componentRef.setInput('uploadImage', upload);
+      fixture.componentRef.setInput('value', '<p>AB</p>');
+      const quill = await ready(fixture, () => editor);
+      const openBar = () => {
+        click('Image');
+        fixture.detectChanges();
+        return fixture.nativeElement.querySelector('.te__link') as HTMLFormElement;
+      };
+
+      quill.setSelection(1, 0);
+      const file = openBar().querySelector('input[type=file]') as HTMLInputElement;
+      Object.defineProperty(file, 'files', { value: [new File(['x'], 'a.png', { type: 'image/png' })] });
+      file.dispatchEvent(new Event('change'));
+      await vi.waitFor(() =>
+        expect(editor.value()).toBe('<p>A<img src="https://cdn.example.com/a.png">B</p>'),
+      );
+
+      const form = openBar();
+      const url = form.querySelector('.te__link-input') as HTMLInputElement;
+      url.value = 'example.com/b.jpg';
+      url.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      form.requestSubmit();
+      await vi.waitFor(() =>
+        expect(editor.value()).toBe(
+          '<p>A<img src="https://cdn.example.com/a.png"><img src="https://example.com/b.jpg">B</p>',
+        ),
+      );
+    });
+
+    it('turns typed shortcuts into symbols, unless typography is off', async () => {
+      fixture.componentRef.setInput('value', '<p>a -</p>');
+      const quill = await ready(fixture, () => editor);
+      const type = (key: string) =>
+        quill.root.dispatchEvent(new KeyboardEvent('keydown', { key, shiftKey: key === '>', bubbles: true }));
+      quill.setSelection(3, 0);
+      type('>');
+      expect(editor.value()).toBe('<p>a →</p>');
+
+      fixture.componentRef.setInput('typography', false);
+      quill.setText('a -', 'user');
+      quill.setSelection(3, 0);
+      type('>');
+      expect(editor.value()).toBe('<p>a -</p>');
+    });
+  });
+
   it('undoes and redoes edits, with the buttons disabled when there is nothing to do', async () => {
     Range.prototype.getBoundingClientRect ??= () => new DOMRect();
     const quill = await ready(fixture, () => editor);

@@ -54,6 +54,13 @@ const htmlFile = (title: string, body: string, word = false) => `<!doctype html>
   blockquote { margin: 0; padding: 4px 0 4px 14px; border-left: 3px solid #6366f1; color: #475569; }
   pre { padding: 12px 14px; border-radius: 6px; background: #f1f5f9; white-space: pre-wrap; }
   a { color: #4f46e5; }
+  img { max-width: 100%; height: auto; border-radius: 6px; }
+  code { padding: 1px 5px; border-radius: 4px; background: #f1f5f9; }
+  hr { border: none; border-top: 1px solid #cbd5e1; }
+  li[data-list='checked'], li[data-list='unchecked'] { list-style: none; }
+  li[data-list='unchecked']::before { content: '☐ '; }
+  li[data-list='checked']::before { content: '☑ '; }
+  li[data-list='checked'] { color: #64748b; text-decoration: line-through; }
 </style>
 </head>
 <body>
@@ -95,7 +102,7 @@ export class TextEditorPageComponent {
     return { words, characters: text.replace(/\n/g, '').length, minutes: Math.max(1, Math.round(words / 200)) };
   });
 
-  /** The buttons at the end of the document's toolbar */
+  /** File actions, in the title bar */
   protected readonly actions = computed(() => [
     { icon: 'file-up', label: 'Open a file (.html, .txt, .md)', run: () => this.fileInput().nativeElement.click() },
     { icon: 'file-down', label: 'Download as Word (.doc)', run: () => this.download(true) },

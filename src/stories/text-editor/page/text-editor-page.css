@@ -2,8 +2,25 @@
   display: block;
 }
 
-.te-page {
-  max-width: 1240px;
+/* The same width and side padding as the top bar (landing-nav.css, responsive.css), so the edges line up; the
+   editor's toolbar sticks under the bar (64px + its border; two rows, 96px, on phones) */
+.gallery-page.te-page {
+  --te-sticky-top: 65px;
+  max-width: 1200px;
+  padding-inline: 24px;
+}
+
+@media (max-width: 1024px) {
+  .gallery-page.te-page {
+    padding-inline: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  .gallery-page.te-page {
+    padding-inline: 16px;
+    --te-sticky-top: 96px;
+  }
 }
 
 .modes {
@@ -29,6 +46,7 @@
 
 .doc__head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
@@ -40,7 +58,7 @@
 }
 
 .doc__title {
-  flex: 1;
+  flex: 1 1 160px;
   min-width: 0;
   padding: 6px 8px;
   border: 1px solid transparent;
@@ -63,6 +81,21 @@
   outline: none;
   border-color: var(--ui-primary);
   box-shadow: var(--ui-ring);
+}
+
+.doc__tools {
+  display: flex;
+  gap: 2px;
+}
+
+.doc__tools .ui-btn {
+  width: 34px;
+  height: 34px;
+  color: var(--ui-text-muted);
+}
+
+.doc__tools .ui-btn:hover {
+  color: var(--ui-primary);
 }
 
 .doc__saved {

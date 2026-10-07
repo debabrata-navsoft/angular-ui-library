@@ -344,7 +344,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   getSemanticHTML() (Quill 2.0's &nbsp; for every space is undone), `''` when empty. It's the library's only
   ControlValueAccessor (formControlName, ngModel), so the package peers on @angular/forms; `quill` is a package
   dependency. ViewEncapsulation.None (Quill builds the editing area), so its CSS is scoped under `.np-text-editor`.
-  Tab leaves the editor (Quill's Tab bindings are cleared). `variant` default | document (a page on a desk, `zoom`);
+  Tab leaves the editor (Quill's Tab bindings are cleared). `variant` default | document (a wide surface with a centered text column, `zoom`);
   `[editorToolbarStart]` / `[editorToolbarEnd]` project extra toolbar controls (class `te__tool`, `data-tool` joins
   the toolbar's arrow keys; the roving tabindex is set on the DOM, so projected controls take part). `theme` light | dark re-declares the neutral tokens.
   Unit tests: `text-editor.component.spec.ts`.

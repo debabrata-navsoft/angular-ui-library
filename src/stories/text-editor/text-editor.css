@@ -1,5 +1,6 @@
 /* ViewEncapsulation.None (Quill builds the editing area), so every rule is nested in .np-text-editor */
 .np-text-editor {
+  --te-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   display: block;
   min-width: 0;
 
@@ -170,6 +171,10 @@
     color: var(--ui-text-muted);
   }
 
+  .te__link label:focus-within {
+    box-shadow: var(--ui-ring);
+  }
+
   .te__link-input {
     flex: 1 1 180px;
     width: auto;
@@ -258,7 +263,7 @@
       overflow-x: auto;
       border-radius: var(--ui-radius-sm);
       background: var(--ui-surface-sunken);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-family: var(--te-mono);
       font-size: 13px;
     }
 
@@ -301,6 +306,60 @@
       content: counter(list-0, decimal) '. ';
     }
 
+    /* Checklist: a checkbox (Quill toggles it on click); done items are struck through */
+    li:is([data-list='checked'], [data-list='unchecked']) > .ql-ui {
+      cursor: pointer;
+
+      &::before {
+        content: '';
+        box-sizing: border-box;
+        width: 15px;
+        height: 15px;
+        margin-right: calc(1.5em - 15px);
+        border: 1.5px solid var(--ui-border-strong);
+        border-radius: 4px;
+        background: var(--ui-surface);
+        vertical-align: -2px;
+      }
+    }
+
+    li[data-list='checked'] {
+      color: var(--ui-text-muted);
+      text-decoration: line-through;
+    }
+
+    li[data-list='checked'] > .ql-ui::before {
+      content: '✓';
+      border-color: transparent;
+      background: var(--ui-gradient);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 12px;
+      text-align: center;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--ui-surface-sunken);
+      font-family: var(--te-mono);
+      font-size: 0.88em;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--ui-radius-sm);
+      vertical-align: middle;
+    }
+
+    hr {
+      margin: 1.2em 0;
+      border: none;
+      border-top: 1px solid var(--ui-border-strong);
+    }
+
     &.ql-blank::before {
       content: attr(data-placeholder);
       position: absolute;
@@ -339,30 +398,25 @@
     cursor: auto;
   }
 
-  /* variant="document": a sheet of paper on a gray desk; the toolbar stays on top while the page scrolls */
+  /* variant="document": one wide writing surface with the text in a centered, readable column (like Notion or
+     Tiptap); the toolbar stays on top while the text scrolls */
   &.np-text-editor--document {
+    /* --te-sticky-top: the height of a fixed header above the editor, if the page has one */
     .te__toolbar {
       position: sticky;
-      top: 0;
+      top: var(--te-sticky-top, 0);
       z-index: 1;
     }
 
-    .te__scroll {
-      padding: 32px 16px;
-      background: var(--ui-surface-sunken);
-    }
-
     .ql-editor {
-      --te-pad: 88px;
-      flex: none;
+      --te-pad: 24px;
+      position: relative;
       width: 100%;
-      max-width: 816px;
-      min-height: 1056px;
+      max-width: 760px;
       margin: 0 auto;
-      padding-block: 72px;
-      border-radius: 4px;
-      background: var(--ui-surface);
-      box-shadow: var(--ui-shadow);
+      padding-block: 48px;
+      font-size: 16px;
+      line-height: 1.7;
       zoom: var(--te-zoom, 1);
     }
   }
@@ -420,26 +474,28 @@
       0 0 0 4px var(--ui-primary);
   }
 
+  /* Tablets and phones: one toolbar row that scrolls sideways, instead of rows of buttons above the text */
+  @media (max-width: 1024px) {
+    .te__toolbar {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: thin;
+
+      > * {
+        flex: none;
+      }
+    }
+  }
+
   @media (max-width: 640px) {
     .te__tool {
       width: 36px;
       height: 36px;
     }
 
-    .te__divider {
-      display: none;
-    }
-
-    &.np-text-editor--document {
-      .te__scroll {
-        padding: 12px 8px;
-      }
-
-      .ql-editor {
-        --te-pad: 20px;
-        min-height: 600px;
-        padding-block: 32px;
-      }
+    &.np-text-editor--document .ql-editor {
+      --te-pad: 16px;
+      padding-block: 24px;
     }
   }
 }
