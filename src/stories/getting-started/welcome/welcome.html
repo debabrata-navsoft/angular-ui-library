@@ -190,7 +190,10 @@
     </np-animate-on-scroll>
     <div class="explore">
       @for (s of sections; track s.id; let i = $index) {
-        <np-animate-on-scroll [delay]="i * 60">
+        <np-animate-on-scroll
+          [delay]="i * 60"
+          [class.explore__wide]="s.id === 'text-editor' || s.id === 'onboarding'"
+        >
           <a class="explore__card" [href]="href(s.path)" target="_top">
             <div class="explore__preview">
               @switch (s.id) {
@@ -219,6 +222,9 @@
                 }
                 @case ('lottie') {
                   <np-lottie src="lottie/rocket.json" size="110px" hover />
+                }
+                @case ('text-editor') {
+                  <np-text-editor-preview />
                 }
                 @case ('effects') {
                   <np-starfield

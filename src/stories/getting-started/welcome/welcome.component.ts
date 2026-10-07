@@ -18,6 +18,7 @@ import { TagComponent } from '../../components/media/tag/tag.component';
 import { AnimateOnScrollComponent } from '../../components/misc/animate-on-scroll/animate-on-scroll.component';
 import { ParticlesComponent } from '../../effects/particles/particles.component';
 import { StarfieldComponent } from '../../effects/starfield/starfield.component';
+import { TextEditorPreviewComponent } from '../../text-editor/page/text-editor-preview.component';
 import { copyToClipboard } from '../../utils/clipboard';
 import { PAGES, SECTIONS, VERSION, managerHref } from '../landing';
 import { SiteFooterComponent } from '../site-footer/site-footer.component';
@@ -60,6 +61,7 @@ export class Settings {
     SiteFooterComponent,
     StarfieldComponent,
     TagComponent,
+    TextEditorPreviewComponent,
     ToggleComponent,
   ],
   templateUrl: './welcome.html',

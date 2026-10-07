@@ -92,6 +92,7 @@ const preview: Preview = {
             'Dot Wave',
             'Dot Ribbon',
           ],
+          'Text Editor',
         ],
       },
     },

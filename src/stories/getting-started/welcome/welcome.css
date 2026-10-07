@@ -682,6 +682,13 @@ h3 {
   min-width: 0;
 }
 
+/* Three columns: Text Editor and Onboarding take two, so the seven cards fill three rows */
+@media (min-width: 960px) {
+  .explore__wide {
+    grid-column: span 2;
+  }
+}
+
 /* ---- responsive ---- */
 @media (max-width: 900px) {
   .bento,

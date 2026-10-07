@@ -15,6 +15,7 @@ import { AboutComponent } from '../about/about.component';
 import { AnimationGalleryComponent } from '../../animations/animation-gallery.component';
 import { IconGalleryComponent } from '../../icons/icon-gallery.component';
 import { LottieGalleryComponent } from '../../nexlottie/lottie-gallery.component';
+import { TextEditorPageComponent } from '../../text-editor/page/text-editor-page.component';
 import { ComponentsCatalogComponent } from '../components-catalog/components-catalog.component';
 import { ContactComponent } from '../contact/contact.component';
 import { PAGES, SITE_ROUTE } from '../landing';
@@ -53,6 +54,7 @@ const routes: Routes = [
     component: LottieGalleryComponent,
     resolve: { animations: () => lottie().then((m) => m.ANIMATIONS) },
   },
+  { path: PAGES.textEditor, title: 'Text Editor', component: TextEditorPageComponent },
   { path: PAGES.about, title: 'About', component: AboutComponent },
   { path: PAGES.contact, title: 'Contact us', component: ContactComponent },
   { path: PAGES.privacy, title: 'Privacy policy', component: LegalComponent, data: { doc: 'privacy' } },

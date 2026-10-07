@@ -60,6 +60,10 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      flickering-grid/, light-rays/, grain/, dot-wave/, dot-ribbon/
     canvas-effect.ts   Shared engine of the canvas effects (base class CanvasEffect)
     effect-story.ts    Story-only helpers (hero copy, dark backgrounds) for the Effects pages
+  text-editor/       np-text-editor (Quill 2; docs at Components ▸ Form ▸ Text Editor, spec file) and page/: the site's
+                     "Text Editor" page (sidebar entry after Effects, /text-editor): Document (variant="document",
+                     zoom, import .html/.txt/.md, export Word/HTML/PDF, autosave in localStorage) | Simple (live
+                     HTML) | Comments modes; text-editor-preview is the Welcome card's picture (no Quill)
   utils/             Shared TypeScript helpers (no components):
     types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
     anchor-position.ts Shared fixed-position helper for popovers and popup menus
@@ -174,7 +178,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page reads every `.svg` with `import.meta.glob(..., { query: '?raw' })` in `icons/icons-data.ts`, so new files need no code changes. The site's router gives it to the page (route resolvers), so it stays out of the Controls panel.
 - `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`; Storybook would pick Icons) and keeps its URL as plain `/` (short page URLs in manager.ts).
-- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects. Root pages and the Onboarding and Effects groups are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects, Text Editor. Root pages, the Onboarding and Effects groups and Text Editor are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#np-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<np-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.np-icon`.
 
@@ -208,7 +212,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   with `heading`/`intro`/`note`, projected content, footer; `.site-card` and `.site-icon` in gallery-page.css). They and Welcome end with `np-site-footer`
   (`getting-started/site-footer/`); contact details and the creators (LinkedIn URLs) are CONTACT and AUTHORS in landing.ts.
 
-- The five pages are one Angular app, `np-site` (`getting-started/site/`): the landing nav plus `<router-outlet>`, with
+- The site's pages are one Angular app, `np-site` (`getting-started/site/`): the landing nav plus `<router-outlet>`, with
   Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
   without Storybook loading a story.
 - Each page keeps its own story (sidebar entry and URL: `/`, `/components-overview`, `/icons`, `/animations`,
@@ -332,6 +336,18 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   (blurred swaying bars) and Grain (SVG noise tile, drawn over the content) are pure CSS with no listeners.
   Spotlight and Aurora are pure CSS; their pointer listeners are plain `addEventListener` calls in `afterNextRender`, so pointer moves don't run change detection. Confetti's `fire(x?, y?)` bursts from code (`trigger="manual"`). Stories build their template with `demo(tag, { height, background, content })` from `effects/effect-story.ts`.
 - Particles (`np-particles`): dots joined by lines within `linkDistance`, `count` per 1000×600 px (so density is size-independent), a pointer `interaction` grab (lines to the cursor) | repulse | attract | none, and `pushOnClick` adds dots. Without `color` it uses the text color (`--ui-primary` by default).
+- Text Editor (`np-text-editor`, `src/stories/text-editor/`, title `Components/Form/Text Editor`; the sidebar's
+  `Text Editor` entry is the site page in `page/`): Quill 2, imported in
+  afterNextRender (SSR-safe; Quill reads `navigator` at import), with its own Parchment registry (only the formats
+  it uses; align as a style, so the HTML needs no Quill CSS). Its own toolbar (role="toolbar", roving tabindex,
+  `tools` subset), color palette as `popover="auto"`, link bar (Ctrl/⌘ K). The value is HTML from
+  getSemanticHTML() (Quill 2.0's &nbsp; for every space is undone), `''` when empty. It's the library's only
+  ControlValueAccessor (formControlName, ngModel), so the package peers on @angular/forms; `quill` is a package
+  dependency. ViewEncapsulation.None (Quill builds the editing area), so its CSS is scoped under `.np-text-editor`.
+  Tab leaves the editor (Quill's Tab bindings are cleared). `variant` default | document (a page on a desk, `zoom`);
+  `[editorToolbarStart]` / `[editorToolbarEnd]` project extra toolbar controls (class `te__tool`, `data-tool` joins
+  the toolbar's arrow keys; the roving tabindex is set on the DOM, so projected controls take part). `theme` light | dark re-declares the neutral tokens.
+  Unit tests: `text-editor.component.spec.ts`.
 - AnimateOnScroll is a wrapper component (`<np-animate-on-scroll animation="fade-up">`). Pass `[root]` when content scrolls inside a container instead of the page.
 
 ## Stories
