@@ -80,6 +80,13 @@ export const SITE_GO = 'np/site-go';
 /** Channel event from the top bar (manager.ts): open the site search */
 export const SITE_SEARCH = 'np/site-search';
 
+/**
+ * Channel event to the manager: open a page by its short URL (managerHref, '' for Welcome). manager.ts resolves it
+ * like the address bar: Storybook's SELECT_STORY can't open a component hidden from the sidebar (Components/Overview)
+ * or an MDX page's short id (getting-started-installation)
+ */
+export const OPEN_PAGE = 'np/open-page';
+
 /** The site's sections, for the top bar (manager.ts) and Welcome's "Pick a place to start" cards */
 export const SECTIONS = [
   {

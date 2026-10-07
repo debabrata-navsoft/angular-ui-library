@@ -116,8 +116,9 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      segment (a component's id for its first page: /icons, /components-form-button-toggle). It turns
                      them into ?path= just before Storybook reads the URL and shortens every URL Storybook writes;
                      middleware.mjs serves them in the dev server (a static host needs a fallback to index.html).
-                     Landing-page links (`managerHref(PAGES.x)`) are short URLs that preview.ts opens in place
-                     (SELECT_STORY), without reloading Storybook
+                     Landing-page links (`managerHref(PAGES.x)`), the site search and the top bar open short URLs in
+                     place through openPage() (OPEN_PAGE from the preview): a component id opens its first page even
+                     when it's hidden from the sidebar, an MDX page's id its docs. Don't use SELECT_STORY for short ids
                      docs-page.ts is every component's docs page (parameters.docs.page in preview.ts): Storybook's layout,
                      but "Show code" has Angular | React | Next.js | Vue | HTML tabs, all from framework-snippets.ts.
                      Angular (angularSnippet): a standalone component importing from 'nexprime', with the story's

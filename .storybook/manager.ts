@@ -8,6 +8,7 @@ import { type API, addons } from 'storybook/manager-api';
 
 import { PALETTES, applyTheme, saveTheme, savedTheme, themeOf } from './np-theme';
 import {
+  OPEN_PAGE,
   PAGES,
   SECTIONS,
   SITE_GO,
@@ -73,6 +74,14 @@ function storybookUrl() {
   if (entry?.type === 'component') id = entry.children[0];
   return `${location.pathname.replace(/[^/]*$/, '')}?path=/story/${id}${location.search.replace('?', '&')}`;
 }
+/**
+ * Opens a page by its short URL, like the address bar does: a component's id opens its first page (also when it's
+ * hidden from the sidebar, which selectStory alone can't), an MDX page's id its docs, '' Welcome
+ */
+function openPage(api: API, page: string) {
+  const entry = page ? (api.resolveStory(page) ?? api.resolveStory(`${page}--docs`)) : undefined;
+  api.selectStory(entry?.type === 'component' ? entry.children[0] : (entry?.id ?? (page || WELCOME)));
+}
 const pageUrl = location.href;
 const opened = !!storybookUrl();
 if (opened) {
@@ -131,6 +140,8 @@ addons.register('np/page-url', (api) => {
   };
   api.on(CURRENT_STORY_WAS_SET, () => showPage());
   api.on(SITE_ROUTE, showPage);
+  // Links from the site's pages and its search (preview.ts, site-search)
+  api.on(OPEN_PAGE, (page: string) => openPage(api, page));
 });
 
 // Browser tab title: Storybook writes "Components / Button - Primary ⋅ Storybook"; show "NexPrime - Button - Primary",
@@ -352,7 +363,7 @@ addons.register('np/topbar', (api) => {
       const dark = document.documentElement.dataset['theme'] === 'dark';
       api.updateGlobals({ theme: dark ? 'light' : 'dark' });
     } else if (tool === 'palette') {
-      showMenu(menu.hidden);
+      showMenu(menu.hidden !== false);
     } else if (swatch) {
       api.updateGlobals({ palette: swatch });
       showMenu(false);
@@ -363,7 +374,7 @@ addons.register('np/topbar', (api) => {
     event.preventDefault();
     const page = link.dataset['page']!;
     if (onSite && SITE_PAGES.includes(page)) api.emit(SITE_GO, page);
-    else api.selectStory(page || WELCOME);
+    else openPage(api, page);
   });
   // The color menu closes on an outside click or Escape
   document.addEventListener('click', (event) => {
