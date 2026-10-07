@@ -34,7 +34,7 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
   getting-started/   "Getting Started": site/ (the NexPrime site, see "Site" below), welcome/ (the landing page, an Angular
                      page built from NexPrime components and effects), components-catalog/ ("View Components": every
                      component grouped like the sidebar, read at runtime from Storybook's index.json; story
-                     Components/Overview, hidden from the sidebar), landing-nav/ (the site's top bar), landing.ts (PAGES,
+                     Components/Overview, hidden from the sidebar), landing.ts (PAGES,
                      SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Installation.mdx (npm install
                      nexprime per framework), Configuration.mdx (theme, dark mode, tokens, icons, Lottie, animations),
                      playground/ (Getting Started ▸ Playground: pick a component from playground-data.ts, edit its
@@ -106,7 +106,6 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      reload never flashes the sidebar. It follows the page the preview shows (STORY_PREPARED/DOCS_PREPARED,
                      kept in addon state), not the selected one, so the layout doesn't change while the previous page is
                      still on screen. The site's SITE_ROUTE event puts its page in the address bar and tab.
-                     The sidebar logo opens Welcome in place (selectStory) instead of reloading Storybook.
                      The toolbar is hidden with CSS (`data-np-layout`), never toggleToolbar(false): Storybook then
                      keeps a landmark without an element, and showing the sidebar later crashes the manager UI
                      Short page URLs (`np/page-url`): "/" is Welcome, other pages are their Storybook id as one path
@@ -124,10 +123,18 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      and `(clicked)="visible = true"` (set on the element bound to `visible`) become real handlers,
                      and a Carousel <ng-template> becomes one child per item. Left as a "Simplified" note: other
                      <ng-template>s and element refs passed as inputs. Plain .ts with createElement: the builder doesn't serve .tsx
-                     manager-head.html styles the Storybook sidebar like PrimeNG's docs: top-level entries get a boxed
-                     icon (set per `data-item-id`, Lucide SVG data URIs) and groups a chevron (restart Storybook after editing)
-                     Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); theme-tools.ts
-                     adds search, light/dark mode and theme color (PrimeNG-style). np-theme.ts holds the palettes and
+                     manager-head.html styles the Storybook sidebar like a docs site (quilljs.com/docs): plain text links
+                     without icons, a 2px theme-color bar left of the selected page, group pages indented behind a guide
+                     line, groups with a small chevron, page-colored background (restart Storybook after editing)
+                     One top bar for every page, the site's included (`#np-topbar`, built in manager.ts, styled in
+                     manager-head.html: logo, SECTIONS links, search, light/dark mode, theme color, Get Started, content
+                     centered in 1200px; links in a second row on phones). It sits above Storybook's layout box
+                     (`#root > div`, shortened by --np-topbar-h; a `[style*=…]` selector didn't match). On docs pages
+                     (data-np-layout="default") that box is centered in the same 1200px column and the sidebar's logo row
+                     is hidden. On the site's pages its links go to the site's router (SITE_GO) and search opens the site
+                     search (SITE_SEARCH); elsewhere links select the story and search focuses the sidebar search
+                     Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); search, light/dark
+                     mode and theme color are in the top bar (icons in theme-tools.ts, which also has managerTheme()). np-theme.ts holds the palettes and
                      applyTheme(); the choice is the `theme`/`palette` globals, applied by preview.ts (data-theme +
                      --ui-primary/--ui-primary-hover/--ui-accent) and saved by manager.ts in localStorage ('np-theme').
                      docs-theme.css styles Storybook's docs pages in dark mode; manager-head.html's sidebar CSS uses
@@ -139,7 +146,10 @@ All components live in `src/stories/components/<group>/<name>/`, one folder per 
 Form (inputs, buttons, pickers, uploads), Data (tables, trees, charts, lists), Panel (layout containers), Overlay (dialogs, popups, tooltips), Menu, Feedback (alerts, progress, loading), Media (icons, avatars, badges, Lottie), Chat, Misc (page helpers). Onboarding components live in `src/stories/onboarding/<name>/` (their own sidebar section), not under components/.
 Import shared types and helpers with `from '../../../utils/types'` (or `../../../utils/<helper>`), components in the same group with `from '../<other>/<other>.component'` and in another group with `from '../../<group>/<other>/<other>.component'`.
 Every story title is `Components/<Group>/<Name>` (Onboarding and Effects keep their own `Onboarding/…` and `Effects/…` groups). Do not use an `Example/` group. The group order in the sidebar is set in `storySort` in `.storybook/preview.ts`.
-The sidebar accordion in `manager.ts` works at every level: opening a group or component closes its open siblings.
+The sidebar in `manager.ts` lists components like PrimeNG's docs: groups inside Components (Form, Data, …) are always-open
+bold headings, and each component is one link to its first page (a trusted click selects it instead of expanding it; its
+story and docs rows are hidden by CSS, prefixes components-/effects-/onboarding-). The current component gets the selected
+bar from a `#np-current-component` style. Top-level groups and components are still accordions.
 
 ## Component conventions
 
@@ -180,7 +190,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - The folder is served at `/icons` by Storybook (`staticDirs` in `.storybook/main.ts`) and by the app build (`assets` in `angular.json`). Keep both in sync with `ICONS_URL` in `icon.component.ts`.
 - The folder ships with all Lucide icons (`LICENSE-lucide.txt`, search keywords in `tags.json`). The **Icons** page reads every `.svg` with `import.meta.glob(..., { query: '?raw' })` in `icons/icons-data.ts`, so new files need no code changes. The site's router gives it to the page (route resolvers), so it stays out of the Controls panel.
 - `http://localhost:6006/` opens the Welcome page (`getting-started-welcome--welcome`; Storybook would pick Icons) and keeps its URL as plain `/` (short page URLs in manager.ts).
-- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects, Text Editor. Root pages, the Onboarding and Effects groups and Text Editor are moved below Components with CSS `order` in manager-head.html (each top-level entry also gets its boxed icon there).
+- Sidebar order is set in `.storybook/preview.ts` (`storySort`): Getting Started, Components, Icons, Animations, Onboarding (Tour, Checklist), NexLottie, Effects, Text Editor. Root pages, the Onboarding and Effects groups and Text Editor are moved below Components with CSS `order` in manager-head.html.
 - Icon styles: `variant` = `outline` (default) | `duotone` (closed shapes tinted, marked by `markClosedShapes()`) | `gradient` (stroke uses a shared `#np-icon-gradient` added to the page once) | `soft` / `solid` (rounded tile filling `size`; on `solid` a `style="color"` becomes the tile color and the icon stays white). They work on any outline icon, so new `.svg` files get them too. The Icons page renders `<np-icon [svg]>` and writes variants out as plain SVG for Copy SVG / Download.
 - `IconComponent` uses `ViewEncapsulation.None` to style the inlined `<svg>`, so scope its CSS under `.np-icon`.
 
@@ -214,7 +224,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   with `heading`/`intro`/`note`, projected content, footer; `.site-card` and `.site-icon` in gallery-page.css). They and Welcome end with `np-site-footer`
   (`getting-started/site-footer/`); contact details and the creators (LinkedIn URLs) are CONTACT and AUTHORS in landing.ts.
 
-- The site's pages are one Angular app, `np-site` (`getting-started/site/`): the landing nav plus `<router-outlet>`, with
+- The site's pages are one Angular app, `np-site` (`getting-started/site/`): the site search plus `<router-outlet>` (the top bar is Storybook's, see manager.ts), with
   Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
   without Storybook loading a story.
 - Each page keeps its own story (sidebar entry and URL: `/`, `/components-overview`, `/icons`, `/animations`,
@@ -224,7 +234,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   history. Its TitleStrategy emits `SITE_ROUTE` ({ page, title }); manager.ts shows that page's short URL and title.
 - Page links stay `managerHref()` anchors with `target="_top"`: the site routes its own pages (`SITE_PAGES`), and
   preview.ts opens the others in Storybook (SELECT_STORY). Both use `clickedPage()`, so new-tab clicks keep the link.
-- Site search (`getting-started/site-search/`, in the landing nav; Ctrl/⌘ K or /): a modal `<dialog>` over pages,
+- Site search (`getting-started/site-search/`, in np-site, opened by the top bar's search button; Ctrl/⌘ K or /): a modal `<dialog>` over pages,
   components and their stories (index.json, sidebar entries only), icons (with tags.json keywords), animations and
   Lottie files, loaded on first open. Site pages open in the router with `?q=` (the galleries' `q` input pre-fills
   their search via withComponentInputBinding; the URL sent to the manager drops the query); other pages via SELECT_STORY.

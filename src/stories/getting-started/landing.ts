@@ -73,7 +73,13 @@ export const AUTHORS = [
 /** Channel event: the site's page changed ({ page, title }); manager.ts shows it in the address bar and tab */
 export const SITE_ROUTE = 'np/site-route';
 
-/** The site's sections, for the landing nav and Welcome's "Pick a place to start" cards */
+/** Channel event from the top bar (manager.ts): open a site page (its short URL) in the site's router */
+export const SITE_GO = 'np/site-go';
+
+/** Channel event from the top bar (manager.ts): open the site search */
+export const SITE_SEARCH = 'np/site-search';
+
+/** The site's sections, for the top bar (manager.ts) and Welcome's "Pick a place to start" cards */
 export const SECTIONS = [
   {
     id: 'catalog',

@@ -2,7 +2,7 @@
   display: block;
 }
 
-/* The same width and side padding as the top bar (landing-nav.css, responsive.css), so the edges line up */
+/* The same width and side padding as the top bar (manager-head.html), so the edges line up */
 .gallery-page.te-page {
   max-width: 1200px;
   padding-inline: 24px;
