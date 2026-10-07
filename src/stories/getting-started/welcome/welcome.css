@@ -343,6 +343,31 @@ h3 {
   gap: 20px;
 }
 
+/* Three columns; the Text Editor card takes a whole row (dense packing keeps the others in full rows) */
+.explore {
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: dense;
+}
+
+.explore__wide {
+  grid-column: 1 / -1;
+}
+
+/* The wide card: its preview on the left, the text on the right */
+@media (min-width: 901px) {
+  .explore__wide a {
+    flex-direction: row;
+    min-height: 220px;
+  }
+
+  /* The preview and the text, half each; the text centered on the preview's height */
+  .explore__wide a > * {
+    flex: 1;
+    height: auto;
+    align-content: center;
+  }
+}
+
 .feature {
   /* border-box: height 100% includes the padding, so a card doesn't spill into the row below */
   box-sizing: border-box;
@@ -521,6 +546,8 @@ h3 {
 
 .mini-ui {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 14px;
 }
@@ -682,15 +709,12 @@ h3 {
   min-width: 0;
 }
 
-/* Three columns: Text Editor and Onboarding take two, so the seven cards fill three rows */
-@media (min-width: 960px) {
-  .explore__wide {
-    grid-column: span 2;
-  }
-}
-
 /* ---- responsive ---- */
 @media (max-width: 900px) {
+  .explore {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .bento,
   .quickstart {
     grid-template-columns: 1fr;

@@ -64,7 +64,8 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      text-editor-tools.ts, Quill setup and shortcuts in text-editor-quill.ts) and page/: the site's
                      "Text Editor" page (sidebar entry after Effects, /text-editor): Document (variant="document",
                      zoom, import .html/.txt/.md, export Word/HTML/PDF, autosave in localStorage) | Simple (live
-                     HTML) | Comments modes; text-editor-preview is the Welcome card's picture (no Quill)
+                     HTML) | Comments modes, in text-editor-demo (also on Welcome as `preview`: shorter, inert, inside a link to
+                     the page, loaded with @defer on viewport); text-editor-preview is the Welcome card's picture (no Quill)
   utils/             Shared TypeScript helpers (no components):
     types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
     anchor-position.ts Shared fixed-position helper for popovers and popup menus

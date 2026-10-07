@@ -65,7 +65,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 2px;
+    gap: 1px;
   }
 
   .te__toolbar {
@@ -82,7 +82,7 @@
   .te__divider {
     width: 1px;
     height: 20px;
-    margin: 0 4px;
+    margin: 0 3px;
     background: var(--ui-border-strong);
   }
 
@@ -474,8 +474,9 @@
       0 0 0 4px var(--ui-primary);
   }
 
-  /* Tablets and phones: one toolbar row that scrolls sideways, instead of rows of buttons above the text */
-  @media (max-width: 1024px) {
+  /* Up to small laptops (where the full toolbar doesn't fit): one row that scrolls sideways, instead of rows of
+     buttons above the text */
+  @media (max-width: 1180px) {
     .te__toolbar {
       flex-wrap: nowrap;
       overflow-x: auto;
