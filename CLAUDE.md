@@ -34,7 +34,11 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
   getting-started/   "Getting Started": site/ (the NexPrime site, see "Site" below), welcome/ (the landing page, an Angular
                      page built from NexPrime components and effects), components-catalog/ ("View Components": every
                      component grouped like the sidebar, read at runtime from Storybook's index.json; story
-                     Components/Overview, hidden from the sidebar), landing.ts (PAGES,
+                     Components/Overview, hidden from the sidebar; the same catalog with `kind: 'effects'` (route data)
+                     is the Effects page /effects-overview, story Effects/Overview, groups Canvas | Pure CSS; each card runs
+                     its effect via NgComponentOutlet, from effect-previews.ts (component, story background, icon,
+                     `idle` keeps the icon on top, `canvas` = extends CanvasEffect, `inputs` raise per-area counts so a
+                     small card isn't sparse), loaded with the index), landing.ts (PAGES,
                      SECTIONS, VERSION, SITE_PAGES, clickedPage() shared by the site's pages), Installation.mdx (npm install
                      nexprime per framework), Configuration.mdx (theme, dark mode, tokens, icons, Lottie, animations),
                      playground/ (Getting Started ▸ Playground: pick a component from playground-data.ts, edit its
@@ -228,7 +232,7 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
   without Storybook loading a story.
 - Each page keeps its own story (sidebar entry and URL: `/`, `/components-overview`, `/icons`, `/animations`,
-  `/nexlottie`); the story spreads `SITE_STORY` (`site-story.ts`) and sets its page in `args: { page }`. `title` and
+  `/nexlottie`, `/effects-overview`); the story spreads `SITE_STORY` (`site-story.ts`) and sets its page in `args: { page }`. `title` and
   `tags: ['np-landing']` stay literal in each story file, since Storybook's indexer reads them statically.
 - The router keeps its URL in the preview iframe's hash (`withHashLocation`), so Back/Forward go through the browser's
   history. Its TitleStrategy emits `SITE_ROUTE` ({ page, title }); manager.ts shows that page's short URL and title.

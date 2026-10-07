@@ -26,10 +26,11 @@ import { WelcomeComponent } from '../welcome/welcome.component';
 const icons = () => import('../../icons/icons-data');
 const animations = () => import('../../animations/animations-data');
 const lottie = () => import('../../nexlottie/lottie-data');
+const effects = () => import('../components-catalog/effect-previews');
 
 /** Loads every page's data, so opening a page doesn't wait for it (preview.ts calls this after the first page) */
 export function preloadSiteData() {
-  return Promise.all([icons(), animations(), lottie()]);
+  return Promise.all([icons(), animations(), lottie(), effects()]);
 }
 
 /** The site's pages. Paths are the pages' short URLs; resolved data goes to the page's inputs */
@@ -55,6 +56,12 @@ const routes: Routes = [
     resolve: { animations: () => lottie().then((m) => m.ANIMATIONS) },
   },
   { path: PAGES.textEditor, title: 'Text Editor', component: TextEditorPageComponent },
+  {
+    path: PAGES.effects,
+    title: 'Effects',
+    component: ComponentsCatalogComponent,
+    data: { kind: 'effects' },
+  },
   { path: PAGES.about, title: 'About', component: AboutComponent },
   { path: PAGES.contact, title: 'Contact us', component: ContactComponent },
   { path: PAGES.privacy, title: 'Privacy policy', component: LegalComponent, data: { doc: 'privacy' } },

@@ -127,7 +127,9 @@ h2 span {
 
 /* Dark tile with a faint grid and a light sheen, like PrimeNG's previews */
 .thumb {
+  position: relative;
   display: grid;
+  overflow: hidden;
   place-items: center;
   aspect-ratio: 16 / 10;
   border-radius: 12px;
@@ -138,6 +140,24 @@ h2 span {
     linear-gradient(160deg, #1e293b, #0b1020);
   color: #94a3b8;
   transition: color 0.2s var(--ui-ease);
+}
+
+/* Effects page: the effect running in place of the dark tile, its icon (if idle) above it. The effect's host is
+   created by NgComponentOutlet, so it needs ::ng-deep */
+.thumb__effect {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px var(--ui-border);
+  border-radius: inherit;
+}
+
+.thumb__effect > ::ng-deep * {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.thumb > np-icon {
+  position: relative;
 }
 
 .card:hover .thumb {
