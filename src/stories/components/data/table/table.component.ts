@@ -13,7 +13,7 @@ import {
 import type { Size, Tone } from '../../../utils/types';
 import { SearchInputComponent } from '../../form/search-input/search-input.component';
 import { IconComponent } from '../../media/icon/icon.component';
-import { PaginationComponent } from '../pagination/pagination.component';
+import { PaginationComponent, type PaginationVariant } from '../pagination/pagination.component';
 
 export interface TableColumn {
   /** Property name in each row object */
@@ -72,6 +72,11 @@ export class TableComponent {
   readonly loading = input(false, { transform: booleanAttribute });
   /** Rows per page; adds a pagination bar below the table (0 shows every row) */
   readonly rows = input(0, { transform: numberAttribute });
+  /** "Items per page" choices of the pagination bar (empty: no select) */
+  readonly rowsOptions = input<number[]>([5, 10, 25, 50]);
+  /** Look of the pagination bar: compact ("Items per page", "1 – 5 of 40", arrows) or any pagination variant;
+   * load-more adds rows below instead of turning pages */
+  readonly paginator = input<PaginationVariant>('compact');
   /** Text shown when there are no rows */
   readonly emptyMessage = input('No data available');
   /** Show a search box that filters rows? */
@@ -86,9 +91,17 @@ export class TableComponent {
   protected readonly filterText = signal('');
   protected readonly sortKey = signal<string | null>(null);
   protected readonly sortDirection = signal<'asc' | 'desc'>('asc');
+  /** Rows per page: `rows`, until another size is picked in the pagination bar */
+  protected readonly pageSize = linkedSignal(() => this.rows());
+  /** The size choices, with the current size among them */
+  protected readonly sizeOptions = computed(() =>
+    this.rowsOptions().length
+      ? [...new Set([...this.rowsOptions(), this.rows()])].sort((a, b) => a - b)
+      : [],
+  );
   /** Current page; back to 1 whenever the filtered rows or the page size change */
   protected readonly page = linkedSignal({
-    source: () => [this.filteredData(), this.rows()],
+    source: () => [this.filteredData(), this.pageSize()],
     computation: () => 1,
   });
 

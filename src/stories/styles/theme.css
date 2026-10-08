@@ -28,9 +28,9 @@
   --ui-help: #8b5cf6;
 
   /* Shape & depth */
-  --ui-radius-sm: 6px;
-  --ui-radius: 10px;
-  --ui-radius-lg: 16px;
+  --ui-radius-sm: 4px;
+  --ui-radius: 4px;
+  --ui-radius-lg: 4px;
   /* Fully round (pills: buttons, badges, chips, toggle tracks, bars); the np-shape-* classes change it too */
   --ui-radius-full: 999px;
   --ui-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { fn } from 'storybook/test';
 
 import { SIZES } from '../../../utils/types';
+import { PAGINATION_VARIANTS } from '../pagination/pagination.component';
 import { TABLE_VARIANTS, TableComponent, type TableColumn, type TableRow } from './table.component';
 import { appearanceStories } from '../../../utils/appearance-stories';
 
@@ -43,6 +44,7 @@ const meta: Meta<TableComponent> = {
   argTypes: {
     variant: { control: 'select', options: TABLE_VARIANTS },
     size: { control: 'inline-radio', options: SIZES },
+    paginator: { control: 'select', options: PAGINATION_VARIANTS },
   },
   args: {
     columns: [
@@ -93,8 +95,14 @@ export const Compact: Story = { args: { size: 'small', variant: 'striped' } };
 /** `selectable` adds checkboxes; `[(selection)]` holds the selected rows, the header box selects all */
 export const Selectable: Story = { args: { ...TEAM, selectable: true } };
 
-/** `rows` pages the data with a built-in pagination bar; works with sorting and the filter */
+/** `rows` pages the data with a built-in pagination bar ("Items per page" from `rowsOptions`, "1 – 5 of 8", arrows); works with sorting and the filter */
 export const Paginated: Story = { args: { ...TEAM, rows: 5, filterable: true } };
+
+/** `paginator` picks another pagination look for the bar, e.g. page numbers */
+export const PaginatorPages: Story = { args: { ...TEAM, rows: 5, paginator: 'default' } };
+
+/** `paginator="load-more"`: "Showing 3 of 8" and a button that adds the next rows below */
+export const PaginatorLoadMore: Story = { args: { ...TEAM, rows: 3, paginator: 'load-more' } };
 
 /** `scrollHeight` caps the height; the header stays pinned while rows scroll */
 export const ScrollHeight: Story = { args: { ...TEAM, scrollHeight: '320px' } };
@@ -109,6 +117,6 @@ export const WithFilter: Story = {
 export const Empty: Story = { args: { data: [], emptyMessage: 'No users found' } };
 
 /** The appearance classes from theme.css (np-color-*, np-shape-*) on the Default example */
-const appearance = appearanceStories(meta, Default);
+const appearance = appearanceStories(meta, Default, 560);
 export const AppearanceColors = appearance.colors;
 export const AppearanceShapes = appearance.shapes;

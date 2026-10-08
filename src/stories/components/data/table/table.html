@@ -1,6 +1,7 @@
 @let total = sortedData().length;
-@let perPage = rows();
-@let shown = perPage ? sortedData().slice((page() - 1) * perPage, page() * perPage) : sortedData();
+@let perPage = pageSize();
+@let from = paginator() === 'load-more' ? 0 : (page() - 1) * perPage;
+@let shown = perPage ? sortedData().slice(from, page() * perPage) : sortedData();
 @let noMatch = filterText() && data().length;
 @if (filterable()) {
   <div class="table-filter">
@@ -108,9 +109,11 @@
   <np-pagination
     class="table-pager"
     size="small"
+    [variant]="paginator()"
     [(page)]="page"
+    [(rows)]="pageSize"
+    [rowsOptions]="sizeOptions()"
     [totalRecords]="total"
-    [rows]="perPage"
     showSummary
   />
 }

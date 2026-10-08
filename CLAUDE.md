@@ -271,9 +271,13 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   `scrollHeight` (sticky header), columns with `align` and `width`.
 - Table (`np-table`): `variant` (TABLE_VARIANTS: default | striped | bordered | minimal | cards | glass), `size`,
   `scrollHeight` (sticky header), `selectable` + `[(selection)]` (rows matched by reference), `loading` (skeleton
-  rows), `rows` (pages with an internal np-pagination; the page resets when the filtered rows change); columns take
+  rows), `rows` (pages with an internal np-pagination, look `paginator` = compact by default, "Items per page" from
+  `rowsOptions`; the page resets when the filtered rows or the page size change); columns take
   `align`, `tones` (value → Tone status pill) and `image` (avatar). Variants only set `--tbl-*` variables.
-- Pagination (`np-pagination`): `variant` (PAGINATION_VARIANTS: default | outlined | soft | glass | minimal | dots),
+- Pagination (`np-pagination`): `variant` (PAGINATION_VARIANTS: default | outlined | soft | glass | minimal | dots |
+  compact = a data table footer like Material's paginator: "Items per page" select, "1 – 5 of 100", arrows only |
+  segmented = joined buttons | input = "Page [3] of 12" | load-more = "Showing 20 of 240" + "Load 20 more"; the
+  consumer shows page × rows items, as np-table does with `paginator="load-more"`); the rows-per-page picker is np-select,
   `size`, `totalRecords` + `[(rows)]`, `rowsOptions`, `showSummary`, `showFirstLast`, `showJump`, arrow keys.
 - Pick List: `variant` (PICK_LIST_VARIANTS: default | cards | compact | glass | minimal), `optionIcon`,
   `optionDescription`, `targetLimit`. Timeline: `variant` (TIMELINE_VARIANTS: default | cards | outlined | gradient |
