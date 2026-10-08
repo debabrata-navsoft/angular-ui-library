@@ -144,7 +144,8 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      search (SITE_SEARCH); elsewhere links select the story and search focuses the sidebar search
                      Toolbar: Storybook's own tools are off (`features` in main.ts, `toolbar` in manager.ts); search, light/dark
                      mode and theme color are in the top bar (icons in theme-tools.ts, which also has managerTheme()). np-theme.ts holds the palettes and
-                     applyTheme(); the choice is the `theme`/`palette` globals, applied by preview.ts (data-theme +
+                     applyTheme(); the menu's Custom row adds the user's colors (palette key `custom-rrggbb`, hover and
+                     accent derived in JS, list kept under 'np-theme-custom', × removes one); the choice is the `theme`/`palette` globals, applied by preview.ts (data-theme +
                      --ui-primary/--ui-primary-hover/--ui-accent) and saved by manager.ts in localStorage ('np-theme').
                      docs-theme.css styles Storybook's docs pages in dark mode; manager-head.html's sidebar CSS uses
                      --nav-* variables that follow the mode; the sidebar logo is public/nexprime-brand-{light,dark}.svg. Toolbar tools are hidden by id in
@@ -182,7 +183,9 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Selected/active states use `background: var(--ui-gradient)` with white text. Hover changes color, background, border or shadow only (e.g. `--ui-primary-soft`). Never move elements on hover (no `translateY` lift). `:focus-visible` uses `box-shadow: var(--ui-ring)`.
 - Alert and Toast show a round tone icon: `<span class="ui-tone-icon">{{ icons[type()] }}</span>` with `TONE_ICONS`.
 - Color variants: add the class `tone-<tone>` and read `--tone-bg`, `--tone-fg`, `--tone-border`, `--tone-solid`. Type the input as `Tone` from `utils/types.ts` (`info | success | warning | danger | neutral`).
-- Appearance classes (theme.css) work on every component: `np-color-<primary|secondary|success|info|warning|danger|help|contrast>`
+- Appearance classes (theme.css) work on every component: `np-color-<primary|secondary|success|info|warning|danger|help|contrast>`,
+  the 24 palette colors `np-color-<indigo|…|graphite>` (PALETTE_COLORS in utils/types.ts, same values as the theme
+  menu's PALETTES) and `np-color-custom` (`--np-color`, optional `--np-accent`; else a 40° hue shift via oklch)
   overrides `--ui-primary`/`--ui-accent` (and re-declares `--ui-gradient`, `--ui-primary-soft`, the ring, which are
   computed where declared) and `np-shape-<pill|rounded|square>` overrides `--ui-radius-sm/-/-lg/-full`. So components
   must take colors and radii from the tokens: fully round parts use `var(--ui-radius-full)`, never `999px`.

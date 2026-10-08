@@ -6,7 +6,16 @@ import {
 } from 'storybook/internal/core-events';
 import { type API, addons } from 'storybook/manager-api';
 
-import { PALETTES, applyTheme, saveTheme, savedTheme, themeOf } from './np-theme';
+import {
+  PALETTES,
+  applyTheme,
+  customColors,
+  customPalette,
+  editCustomColors,
+  saveTheme,
+  savedTheme,
+  themeOf,
+} from './np-theme';
 import {
   OPEN_PAGE,
   PAGES,
@@ -18,6 +27,10 @@ import {
   SITE_SEARCH,
 } from '../src/stories/getting-started/landing';
 import { ICONS, managerTheme } from './theme-tools';
+
+/** A theme menu swatch that picks the palette `key` (ringed in `color` when it's the current one) */
+const swatchButton = (key: string, label: string, color: string, background = color) =>
+  `<button type="button" role="menuitemradio" class="np-topbar__swatch" data-palette="${key}" aria-label="${label}" title="${label}" style="background: ${background}; --swatch: ${color}"></button>`;
 
 /** The last light/dark mode and theme color the user picked (preview.ts starts the stories with it too) */
 const saved = savedTheme();
@@ -81,7 +94,9 @@ function storybookUrl() {
  */
 function openPage(api: API, page: string) {
   const entry = page ? (api.resolveStory(page) ?? api.resolveStory(`${page}--docs`)) : undefined;
-  api.selectStory(entry?.type === 'component' ? entry.children[0] : (entry?.id ?? (page || WELCOME)));
+  api.selectStory(
+    entry?.type === 'component' ? entry.children[0] : (entry?.id ?? (page || WELCOME)),
+  );
 }
 const pageUrl = location.href;
 const opened = !!storybookUrl();
@@ -317,11 +332,16 @@ addons.register('np/topbar', (api) => {
           <button type="button" class="np-topbar__tool" data-tool="palette" aria-label="Theme color" title="Theme color" aria-expanded="false">${icon('palette')}</button>
           <div class="np-topbar__menu" role="menu" aria-label="Theme color" hidden>
             ${Object.entries(PALETTES)
-              .map(
-                ([key, p]) =>
-                  `<button type="button" role="menuitemradio" class="np-topbar__swatch" data-palette="${key}" aria-label="${p.label}" title="${p.label}" style="background: linear-gradient(135deg, ${p.primary}, ${p.accent}); --swatch: ${p.primary}"></button>`,
+              .map(([key, p]) =>
+                swatchButton(
+                  key,
+                  p.label,
+                  p.primary,
+                  `linear-gradient(135deg, ${p.primary}, ${p.accent})`,
+                ),
               )
               .join('')}
+            <div class="np-topbar__custom" role="group" aria-label="Custom colors"></div>
           </div>
         </div>
       </div>
@@ -345,6 +365,30 @@ addons.register('np/topbar', (api) => {
     burger.innerHTML = icon(open ? 'x' : 'menu');
   };
 
+  // Custom colors: the user's own (saved in this browser), each removable, and a color picker that adds one
+  const custom = menu.querySelector<HTMLElement>('.np-topbar__custom')!;
+  const renderCustom = () => {
+    custom.innerHTML = `<span class="np-topbar__custom-title">Custom</span>
+      ${customColors()
+        .map(
+          (c) => `<span class="np-topbar__custom-item">
+            ${swatchButton(customPalette(c), `Custom color ${c}`, c)}
+            <button type="button" class="np-topbar__remove" data-remove="${c}" aria-label="Remove ${c}" title="Remove">${icon('x')}</button>
+          </span>`,
+        )
+        .join('')}
+      <label class="np-topbar__add" title="Add your own color">${icon('plus')}
+        <input type="color" value="#6366f1" aria-label="Add a custom theme color" />
+      </label>`;
+    sync();
+  };
+  custom.addEventListener('change', (event) => {
+    const color = (event.target as HTMLInputElement).value;
+    editCustomColors(color);
+    renderCustom();
+    api.updateGlobals({ palette: customPalette(color) });
+  });
+
   // Mode icon and the checked swatch follow the page's data-np-theme ("dark|teal", set by applyTheme)
   const modeButton = bar.querySelector<HTMLElement>('[data-tool="mode"]')!;
   const sync = () => {
@@ -354,13 +398,14 @@ addons.register('np/topbar', (api) => {
     modeButton.title = dark ? 'Light mode' : 'Dark mode';
     modeButton.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
     for (const swatch of menu.querySelectorAll<HTMLElement>('[data-palette]')) {
-      const on = swatch.dataset['palette'] === (palette in PALETTES ? palette : 'indigo');
+      const current = palette in PALETTES || palette.startsWith('custom-') ? palette : 'indigo';
+      const on = swatch.dataset['palette'] === current;
       swatch.classList.toggle('np-topbar__swatch--on', on);
       swatch.setAttribute('aria-checked', String(on));
       swatch.innerHTML = on ? icon('check') : '';
     }
   };
-  sync();
+  renderCustom();
   new MutationObserver(sync).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['data-np-theme'],
@@ -379,6 +424,7 @@ addons.register('np/topbar', (api) => {
     const target = event.target as Element;
     const tool = target.closest<HTMLElement>('[data-tool]')?.dataset['tool'];
     const swatch = target.closest<HTMLElement>('[data-palette]')?.dataset['palette'];
+    const remove = target.closest<HTMLElement>('[data-remove]')?.dataset['remove'];
     const onSite = document.documentElement.dataset['npLayout'] === 'landing';
     if (tool === 'search' && onSite) {
       api.emit(SITE_SEARCH);
@@ -395,6 +441,12 @@ addons.register('np/topbar', (api) => {
       showLinks(!bar.hasAttribute('data-np-links'));
     } else if (tool === 'palette') {
       showMenu(menu.hidden !== false);
+    } else if (remove) {
+      // Removing the color in use goes back to the default
+      editCustomColors(remove, true);
+      if (document.documentElement.dataset['npTheme']?.endsWith(customPalette(remove)))
+        api.updateGlobals({ palette: 'indigo' });
+      renderCustom();
     } else if (swatch) {
       api.updateGlobals({ palette: swatch });
       showMenu(false);
