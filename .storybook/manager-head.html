@@ -400,7 +400,7 @@
     }
   }
   .np-topbar__burger {
-    display: none !important;
+    display: none;
   }
   /* Phones: the section links drop down under the bar from the menu button (manager.ts sets data-np-links) */
   @media (max-width: 760px) {
@@ -409,7 +409,7 @@
       padding: 0 16px;
     }
     .np-topbar__burger {
-      display: grid !important;
+      display: grid;
     }
     .np-topbar__links {
       position: absolute;
@@ -446,6 +446,17 @@
     }
     .np-topbar__brand {
       font-size: 18px;
+    }
+  }
+  /* Phones: Storybook's menu drawer focuses its search when it opens, and a focused search hides the page tree
+     (sb-sr-only) behind "Recently opened". Until something is typed, show the tree instead */
+  #storybook-mobile-menu:has(#storybook-explorer-searchfield:placeholder-shown) {
+    #storybook-explorer-tree.sb-sr-only {
+      all: unset !important;
+      display: block !important;
+    }
+    #storybook-explorer-menu > [role='listbox'] {
+      display: none;
     }
   }
   /* Toolbar: manager.ts hides Storybook's tools by id; this one is built into the toolbar and has none */

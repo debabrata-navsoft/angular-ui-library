@@ -332,8 +332,10 @@ addons.register('np/topbar', (api) => {
     menu.hidden = !open;
     paletteButton.setAttribute('aria-expanded', String(open));
   };
-  // Phones: the section links drop down under the bar from the menu button (CSS shows it at <= 760px)
+  // Phones on the site's pages: the section links drop down under the bar from the menu button (CSS shows it at
+  // <= 760px); on docs pages the button opens the sidebar instead
   const burger = bar.querySelector<HTMLElement>('[data-tool="menu"]')!;
+  const links = bar.querySelector<HTMLElement>('.np-topbar__links')!;
   const showLinks = (open: boolean) => {
     bar.toggleAttribute('data-np-links', open);
     burger.setAttribute('aria-expanded', String(open));
@@ -361,6 +363,15 @@ addons.register('np/topbar', (api) => {
     attributeFilter: ['data-np-theme'],
   });
 
+  // Docs pages' sidebar, with every section and the search. Storybook's phone layout (< 600px) has a menu drawer
+  // instead; returns whether it opened that
+  const openSidebar = () => {
+    const phone = matchMedia('(max-width: 599px)').matches;
+    if (phone) api.setMobileNavigation(true);
+    else api.toggleNav(true);
+    return phone;
+  };
+
   bar.addEventListener('click', (event) => {
     const target = event.target as Element;
     const tool = target.closest<HTMLElement>('[data-tool]')?.dataset['tool'];
@@ -369,11 +380,14 @@ addons.register('np/topbar', (api) => {
     if (tool === 'search' && onSite) {
       api.emit(SITE_SEARCH);
     } else if (tool === 'search') {
-      if (!api.getIsNavShown()) api.toggleNav(true);
-      setTimeout(() => api.focusOnUIElement('storybook-explorer-searchfield'));
+      // The drawer slides in before its search can take focus
+      const delay = openSidebar() ? 350 : 0;
+      setTimeout(() => api.focusOnUIElement('storybook-explorer-searchfield'), delay);
     } else if (tool === 'mode') {
       const dark = document.documentElement.dataset['theme'] === 'dark';
       api.updateGlobals({ theme: dark ? 'light' : 'dark' });
+    } else if (tool === 'menu' && !onSite) {
+      openSidebar();
     } else if (tool === 'menu') {
       showLinks(!bar.hasAttribute('data-np-links'));
     } else if (tool === 'palette') {
@@ -396,7 +410,7 @@ addons.register('np/topbar', (api) => {
     // composedPath: the menu button's icon is replaced on click, so the clicked <svg> is no longer in the bar
     const path = event.composedPath();
     if (!menu.hidden && !path.includes(menu.parentElement!)) showMenu(false);
-    if (!path.includes(burger) && !path.includes(bar.querySelector('.np-topbar__links')!)) showLinks(false);
+    if (!path.includes(burger) && !path.includes(links)) showLinks(false);
   });
   // Taps on the page land in the preview frame, outside this document: the manager window loses focus
   window.addEventListener('blur', () => showLinks(false));
