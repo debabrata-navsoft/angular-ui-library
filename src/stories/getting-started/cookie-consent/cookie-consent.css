@@ -69,20 +69,37 @@ a {
   background: var(--ui-primary-hover);
 }
 
+/* White, so it shows over the dark pages (the Welcome hero) as well as light ones */
 .cc .ui-close {
-  color: #111827;
+  color: #fff;
   font-size: 22px;
   font-weight: 700;
 }
 
 @media (max-width: 640px) {
+  /* Text on its own rows (room on the right for the close button, now in the corner), a full-width button below */
   .cc {
     bottom: 16px;
     flex-wrap: wrap;
-    padding: 14px 16px;
+    padding: 16px;
+    /* More solid: on a narrow screen the text sits over the page's own text */
+    background: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  p {
+    flex-basis: 100%;
+    padding-right: 28px;
   }
 
   .cc .ui-btn {
     flex: 1;
+  }
+
+  .cc .ui-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 }

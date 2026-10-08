@@ -461,9 +461,14 @@
   }
   /* Toolbar: manager.ts hides Storybook's tools by id; this one is built into the toolbar and has none */
   button[aria-label='Show addon panel'],
-  /* Landing pages (manager.ts sets data-np-layout) have no toolbar, nor Storybook's mobile bottom bar (story name) */
+  /* Landing pages (manager.ts sets data-np-layout) have no toolbar */
   [data-np-layout='landing'] [data-testid='sb-preview-toolbar'],
-  [data-np-layout='landing'] section:has(> header.sb-bar) {
+  /* Storybook's mobile bottom bar (story name, menu): the top bar's menu button opens the sidebar instead. Its
+     section also holds the menu drawer, so only the bar goes */
+  section > header.sb-bar {
     display: none !important;
+  }
+  section:has(> header.sb-bar) {
+    border-top: 0 !important;
   }
 </style>

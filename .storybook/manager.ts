@@ -234,7 +234,10 @@ addons.register('np/sidebar-components', (api) => {
         return;
       event.preventDefault();
       event.stopPropagation();
-      if (row.dataset['nodetype'] === 'component') api.selectStory(row.dataset['itemId']);
+      if (row.dataset['nodetype'] !== 'component') return;
+      api.selectStory(row.dataset['itemId']);
+      // Storybook closes its phone menu drawer only for its own selections
+      api.setMobileNavigation(false);
     },
     true,
   );
