@@ -68,7 +68,11 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      text-editor-tools.ts, Quill setup and shortcuts in text-editor-quill.ts) and page/: the site's
                      "Text Editor" page (sidebar entry after Effects, /text-editor): Document (variant="document",
                      zoom, import .html/.txt/.md, export Word/HTML/PDF, autosave in localStorage) | Simple (live
-                     HTML) | Comments modes, in text-editor-demo (also on Welcome as `preview`: shorter, inert, a picture only (the Explore card links to
+                     HTML) | Comments | Markdown (text-editor-markdown: source + read-only editor preview, "Open as
+                     document") | Email (text-editor-email: To/Cc/Subject, attachments, nothing is sent) | Notes
+                     (text-editor-notes, localStorage) | Focus (text-editor-focus: dark, no toolbar, word goal) modes, in
+                     text-editor-demo; markdownToHtml() and shared helpers in page/text-editor-page-utils.ts (+ spec)
+                     (also on Welcome as `preview`: shorter, inert, a picture only (the Explore card links to
                      the page), loaded with @defer on viewport); text-editor-preview is the Welcome card's picture (no Quill)
   utils/             Shared TypeScript helpers (no components):
     types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
@@ -368,8 +372,11 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   Tab leaves the editor (Quill's Tab bindings are cleared). `variant` default | document (a wide surface with a centered text column, `zoom`);
   `[editorToolbarStart]` / `[editorToolbarEnd]` project extra toolbar controls (class `te__tool`, `data-tool` joins
   the toolbar's arrow keys; the roving tabindex is set on the DOM, so projected controls take part). `theme` light | dark re-declares the neutral tokens.
-  Also: font size (px, a style), indent (3 levels, class ql-indent-N; lists nest in the HTML), alignment and color
-  menus, tables (Quill's table module; size picker, row/column menu; cells get inline borders in the HTML), find &
+  Also: font size (px, a style), font family (`font`, a style, TEXT_EDITOR_FONTS), indent (3 levels, class
+  ql-indent-N; lists nest in the HTML), alignment, line spacing (`lineheight`, a block style), text color and
+  highlight menus, letter case (changeCase() keeps formats), emoji and special character grids, YouTube/Vimeo video
+  (an iframe; other iframe addresses become about:blank) and reading time with `showCount`. Menus are the MENUS set
+  and bars the BARS set in text-editor-tools.ts; tables (Quill's table module; size picker, row/column menu; cells get inline borders in the HTML), find &
   replace (Ctrl/⌘ F, CSS Custom Highlight API), markdown and typography shortcuts (text-editor-quill.ts; Enter
   shortcuts go before Quill's own Enter handler), `showCount` / `maxLength`. Two stylesheets, each under the 10 kB
   budget: text-editor.css (frame, toolbar, menus) and text-editor-content.css (the content's look).
