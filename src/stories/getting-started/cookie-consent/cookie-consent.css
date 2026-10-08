@@ -1,110 +1,33 @@
-:host {
-  display: contents;
-}
-
-/* Grey overlay over the page, under the bar; it takes the clicks, so the page waits for an answer */
+/* Grey overlay over the page; it takes the clicks, so the page waits for an answer */
 .cc-backdrop {
   position: fixed;
   z-index: 1089;
   inset: 0;
   background: rgba(15, 23, 42, 0.5);
-  animation: cc-fade 0.3s ease both;
 }
 
-/* A bar along the bottom of the page: message, Accept, close */
+/* Flat see-through bar, lifted 48px off the bottom, its content in the site's 1200px column */
 .cc {
   position: fixed;
   z-index: 1090;
-  /* Lifted off the bottom edge, with a gap below it */
   inset: auto 0 48px;
   display: flex;
   align-items: center;
   gap: 16px 24px;
-  box-sizing: border-box;
   padding: 14px max(24px, calc((100vw - 1200px) / 2));
-  /* Flat see-through grey, no blur: the page shows through as it is */
   background: rgba(0, 0, 0, 0.4);
   color: #fff;
-  font-family: var(--ui-font);
   font-size: 14px;
   line-height: 1.6;
-  animation: cc-in 0.35s var(--ui-ease, ease) both;
 }
 
-.cc__message {
-  flex: 1;
-  margin: 0;
+.cc-backdrop {
+  animation: cc-fade 0.3s ease both;
 }
 
-.cc__link {
-  color: color-mix(in srgb, var(--ui-primary) 55%, #fff);
-  text-decoration: none;
-}
-
-.cc__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.cc__link:focus-visible {
-  outline: none;
-  border-radius: var(--ui-radius-sm);
-  box-shadow: var(--ui-ring);
-}
-
-/* A solid, square-cornered button in the theme color */
-.cc .ui-btn {
-  flex: none;
-  padding: 10px 16px;
-  border-radius: var(--ui-radius-sm);
-  background: var(--ui-primary);
-  box-shadow: none;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.cc .ui-btn:hover {
-  background: var(--ui-primary-hover);
-  box-shadow: none;
-}
-
-.cc .ui-btn:focus-visible {
-  box-shadow: var(--ui-ring);
-}
-
-.cc .ui-close {
-  color: #111827;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.cc .ui-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #111827;
-}
-
-@media (max-width: 640px) {
-  .cc {
-    bottom: 16px;
-    flex-wrap: wrap;
-    padding: 14px 16px;
-  }
-
-  .cc__message {
-    flex-basis: calc(100% - 48px);
-  }
-
-  .cc .ui-btn {
-    flex: 1;
-    order: 3;
-  }
-}
-
-@keyframes cc-in {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
+/* np-fade-up is the global keyframes of .np-anim-fade-up (animations.css) */
+.cc {
+  animation: np-fade-up 0.35s var(--ui-ease) both;
 }
 
 @keyframes cc-fade {
@@ -117,5 +40,49 @@
   .cc-backdrop,
   .cc {
     animation: none;
+  }
+}
+
+p {
+  flex: 1;
+  margin: 0;
+}
+
+a {
+  color: color-mix(in srgb, var(--ui-primary) 55%, #fff);
+}
+
+/* Solid, square-cornered button in the theme color */
+.cc .ui-btn {
+  padding: 10px 16px;
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cc .ui-btn:not(:focus-visible) {
+  box-shadow: none;
+}
+
+.cc .ui-btn:hover {
+  background: var(--ui-primary-hover);
+}
+
+.cc .ui-close {
+  color: #111827;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .cc {
+    bottom: 16px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+  }
+
+  .cc .ui-btn {
+    flex: 1;
   }
 }

@@ -3,15 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { addons } from 'storybook/preview-api';
 
 import { CookieConsentComponent } from '../cookie-consent/cookie-consent.component';
-import {
-  PAGES,
-  SITE_COOKIE_OVERLAY,
-  SITE_GO,
-  SITE_PAGES,
-  SITE_SEARCH,
-  clickedPage,
-  managerHref,
-} from '../landing';
+import { SITE_GO, SITE_PAGES, SITE_SEARCH, clickedPage } from '../landing';
 import { SiteSearchComponent } from '../site-search/site-search.component';
 
 /**
@@ -31,9 +23,6 @@ export class SiteComponent {
   /** Page to open: a short URL from SITE_PAGES ('' for Welcome) */
   readonly page = input('');
 
-  /** The cookie notice's link to the Privacy page */
-  protected readonly privacyHref = managerHref(PAGES.privacy);
-
   private readonly router = inject(Router);
   private readonly search = viewChild.required(SiteSearchComponent);
 
@@ -47,13 +36,7 @@ export class SiteComponent {
     inject(DestroyRef).onDestroy(() => {
       channel.off(SITE_GO, go);
       channel.off(SITE_SEARCH, search);
-      channel.emit(SITE_COOKIE_OVERLAY, false);
     });
-  }
-
-  /** The top bar is Storybook's, outside this frame: manager.ts dims it while the cookie notice's overlay is up */
-  protected cookieOverlay(open: boolean) {
-    addons.getChannel().emit(SITE_COOKIE_OVERLAY, open);
   }
 
   /** Links to the site's pages (managerHref) open in the router; preview.ts opens the others in Storybook */
