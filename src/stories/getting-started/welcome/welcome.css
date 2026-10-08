@@ -63,19 +63,22 @@
   object-fit: cover;
 }
 
-/* Phones: the whole banner (NP mark, wordmark and tagline) behind the title, as on desktop, scaled to the width
-   instead of cropped; a wash over the middle dims the wordmark so the title reads on top */
+/* Phones: the banner's NP mark and wordmark behind the title and paragraph, as on desktop, centered on them (at 46%
+   of the hero on phones) and wider than the screen; its edges fade into the hero, and its tagline band too, which
+   would otherwise run through the paragraph. A wash over the middle dims the wordmark so the text reads on top */
 @media (max-width: 640px) {
   .hero__banner {
     position: absolute;
-    top: 36%;
+    top: 46%;
     left: 50%;
     width: 135%;
     max-width: none;
     height: auto;
     translate: -50% -50%;
-    /* Its edges fade into the hero, as the desktop crop hides them */
-    mask: radial-gradient(closest-side, #000 70%, transparent);
+    mask:
+      radial-gradient(closest-side, #000 70%, transparent),
+      linear-gradient(#000 66%, transparent 76%);
+    mask-composite: intersect;
   }
 
   .hero__bg::before {
@@ -83,7 +86,7 @@
   }
 
   .hero__bg::after {
-    background: radial-gradient(ellipse 70% 28% at 60% 36%, rgb(2 6 23 / 0.45), rgb(2 6 23 / 0.1));
+    background: radial-gradient(ellipse 70% 28% at 60% 46%, rgb(2 6 23 / 0.45), rgb(2 6 23 / 0.1));
   }
 }
 
