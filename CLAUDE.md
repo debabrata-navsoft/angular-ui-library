@@ -133,7 +133,7 @@ public/favicon.svg   NexPrime icon: the "prism" NP mark (blue stem, blue→viole
                      line, groups with a small chevron, page-colored background (restart Storybook after editing)
                      One top bar for every page, the site's included (`#np-topbar`, built in manager.ts, styled in
                      manager-head.html: logo, SECTIONS links, search, light/dark mode, theme color, Get Started, content
-                     centered in 1200px; links in a second row on phones). It sits above Storybook's layout box
+                     centered in 1200px; on phones (<= 760px) the links drop down from a menu button, `data-np-links`). It sits above Storybook's layout box
                      (`#root > div`, shortened by --np-topbar-h; a `[style*=…]` selector didn't match). On docs pages
                      (data-np-layout="default") that box is centered in the same 1200px column and the sidebar's logo row
                      is hidden. On the site's pages its links go to the site's router (SITE_GO) and search opens the site

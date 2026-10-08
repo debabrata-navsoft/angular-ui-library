@@ -301,7 +301,7 @@ addons.register('np/topbar', (api) => {
       <a class="np-topbar__brand" href="./" data-page="" aria-label="NexPrime home">
         <img src="favicon.svg" alt="" width="28" height="28" /><span>Nex<b>Prime</b></span>
       </a>
-      <div class="np-topbar__links">
+      <div class="np-topbar__links" id="np-topbar-links">
         ${TOP_LINKS.map(
           ({ label, path, prefix }) =>
             `<a href="./${path}" data-page="${path}" data-prefix="${prefix}">${label}</a>`,
@@ -323,6 +323,7 @@ addons.register('np/topbar', (api) => {
         </div>
       </div>
       <a class="np-topbar__start" href="./${PAGES.getStarted}" data-page="${PAGES.getStarted}">Get Started</a>
+      <button type="button" class="np-topbar__tool np-topbar__burger" data-tool="menu" aria-label="Menu" aria-expanded="false" aria-controls="np-topbar-links">${icon('menu')}</button>
     </nav>`;
   document.body.prepend(bar);
   const menu = bar.querySelector<HTMLElement>('.np-topbar__menu')!;
@@ -330,6 +331,13 @@ addons.register('np/topbar', (api) => {
   const showMenu = (open: boolean) => {
     menu.hidden = !open;
     paletteButton.setAttribute('aria-expanded', String(open));
+  };
+  // Phones: the section links drop down under the bar from the menu button (CSS shows it at <= 760px)
+  const burger = bar.querySelector<HTMLElement>('[data-tool="menu"]')!;
+  const showLinks = (open: boolean) => {
+    bar.toggleAttribute('data-np-links', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.innerHTML = icon(open ? 'x' : 'menu');
   };
 
   // Mode icon and the checked swatch follow the page's data-np-theme ("dark|teal", set by applyTheme)
@@ -366,6 +374,8 @@ addons.register('np/topbar', (api) => {
     } else if (tool === 'mode') {
       const dark = document.documentElement.dataset['theme'] === 'dark';
       api.updateGlobals({ theme: dark ? 'light' : 'dark' });
+    } else if (tool === 'menu') {
+      showLinks(!bar.hasAttribute('data-np-links'));
     } else if (tool === 'palette') {
       showMenu(menu.hidden !== false);
     } else if (swatch) {
@@ -376,19 +386,28 @@ addons.register('np/topbar', (api) => {
     if (!link || event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
       return;
     event.preventDefault();
+    showLinks(false);
     const page = link.dataset['page']!;
     if (onSite && SITE_PAGES.includes(page)) api.emit(SITE_GO, page);
     else openPage(api, page);
   });
-  // The color menu closes on an outside click or Escape
+  // The color menu and the links menu close on an outside click or Escape
   document.addEventListener('click', (event) => {
-    if (!menu.hidden && !(event.target as Element).closest?.('.np-topbar__palette'))
-      showMenu(false);
+    // composedPath: the menu button's icon is replaced on click, so the clicked <svg> is no longer in the bar
+    const path = event.composedPath();
+    if (!menu.hidden && !path.includes(menu.parentElement!)) showMenu(false);
+    if (!path.includes(burger) && !path.includes(bar.querySelector('.np-topbar__links')!)) showLinks(false);
   });
+  // Taps on the page land in the preview frame, outside this document: the manager window loses focus
+  window.addEventListener('blur', () => showLinks(false));
   bar.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !menu.hidden) {
+    if (event.key !== 'Escape') return;
+    if (!menu.hidden) {
       showMenu(false);
       paletteButton.focus();
+    } else if (bar.hasAttribute('data-np-links')) {
+      showLinks(false);
+      burger.focus();
     }
   });
 

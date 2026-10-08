@@ -15,12 +15,9 @@
     --nav-box-border: #334155;
   }
 
-  /* The sidebar content (Storybook's 16px top / 12px side padding) has no left padding, so it lines up with the top
-     bar's logo. Its logo row is hidden (the logo is in the top bar), so it starts with the search, which stays put
-     while the list scrolls under it; the negative margins and matching padding let its background cover the width */
-  #storybook-sidebar-region div:has(> div > .sidebar-header) {
-    padding-left: 0;
-  }
+  /* #storybook-sidebar-region div:has(> div > .sidebar-header) {
+    padding-left: 12px;
+  } */
   #storybook-sidebar-region div:has(> .sidebar-header) {
     display: none;
   }
@@ -28,8 +25,8 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    margin: -16px -12px -12px 0;
-    padding: 16px 12px 12px 0;
+    margin: -16px -12px -12px;
+    padding: 16px 12px 12px;
     background: var(--nav-bg);
   }
 
@@ -402,28 +399,37 @@
       padding: 8px 9px;
     }
   }
-  /* Phones: the section links move to a second row that scrolls sideways, instead of disappearing */
+  .np-topbar__burger {
+    display: none !important;
+  }
+  /* Phones: the section links drop down under the bar from the menu button (manager.ts sets data-np-links) */
   @media (max-width: 760px) {
-    :root {
-      --np-topbar-h: 97px;
-    }
     .np-topbar__inner {
-      flex-wrap: wrap;
-      align-content: center;
-      gap: 0 12px;
-      height: 96px;
+      gap: 8px;
       padding: 0 16px;
     }
+    .np-topbar__burger {
+      display: grid !important;
+    }
     .np-topbar__links {
-      flex: 1 0 100%;
-      order: 3;
-      margin: 0 -16px;
-      padding: 0 12px 4px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      position: absolute;
+      z-index: 20;
+      inset: 100% 0 auto;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      margin: 0;
+      padding: 8px 12px 12px;
+      border-bottom: 1px solid var(--nav-box-border);
+      background: var(--nav-bg);
+      box-shadow: 0 16px 32px -12px rgb(15 23 42 / 0.25);
+    }
+    #np-topbar[data-np-links] .np-topbar__links {
+      display: flex;
     }
     .np-topbar__links a {
-      flex: none;
+      padding: 12px;
+      font-size: 15px;
     }
     .np-topbar__tools {
       margin-left: auto;
@@ -444,8 +450,9 @@
   }
   /* Toolbar: manager.ts hides Storybook's tools by id; this one is built into the toolbar and has none */
   button[aria-label='Show addon panel'],
-  /* Landing pages (manager.ts sets data-np-layout) have no toolbar */
-  [data-np-layout='landing'] [data-testid='sb-preview-toolbar'] {
+  /* Landing pages (manager.ts sets data-np-layout) have no toolbar, nor Storybook's mobile bottom bar (story name) */
+  [data-np-layout='landing'] [data-testid='sb-preview-toolbar'],
+  [data-np-layout='landing'] section:has(> header.sb-bar) {
     display: none !important;
   }
 </style>

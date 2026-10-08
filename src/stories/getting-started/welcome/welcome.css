@@ -63,8 +63,8 @@
   object-fit: cover;
 }
 
-/* Phones only see a narrow slice: zoom in on the NP mark (at 23% / 46% of the banner) so the wordmark and tagline
-   fall outside, instead of showing half of them */
+/* Phones only see a narrow slice: center the NP mark (at 23% / 46% of the banner), whole, so the wordmark and
+   tagline fall outside, instead of showing half of them */
 @media (max-width: 640px) {
   .hero__banner {
     position: absolute;
@@ -72,8 +72,10 @@
     left: 50%;
     width: auto;
     max-width: none;
-    height: 180%;
+    height: 110%;
     translate: -23% -46%;
+    /* The tagline (bottom band) would still show under the mark */
+    mask: linear-gradient(to bottom, #000 64%, transparent 74%);
   }
 
   /* The wordmark and tagline are cropped out here: keep only the base wash, not the NP mark shaded or gray */
