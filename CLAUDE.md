@@ -272,8 +272,15 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
 - Table (`np-table`): `variant` (TABLE_VARIANTS: default | striped | bordered | minimal | cards | glass), `size`,
   `scrollHeight` (sticky header), `selectable` + `[(selection)]` (rows matched by reference), `loading` (skeleton
   rows), `rows` (pages with an internal np-pagination, look `paginator` = compact by default, "Items per page" from
-  `rowsOptions`; the page resets when the filtered rows or the page size change); columns take
-  `align`, `tones` (value → Tone status pill) and `image` (avatar). Variants only set `--tbl-*` variables.
+  `rowsOptions`, `showFirstLast`; the page resets when the filtered rows or the page size change), `sortField` /
+  `sortOrder` (first sort), `[(data)]` + `reorderable` (CDK drag handle, `rowReorder`, clears the sort), `[(columns)]` +
+  `reorderableColumns` (drag headers, `columnReorder`), `expandable` (a row click or its toggle opens a detail row from a projected `<ng-template #rowDetail let-row>`, or `detailKey` text for Web Components),
+  `stickyFooter`, `footerNote`, `noWrap`, `lazy` + `totalRecords` + `(lazyLoad)` (server data: `data` is one page;
+  page / sort / filter changes emit TableLazyLoad). Columns take `align`, `width`, `tones` (value → Tone status pill),
+  `image` (avatar), `format`, `description` (second header line), `footer` (value or function of the rows),
+  `sticky` start | end (offsets measured in afterRenderEffect + ResizeObserver) and `actions` (centered icon buttons,
+  `rowAction`). Sort arrows are icons like Material's: hidden until hover, solid on the sorted column. Variants only set `--tbl-*` variables. The Material-style examples use table-demo-data.ts and the
+  story-only wrapper np-elements-table (table-wrapper-demo.component.ts).
 - Pagination (`np-pagination`): `variant` (PAGINATION_VARIANTS: default | outlined | soft | glass | minimal | dots |
   compact = a data table footer like Material's paginator: "Items per page" select, "1 – 5 of 100", arrows only |
   segmented = joined buttons | input = "Page [3] of 12" | load-more = "Showing 20 of 240" + "Load 20 more"; the
