@@ -220,8 +220,23 @@
     --np-topbar-h: 65px;
   }
   #np-topbar {
+    position: relative;
     border-bottom: 1px solid var(--nav-box-border);
     background: var(--nav-bg);
+  }
+  /* The site's cookie notice is open: the same grey overlay as on the page, which also takes the bar's clicks */
+  #np-topbar[data-np-cookie]::after {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    inset: 0 0 -1px;
+    background: rgba(15, 23, 42, 0.5);
+    animation: np-cookie-fade 0.3s ease both;
+  }
+  @keyframes np-cookie-fade {
+    from {
+      opacity: 0;
+    }
   }
   body {
     overflow: hidden;

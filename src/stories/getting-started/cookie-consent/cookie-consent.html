@@ -1,0 +1,15 @@
+@if (visible()) {
+  <!-- Dims the page until the visitor answers -->
+  <div class="cc-backdrop" aria-hidden="true"></div>
+  <section class="cc" role="region" aria-label="Cookie notice">
+    <p class="cc__message">
+      {{ message() }}
+      @if (policyUrl()) {
+        For more information see our
+        <a class="cc__link" [href]="policyUrl()" [attr.target]="policyTarget() || null">{{ policyLabel() }}</a>.
+      }
+    </p>
+    <button type="button" class="ui-btn ui-btn--primary" (click)="accept()">{{ acceptLabel() }}</button>
+    <button type="button" class="ui-close" aria-label="Close" (click)="visible.set(false)">×</button>
+  </section>
+}

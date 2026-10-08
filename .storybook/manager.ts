@@ -13,6 +13,7 @@ import {
   SECTIONS,
   SITE_GO,
   SITE_PAGES,
+  SITE_COOKIE_OVERLAY,
   SITE_ROUTE,
   SITE_SEARCH,
 } from '../src/stories/getting-started/landing';
@@ -292,6 +293,9 @@ const icon = (name: string) =>
 addons.register('np/topbar', (api) => {
   const bar = document.createElement('header');
   bar.id = 'np-topbar';
+  // The site's cookie notice dims its page; the bar is outside the preview frame, so it gets its own overlay
+  api.on(SITE_COOKIE_OVERLAY, (open: boolean) => bar.toggleAttribute('data-np-cookie', open));
+  api.on(CURRENT_STORY_WAS_SET, () => bar.removeAttribute('data-np-cookie'));
   bar.innerHTML = `
     <nav class="np-topbar__inner" aria-label="NexPrime">
       <a class="np-topbar__brand" href="./" data-page="" aria-label="NexPrime home">

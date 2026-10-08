@@ -229,6 +229,10 @@ The look is an indigo → violet gradient accent (`--ui-gradient`) on slate neut
   with `heading`/`intro`/`note`, projected content, footer; `.site-card` and `.site-icon` in gallery-page.css). They and Welcome end with `np-site-footer`
   (`getting-started/site-footer/`); contact details and the creators (LinkedIn URLs) are CONTACT and AUTHORS in landing.ts.
 
+- Cookie notice: `np-cookie-consent` (`getting-started/cookie-consent/`, site-only, not in the npm package or
+  nexprime.ts) is a full-width bar at the bottom of np-site: message, Privacy link, Accept (remembered under
+  'np-cookie-notice' in localStorage) and × (hides it until the next visit), over a grey backdrop that blocks the page until one is clicked; SITE_COOKIE_OVERLAY tells manager.ts to dim the top bar too (`data-np-cookie`).
+
 - The site's pages are one Angular app, `np-site` (`getting-started/site/`): the site search plus `<router-outlet>` (the top bar is Storybook's, see manager.ts), with
   Angular Router routes in `site.routes.ts` whose paths are the pages' short URLs. Links between them switch instantly,
   without Storybook loading a story.
