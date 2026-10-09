@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shopora: online store</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="shop">
+    <header class="header">
+      <div class="container header__row">
+        <a class="logo" href="#"><span class="logo__mark">S</span> Shopora</a>
+        <nav id="nav" class="nav" aria-label="Main"></nav>
+        <input
+          id="search"
+          class="search"
+          type="search"
+          placeholder="Search products…"
+          aria-label="Search products"
+        />
+        <button id="cart-open" class="cart-button" type="button" aria-label="Open cart">
+          🛒<span id="cart-count" class="cart-button__count" hidden>0</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <span class="hero__tag">Summer sale · up to 30% off</span>
+        <h1>Everything you need, delivered fast.</h1>
+        <p>
+          Headphones, bags, gadgets and home goods, picked for quality. Free shipping on orders over
+          $100.
+        </p>
+        <button id="shop-now" class="hero__cta" type="button">Shop now</button>
+        <div class="hero__art" aria-hidden="true">
+          <span>🎧</span><span>👟</span><span>⌚</span><span>🎒</span>
+        </div>
+      </section>
+
+      <section id="products">
+        <div class="toolbar">
+          <h2 id="title">All products</h2>
+          <div id="chips" class="chips" role="group" aria-label="Category"></div>
+          <select id="sort" class="sort" aria-label="Sort products"></select>
+        </div>
+        <div id="grid" class="grid"></div>
+      </section>
+
+      <section id="features" class="features"></section>
+
+      <section id="about" class="about">
+        <div>
+          <h2>About Shopora</h2>
+          <p>
+            We started Shopora in 2019 with one idea: fewer, better things. Every product is tested
+            by our team before it reaches the shop, and we ship from our own warehouse, so most
+            orders arrive in two days.
+          </p>
+          <p>
+            Not happy with something? Send it back within 30 days for a full refund, no questions
+            asked.
+          </p>
+        </div>
+        <div id="stats" class="stats"></div>
+      </section>
+
+      <section class="newsletter">
+        <div>
+          <h3>Get 10% off your first order</h3>
+          <p>Join the newsletter for new arrivals and member-only deals.</p>
+        </div>
+        <form id="newsletter">
+          <input type="email" required placeholder="you@example.com" aria-label="Email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="container">
+        <span>© 2026 Shopora. All rights reserved.</span><span>Privacy · Terms · Contact</span>
+      </div>
+    </footer>
+
+    <div id="cart"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
