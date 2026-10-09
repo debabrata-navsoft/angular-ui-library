@@ -344,7 +344,9 @@ export class TextEditorComponent implements ControlValueAccessor {
       const { top, left } = anchorPosition(button, el);
       Object.assign(el.style, { top: `${top}px`, left: `${left}px` });
       // Drop-downs start on their current option
-      (el.querySelector<HTMLElement>('.te__menu-item--active') ?? el.querySelector('button'))?.focus();
+      (
+        el.querySelector<HTMLElement>('.te__menu-item--active') ?? el.querySelector('button')
+      )?.focus();
     });
 
     effect(() => this.bar() && this.barInput()?.nativeElement.focus());
@@ -438,8 +440,13 @@ export class TextEditorComponent implements ControlValueAccessor {
 
   protected run(item: ToolItem, button: HTMLElement) {
     const { tool } = item;
+    // A second click on the button closes its menu
     if (MENUS.has(tool))
-      return this.menu.set({ tool, label: item.label, format: item.format, button });
+      return this.menu.set(
+        this.menu()?.button === button
+          ? null
+          : { tool, label: item.label, format: item.format, button },
+      );
     if (BARS.has(tool)) return this.openBar(tool as TextEditorBar);
     if (tool === 'undo' || tool === 'redo') return this.edit((quill) => quill.history[tool]());
     this.edit((quill, range) => {
@@ -472,9 +479,10 @@ export class TextEditorComponent implements ControlValueAccessor {
     this.apply((quill, range) => range.length && changeCase(quill, range, to));
   }
 
-  /** Closed without a choice (Escape, a click outside): back to the menu's button */
+  /** Closed without a choice (Escape, a click outside); Escape goes back to the menu's button */
   protected closeMenu() {
-    this.menu()?.button.focus();
+    // Escape leaves focus in the menu; a click elsewhere has already moved it
+    if (this.menuEl()?.nativeElement.matches(':focus-within')) this.menu()?.button.focus();
     this.menu.set(null);
   }
 

@@ -105,7 +105,7 @@
   }
 
   .te__tool:hover:not(:disabled),
-  .te__menu-item:hover,
+  .te__menu-item:is(:hover, :focus-visible),
   .te__char:hover {
     background: var(--ui-primary-soft);
     color: var(--ui-primary);
@@ -117,7 +117,7 @@
     color: #fff;
   }
 
-  :is(.te__tool, .te__select, .te__menu-item, .te__swatch, .te__cell, .te__char):focus-visible {
+  :is(.te__tool, .te__select, .te__swatch, .te__cell, .te__char):focus-visible {
     outline: none;
     box-shadow: var(--ui-ring);
   }
@@ -319,6 +319,11 @@
     font-size: 13px;
     text-align: left;
     cursor: pointer;
+  }
+
+  /* Menu items show focus like hover (a ring would be clipped by a scrolling list) */
+  .te__menu-item:focus-visible {
+    outline: none;
   }
 
   .te__menu-item--active {
