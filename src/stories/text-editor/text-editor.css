@@ -68,6 +68,11 @@
     gap: 1px;
   }
 
+  /* Controls keep their size (a group like the zoom buttons would wrap inside itself); the toolbar wraps instead */
+  .te__toolbar > * {
+    flex: none;
+  }
+
   .te__toolbar {
     padding: 6px;
     border-bottom: 1px solid var(--ui-border);
@@ -435,10 +440,6 @@
       flex-wrap: nowrap;
       overflow-x: auto;
       scrollbar-width: thin;
-
-      > * {
-        flex: none;
-      }
     }
   }
 

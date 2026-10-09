@@ -117,8 +117,10 @@
   border-radius: 0;
 }
 
-/* The document: a tall page area */
+/* The document: a tall page area that scrolls inside (flex: none, or te-fill's flex: 1 drops the height and the
+   editor grows with its text, so the wheel over it can't scroll anything) */
 .doc ::ng-deep .te__scroll {
+  flex: none;
   height: min(72vh, 900px);
 }
 
@@ -289,7 +291,9 @@
   box-shadow: var(--ui-shadow-sm);
 }
 
+/* The card has a fixed height: the text fills what the title, toolbar and status bar leave */
 :host(.demo--preview) .doc ::ng-deep .te__scroll {
+  flex: 1;
   height: auto;
 }
 
