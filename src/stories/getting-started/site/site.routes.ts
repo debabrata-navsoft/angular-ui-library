@@ -15,6 +15,7 @@ import { AboutComponent } from '../about/about.component';
 import { AnimationGalleryComponent } from '../../animations/animation-gallery.component';
 import { IconGalleryComponent } from '../../icons/icon-gallery.component';
 import { LottieGalleryComponent } from '../../nexlottie/lottie-gallery.component';
+import { TemplatesGalleryComponent } from '../../templates/templates-gallery.component';
 import { TextEditorPageComponent } from '../../text-editor/page/text-editor-page.component';
 import { ComponentsCatalogComponent } from '../components-catalog/components-catalog.component';
 import { ContactComponent } from '../contact/contact.component';
@@ -26,11 +27,12 @@ import { WelcomeComponent } from '../welcome/welcome.component';
 const icons = () => import('../../icons/icons-data');
 const animations = () => import('../../animations/animations-data');
 const lottie = () => import('../../nexlottie/lottie-data');
+const templates = () => import('../../templates/templates-data');
 const effects = () => import('../components-catalog/effect-previews');
 
 /** Loads every page's data, so opening a page doesn't wait for it (preview.ts calls this after the first page) */
 export function preloadSiteData() {
-  return Promise.all([icons(), animations(), lottie(), effects()]);
+  return Promise.all([icons(), animations(), lottie(), templates(), effects()]);
 }
 
 /** The site's pages. Paths are the pages' short URLs; resolved data goes to the page's inputs */
@@ -55,6 +57,12 @@ const routes: Routes = [
     component: LottieGalleryComponent,
     resolve: { animations: () => lottie().then((m) => m.ANIMATIONS) },
   },
+  {
+    path: PAGES.templates,
+    title: 'Templates',
+    component: TemplatesGalleryComponent,
+    resolve: { templates: () => templates().then((m) => m.TEMPLATES) },
+  },
   { path: PAGES.textEditor, title: 'Text Editor', component: TextEditorPageComponent },
   {
     path: PAGES.effects,
@@ -64,8 +72,18 @@ const routes: Routes = [
   },
   { path: PAGES.about, title: 'About', component: AboutComponent },
   { path: PAGES.contact, title: 'Contact us', component: ContactComponent },
-  { path: PAGES.privacy, title: 'Privacy policy', component: LegalComponent, data: { doc: 'privacy' } },
-  { path: PAGES.terms, title: 'Terms of service', component: LegalComponent, data: { doc: 'terms' } },
+  {
+    path: PAGES.privacy,
+    title: 'Privacy policy',
+    component: LegalComponent,
+    data: { doc: 'privacy' },
+  },
+  {
+    path: PAGES.terms,
+    title: 'Terms of service',
+    component: LegalComponent,
+    data: { doc: 'terms' },
+  },
   { path: '**', redirectTo: '' },
 ];
 

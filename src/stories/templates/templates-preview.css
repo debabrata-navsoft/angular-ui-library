@@ -1,0 +1,37 @@
+:host {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  width: min(440px, 92%);
+}
+
+.shots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.shot {
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+
+  & span {
+    padding: 2px 9px;
+    border-radius: var(--ui-radius-full);
+    background: var(--ui-surface);
+    box-shadow: var(--ui-shadow-sm);
+    color: var(--ui-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+}

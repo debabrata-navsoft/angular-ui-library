@@ -1,0 +1,30 @@
+<main class="pricing">
+  <h1>Simple, honest pricing</h1>
+  <p class="pricing__intro">Start free, upgrade when you grow. Cancel any time.</p>
+  <div class="switch" role="group" aria-label="Billing period">
+    <button type="button" [attr.aria-pressed]="period() === 'monthly'" (click)="period.set('monthly')">
+      Monthly
+    </button>
+    <button type="button" [attr.aria-pressed]="period() === 'yearly'" (click)="period.set('yearly')">
+      Yearly <small>-20%</small>
+    </button>
+  </div>
+  <div class="plans">
+    @for (plan of plans; track plan.name) {
+      <article class="plan" [class.plan--featured]="plan.featured">
+        @if (plan.featured) {
+          <span class="plan__badge">Most popular</span>
+        }
+        <h2>{{ plan.name }}</h2>
+        <p class="plan__text">{{ plan.text }}</p>
+        <div class="plan__price">${{ price(plan) }}<span> / month</span></div>
+        <ul>
+          @for (feature of plan.features; track feature) {
+            <li>{{ feature }}</li>
+          }
+        </ul>
+        <button type="button" class="plan__cta">{{ plan.cta }}</button>
+      </article>
+    }
+  </div>
+</main>

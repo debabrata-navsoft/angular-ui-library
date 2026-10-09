@@ -1,0 +1,38 @@
+/* The page is drawn at its full size and scaled down (--frame-scale), so thumbnails show the real layout */
+:host {
+  display: block;
+  overflow: hidden;
+  background: var(--ui-surface-muted);
+}
+
+.frame {
+  display: block;
+  width: calc(100% / var(--frame-scale, 1));
+  /* Also caps a device width (a 768px tablet) to the box */
+  max-width: calc(100% / var(--frame-scale, 1));
+  height: calc(100% / var(--frame-scale, 1));
+  margin: 0 auto;
+  border: 0;
+  background: #fff;
+  transform: scale(var(--frame-scale, 1));
+  transform-origin: top left;
+}
+
+/* A device width: centered, with the room around it showing */
+.frame[style*='width'] {
+  box-shadow: var(--ui-shadow);
+  transform-origin: top center;
+}
+
+/* Thumbnails: a picture, not a page to use */
+.frame[aria-hidden] {
+  pointer-events: none;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--ui-text-subtle);
+  font-size: 13px;
+}

@@ -1,0 +1,10 @@
+<div class="shots" aria-hidden="true">
+  @for (t of templates; track t.slug) {
+    <np-template-frame class="shot" [template]="t" [scale]="0.2" [inert]="true" />
+  }
+</div>
+<div class="chips" aria-hidden="true">
+  @for (f of frameworks; track f.value) {
+    <span>{{ f.label }}</span>
+  }
+</div>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="login">
+      <form class="login__card" id="login-form" novalidate>
+        <div class="login__logo">N</div>
+        <h1>Welcome back</h1>
+        <p class="login__intro">Sign in to continue to your account.</p>
+
+        <label class="field">
+          Email
+          <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
+          <span class="field__error" id="email-error" hidden></span>
+        </label>
+
+        <label class="field">
+          Password
+          <span class="field__box">
+            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+            <button type="button" class="field__toggle" id="toggle">Show</button>
+          </span>
+          <span class="field__error" id="password-error" hidden></span>
+        </label>
+
+        <div class="login__row">
+          <label><input type="checkbox" id="remember" /> Remember me</label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login__submit" id="submit">Sign in</button>
+        <p class="login__done" id="done" hidden>Signed in! Replace this with a redirect to your app.</p>
+
+        <p class="login__footer">No account yet? <a href="#">Create one</a></p>
+      </form>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

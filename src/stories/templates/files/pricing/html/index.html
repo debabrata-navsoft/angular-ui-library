@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pricing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="pricing">
+      <h1>Simple, honest pricing</h1>
+      <p class="pricing__intro">Start free, upgrade when you grow. Cancel any time.</p>
+      <div class="switch" role="group" aria-label="Billing period">
+        <button type="button" data-period="monthly" aria-pressed="true">Monthly</button>
+        <button type="button" data-period="yearly" aria-pressed="false">Yearly <small>-20%</small></button>
+      </div>
+      <div class="plans" id="plans"></div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

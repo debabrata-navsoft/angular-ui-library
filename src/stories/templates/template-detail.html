@@ -1,0 +1,97 @@
+<np-dialog
+  [visible]="true"
+  [header]="template().title"
+  [subtitle]="template().description"
+  width="min(1180px, 96vw)"
+  maximizable
+  dismissableMask
+  (visibleChange)="!$event && closed.emit()"
+>
+  <div class="detail">
+    <div class="bar">
+      <np-button-toggle
+        size="small"
+        ariaLabel="View"
+        [showCheck]="false"
+        [options]="[
+          { value: 'preview', label: 'Preview', icon: 'eye' },
+          { value: 'code', label: 'Code', icon: 'code-xml' },
+        ]"
+        [value]="view()"
+        (valueChange)="view.set($any($event))"
+      />
+      @if (view() === 'preview') {
+        <np-button-toggle
+          size="small"
+          ariaLabel="Device width"
+          [showCheck]="false"
+          [options]="devices"
+          [value]="device()"
+          (valueChange)="device.set($any($event))"
+        />
+      }
+    </div>
+
+    @if (view() === 'preview') {
+      <np-template-frame class="stage" [template]="template()" [width]="deviceWidth()" />
+    } @else {
+      <div class="code">
+        <nav class="files" aria-label="Files">
+          @for (f of files(); track f.path) {
+            <button
+              type="button"
+              class="files__item"
+              [class.files__item--on]="f === file()"
+              [attr.aria-current]="f === file() || null"
+              (click)="file.set(f)"
+            >
+              <np-icon name="file-code" [size]="14" /> {{ f.path }}
+            </button>
+          }
+        </nav>
+        <div class="source">
+          <div class="source__head">
+            <span>{{ file()?.path }}</span>
+            <button type="button" class="ui-btn ui-btn--text ui-btn--sm" (click)="copy()">
+              <np-icon [name]="copied() ? 'check' : 'copy'" [size]="14" />
+              {{ copied() ? 'Copied' : 'Copy' }}
+            </button>
+          </div>
+          <pre tabindex="0"><code [innerHTML]="highlighted()"></code></pre>
+        </div>
+      </div>
+    }
+
+    <!-- What to download (and what the code view shows) -->
+    <div class="picker">
+      <np-radio-group
+        label="Select framework"
+        variant="cards"
+        horizontal
+        [options]="frameworkOptions()"
+        [value]="framework()"
+        (valueChange)="framework.set($any($event))"
+      />
+      <np-radio-group
+        label="Code language"
+        horizontal
+        [options]="languageOptions()"
+        [value]="language()"
+        (valueChange)="preferred.set($any($event))"
+      />
+    </div>
+  </div>
+
+  <div dialogFooter>
+    <span class="choose"> <np-icon name="file-archive" [size]="16" /> {{ zipName() }} </span>
+    <button
+      type="button"
+      class="ui-btn ui-btn--primary"
+      [disabled]="downloading()"
+      (click)="download()"
+    >
+      <np-icon name="download" [size]="16" />
+      {{ downloading() ? 'Preparing…' : 'Download .zip' }}
+    </button>
+  </div>
+</np-dialog>

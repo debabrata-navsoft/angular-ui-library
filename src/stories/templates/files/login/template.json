@@ -1,0 +1,11 @@
+{
+  "title": "Login page",
+  "description": "A centered sign-in card with email and password validation, show/hide password, remember me and a success state.",
+  "category": "Authentication",
+  "tags": [
+    "login",
+    "sign in",
+    "form",
+    "auth"
+  ]
+}

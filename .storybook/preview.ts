@@ -1,9 +1,5 @@
 import type { Preview } from '@storybook/angular-vite';
-import {
-  GLOBALS_UPDATED,
-  SET_GLOBALS,
-  STORY_RENDERED,
-} from 'storybook/internal/core-events';
+import { GLOBALS_UPDATED, SET_GLOBALS, STORY_RENDERED } from 'storybook/internal/core-events';
 import { addons } from 'storybook/preview-api';
 import { OPEN_PAGE, clickedPage } from '../src/stories/getting-started/landing';
 import '../src/stories/styles/theme.css';
@@ -67,6 +63,7 @@ const preview: Preview = {
           'Onboarding',
           ['Tour', 'Checklist'],
           'NexLottie',
+          'Templates',
           'Effects',
           [
             'Particles',

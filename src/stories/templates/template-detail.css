@@ -1,0 +1,181 @@
+.detail {
+  display: grid;
+  gap: 14px;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* The preview: a browser-sized frame; device widths are centered inside it */
+.stage,
+.code {
+  height: min(52vh, 560px);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+}
+
+/* Code: the file list beside the source */
+.code {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  /* One row the height of the box, so the file list and the code scroll inside it */
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.files {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: 8px;
+  overflow-y: auto;
+  border-right: 1px solid var(--ui-border);
+  background: var(--ui-surface-muted);
+}
+
+.files__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: var(--ui-radius-sm);
+  background: none;
+  color: var(--ui-text-muted);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ui-primary-soft);
+    color: var(--ui-primary);
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--ui-ring);
+  }
+}
+
+.files__item--on,
+.files__item--on:hover {
+  background: var(--ui-gradient);
+  color: #fff;
+}
+
+.source {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #1e293b;
+}
+
+.source__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid #334155;
+  color: #cbd5e1;
+  font-size: 12px;
+
+  & .ui-btn {
+    color: #cbd5e1;
+  }
+}
+
+.source pre {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 14px;
+  overflow: auto;
+  color: #e2e8f0;
+  font:
+    12.5px/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  tab-size: 2;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset var(--ui-ring);
+  }
+}
+
+/* Syntax colors (template-highlight.ts), on the dark code background */
+.source code ::ng-deep {
+  .t-comment {
+    color: #64748b;
+    font-style: italic;
+  }
+  .t-keyword {
+    color: #c792ea;
+  }
+  .t-string {
+    color: #c3e88d;
+  }
+  .t-number {
+    color: #f78c6c;
+  }
+  .t-function {
+    color: #82aaff;
+  }
+  .t-tag {
+    color: #f07178;
+  }
+  .t-attribute,
+  .t-decorator {
+    color: #ffcb6b;
+  }
+  .t-property {
+    color: #89ddff;
+  }
+  .t-selector {
+    color: #ffcb6b;
+  }
+  .t-expression {
+    color: #89ddff;
+  }
+}
+
+/* Framework cards in two columns, then the language */
+.picker {
+  display: grid;
+  gap: 14px;
+  padding-top: 4px;
+
+  & ::ng-deep .radio-group--cards .radio-group__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.choose {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+  color: var(--ui-text-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .code {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .files {
+    max-height: 140px;
+    border-right: none;
+    border-bottom: 1px solid var(--ui-border);
+  }
+}

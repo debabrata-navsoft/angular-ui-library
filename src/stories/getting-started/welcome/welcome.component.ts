@@ -20,6 +20,7 @@ import { ParticlesComponent } from '../../effects/particles/particles.component'
 import { StarfieldComponent } from '../../effects/starfield/starfield.component';
 import { TextEditorDemoComponent } from '../../text-editor/page/text-editor-demo.component';
 import { TextEditorPreviewComponent } from '../../text-editor/page/text-editor-preview.component';
+import { TemplatesPreviewComponent } from '../../templates/templates-preview.component';
 import { copyToClipboard } from '../../utils/clipboard';
 import { PAGES, SECTIONS, VERSION, managerHref } from '../landing';
 import { SiteFooterComponent } from '../site-footer/site-footer.component';
@@ -64,6 +65,7 @@ export class Settings {
     TagComponent,
     TextEditorDemoComponent,
     TextEditorPreviewComponent,
+    TemplatesPreviewComponent,
     ToggleComponent,
   ],
   templateUrl: './welcome.html',

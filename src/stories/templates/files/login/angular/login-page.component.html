@@ -1,0 +1,57 @@
+<main class="login">
+  <form class="login__card" novalidate (submit)="submit($event)">
+    <div class="login__logo">N</div>
+    <h1>Welcome back</h1>
+    <p class="login__intro">Sign in to continue to your account.</p>
+
+    <label class="field">
+      Email
+      <input
+        type="email"
+        autocomplete="email"
+        placeholder="you@example.com"
+        [value]="email()"
+        [attr.aria-invalid]="!!errors().email"
+        (input)="email.set($any($event.target).value)"
+      />
+      @if (errors().email) {
+        <span class="field__error">{{ errors().email }}</span>
+      }
+    </label>
+
+    <label class="field">
+      Password
+      <span class="field__box">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          [value]="password()"
+          [attr.aria-invalid]="!!errors().password"
+          (input)="password.set($any($event.target).value)"
+        />
+        <button type="button" class="field__toggle" (click)="showPassword.set(!showPassword())">
+          {{ showPassword() ? 'Hide' : 'Show' }}
+        </button>
+      </span>
+      @if (errors().password) {
+        <span class="field__error">{{ errors().password }}</span>
+      }
+    </label>
+
+    <div class="login__row">
+      <label><input type="checkbox" /> Remember me</label>
+      <a href="#">Forgot password?</a>
+    </div>
+
+    @if (status() === 'done') {
+      <p class="login__done">Signed in! Replace this with a redirect to your app.</p>
+    } @else {
+      <button type="submit" class="login__submit" [disabled]="status() === 'loading'">
+        {{ status() === 'loading' ? 'Signing in…' : 'Sign in' }}
+      </button>
+    }
+
+    <p class="login__footer">No account yet? <a href="#">Create one</a></p>
+  </form>
+</main>

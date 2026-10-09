@@ -1,0 +1,163 @@
+/* Pricing page: three plans with a monthly / yearly switch. Change the two colors below to match your brand */
+:root {
+  --brand: #6366f1;
+  --brand-2: #a855f7;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+}
+
+.pricing {
+  min-height: 100vh;
+  padding: 64px 24px;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.pricing h1 {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.pricing__intro {
+  margin: 0 auto 28px;
+  max-width: 520px;
+  color: var(--muted);
+}
+
+.switch {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 40px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.switch button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.switch button[aria-pressed='true'] {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+}
+
+.switch small {
+  margin-left: 6px;
+  opacity: 0.8;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.plan--featured {
+  border: 2px solid var(--brand);
+  box-shadow: 0 24px 50px -24px color-mix(in srgb, var(--brand) 60%, transparent);
+}
+
+.plan__badge {
+  position: absolute;
+  top: -12px;
+  left: 28px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.plan h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.plan__text {
+  margin: 6px 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.plan__price {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.plan__price span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.plan ul {
+  flex: 1;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.plan li {
+  padding: 6px 0;
+}
+
+.plan li::before {
+  content: '✓';
+  margin-right: 8px;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.plan__cta {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.plan--featured .plan__cta {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+}

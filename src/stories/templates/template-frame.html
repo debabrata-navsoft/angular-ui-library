@@ -1,0 +1,14 @@
+@if (doc(); as html) {
+  <iframe
+    class="frame"
+    sandbox="allow-scripts allow-forms"
+    loading="lazy"
+    [title]="title()"
+    [srcdoc]="html"
+    [style.width]="width() ? width() + 'px' : null"
+    [attr.tabindex]="inert() ? -1 : null"
+    [attr.aria-hidden]="inert() || null"
+  ></iframe>
+} @else {
+  <div class="placeholder">{{ missing() ? 'No HTML version to preview' : '' }}</div>
+}

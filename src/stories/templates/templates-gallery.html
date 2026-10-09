@@ -1,0 +1,52 @@
+<div class="gallery-page">
+  <header class="gallery-hero">
+    <span class="gallery-version"><i></i>{{ version }}</span>
+    <h1>Templates</h1>
+    <p class="subtitle">
+      Ready-made pages you can preview here and download as source code for
+      <b>HTML, CSS &amp; JavaScript</b>, <b>React</b>, <b>Vue</b> or <b>Angular</b>. Each download
+      runs on its own: open it, change the colors and make it yours.
+    </p>
+  </header>
+
+  <div class="toolbar">
+    <np-search-input
+      class="search"
+      placeholder="Search templates..."
+      [value]="query()"
+      (search)="query.set($event)"
+    />
+    <np-button-toggle
+      size="small"
+      ariaLabel="Category"
+      [options]="categories()"
+      [showCheck]="false"
+      [value]="category()"
+      (valueChange)="category.set($any($event))"
+    />
+  </div>
+
+  <div class="templates">
+    @for (t of filtered(); track t.slug) {
+      <button type="button" class="template" (click)="selected.set(t)">
+        <np-template-frame class="template__thumb" [template]="t" [scale]="0.3" [inert]="true" />
+        <span class="template__body">
+          <span class="template__category">{{ t.category }}</span>
+          <b class="template__title">{{ t.title }}</b>
+          <span class="template__text">{{ t.description }}</span>
+          <span class="template__frameworks">
+            @for (f of frameworksOf(t); track f.value) {
+              <span class="template__chip">{{ f.label }}</span>
+            }
+          </span>
+        </span>
+      </button>
+    } @empty {
+      <p class="empty">No templates match "{{ query() }}".</p>
+    }
+  </div>
+
+  @if (selected(); as t) {
+    <np-template-detail [template]="t" (closed)="selected.set(null)" />
+  }
+</div>

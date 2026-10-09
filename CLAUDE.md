@@ -74,6 +74,15 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      text-editor-demo; markdownToHtml() and shared helpers in page/text-editor-page-utils.ts (+ spec)
                      (also on Welcome as `preview`: shorter, inert, a picture only (the Explore card links to
                      the page), loaded with @defer on viewport); text-editor-preview is the Welcome card's picture (no Quill)
+  templates/         "Templates" site page (/templates, story Templates, sidebar after NexLottie): templates-gallery (cards with
+                     live thumbnails, search, category filter), template-detail (np-dialog: Preview at desktop/tablet/phone
+                     width | Code with a file list and colors (template-highlight.ts); a picker below: "Select framework"
+                     np-radio-group cards + "Code language" JavaScript | TypeScript, Download .zip of that folder via fflate),
+                     template-frame (the html/ version in a sandboxed iframe, CSS/JS inlined by previewDocument()),
+                     templates-preview (Welcome's card), templates-data.ts (import.meta.glob of files/)
+    files/             One folder per template: template.json + html/ react/ react-ts/ vue/ vue-ts/ angular/ (folderOf();
+                       see files/README.md);
+                       excluded from tsconfig.app.json and .storybook/tsconfig.json, read as ?raw text
   utils/             Shared TypeScript helpers (no components):
     types.ts           Shared types: Tone, TONES, TONE_ICONS, Size, SIZES, User, MenuItem, TreeNode
     anchor-position.ts Shared fixed-position helper for popovers and popup menus
