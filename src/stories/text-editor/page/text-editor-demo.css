@@ -282,8 +282,19 @@
   }
 }
 
-/* preview (Welcome): a shorter, read-only picture of the document editor that fades out */
+/* preview (Welcome): display-only demo of the document editor matching the other bento cards and 470px showcase height */
 :host(.demo--preview) .doc {
+  height: 470px;
+  border-radius: 20px;
+  box-shadow: var(--ui-shadow-sm);
+}
+
+:host(.demo--preview) .doc ::ng-deep .te__scroll {
+  height: auto;
+}
+
+/* preview (Welcome): a shorter, read-only picture of the document editor that fades out */
+/* :host(.demo--preview) .doc {
   position: relative;
 }
 
@@ -297,7 +308,7 @@
 
 :host(.demo--preview) .doc ::ng-deep .te__toolbar {
   position: static;
-  /* A picture: one row, cut off at the edge */
+
   flex-wrap: nowrap;
   overflow: hidden;
 }
@@ -308,4 +319,4 @@
 
 :host(.demo--preview) .doc__status {
   display: none;
-}
+} */
