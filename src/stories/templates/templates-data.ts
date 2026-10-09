@@ -2,13 +2,15 @@
 /**
  * The Templates page's data: every folder in src/stories/templates/files, read at build time, so a new template needs
  * no code changes. A template is `files/<slug>/template.json` (title, description, category, tags) plus one folder per
- * framework and language: html/, react/ (JavaScript), react-ts/ (TypeScript), vue/, vue-ts/, angular/. File contents
+ * framework and language: html/, react/ (JavaScript), react-ts/ (TypeScript), next/, next-ts/, vue/, vue-ts/, angular/. Each
+ * is a complete project (everything but node_modules). File contents
  * load only when a template is viewed or downloaded.
  */
 
 /** The frameworks a template can come in, in picker order, with their languages (Angular is TypeScript only) */
 export const TEMPLATE_FRAMEWORKS = [
   { value: 'react', label: 'React', languages: ['js', 'ts'] },
+  { value: 'next', label: 'Next.js', languages: ['js', 'ts'] },
   { value: 'angular', label: 'Angular', languages: ['ts'] },
   { value: 'vue', label: 'Vue', languages: ['js', 'ts'] },
   { value: 'html', label: 'HTML / CSS / JS', languages: ['js'] },

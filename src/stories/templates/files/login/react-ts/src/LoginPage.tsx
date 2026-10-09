@@ -63,7 +63,11 @@ export function LoginPage() {
               aria-invalid={!!errors.password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="button" className="field__toggle" onClick={() => setShowPassword(!showPassword)}>
+            <button
+              type="button"
+              className="field__toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
               {showPassword ? 'Hide' : 'Show'}
             </button>
           </span>

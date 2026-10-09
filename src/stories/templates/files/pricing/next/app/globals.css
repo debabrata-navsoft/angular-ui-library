@@ -1,0 +1,8 @@
+/* Global styles; the page's own styles are in its component */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}

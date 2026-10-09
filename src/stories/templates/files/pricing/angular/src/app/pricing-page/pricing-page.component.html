@@ -2,10 +2,18 @@
   <h1>Simple, honest pricing</h1>
   <p class="pricing__intro">Start free, upgrade when you grow. Cancel any time.</p>
   <div class="switch" role="group" aria-label="Billing period">
-    <button type="button" [attr.aria-pressed]="period() === 'monthly'" (click)="period.set('monthly')">
+    <button
+      type="button"
+      [attr.aria-pressed]="period() === 'monthly'"
+      (click)="period.set('monthly')"
+    >
       Monthly
     </button>
-    <button type="button" [attr.aria-pressed]="period() === 'yearly'" (click)="period.set('yearly')">
+    <button
+      type="button"
+      [attr.aria-pressed]="period() === 'yearly'"
+      (click)="period.set('yearly')"
+    >
       Yearly <small>-20%</small>
     </button>
   </div>

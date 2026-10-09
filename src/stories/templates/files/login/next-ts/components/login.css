@@ -1,7 +1,5 @@
 /* Login page: a centered card on a soft gradient. Change the two colors below to match your brand */
-:host {
-  display: block;
-
+:root {
   --brand: #6366f1;
   --brand-2: #a855f7;
   --text: #0f172a;
@@ -14,9 +12,14 @@
   box-sizing: border-box;
 }
 
-.login {
+body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   color: var(--text);
 }
 
@@ -25,7 +28,8 @@
   place-items: center;
   min-height: 100vh;
   padding: 24px;
-  background: radial-gradient(circle at 20% 10%, #eef2ff, transparent 50%),
+  background:
+    radial-gradient(circle at 20% 10%, #eef2ff, transparent 50%),
     radial-gradient(circle at 80% 90%, #faf5ff, transparent 50%), #f8fafc;
 }
 
@@ -81,7 +85,9 @@
   font: inherit;
   font-weight: 400;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .field input:focus {

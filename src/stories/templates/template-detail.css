@@ -147,14 +147,14 @@
   }
 }
 
-/* Framework cards in two columns, then the language */
+/* Framework cards in as many columns as fit, then the language */
 .picker {
   display: grid;
   gap: 14px;
   padding-top: 4px;
 
   & ::ng-deep .radio-group--cards .radio-group__list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   }
 }
 

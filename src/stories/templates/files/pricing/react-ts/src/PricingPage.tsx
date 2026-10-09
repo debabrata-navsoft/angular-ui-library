@@ -14,44 +14,31 @@ interface Plan {
 
 const PLANS: Plan[] = [
   {
-    "name": "Starter",
-    "monthly": 0,
-    "text": "For side projects and trying things out.",
-    "features": [
-      "1 project",
-      "Community support",
-      "Basic analytics"
-    ],
-    "cta": "Start for free"
+    name: 'Starter',
+    monthly: 0,
+    text: 'For side projects and trying things out.',
+    features: ['1 project', 'Community support', 'Basic analytics'],
+    cta: 'Start for free',
   },
   {
-    "name": "Pro",
-    "monthly": 19,
-    "text": "For growing teams that ship every week.",
-    "features": [
-      "Unlimited projects",
-      "Priority support",
-      "Advanced analytics",
-      "Custom domains"
-    ],
-    "cta": "Start 14-day trial",
-    "featured": true
+    name: 'Pro',
+    monthly: 19,
+    text: 'For growing teams that ship every week.',
+    features: ['Unlimited projects', 'Priority support', 'Advanced analytics', 'Custom domains'],
+    cta: 'Start 14-day trial',
+    featured: true,
   },
   {
-    "name": "Business",
-    "monthly": 49,
-    "text": "For companies with security needs.",
-    "features": [
-      "Everything in Pro",
-      "SSO and audit logs",
-      "99.9% uptime SLA",
-      "Dedicated manager"
-    ],
-    "cta": "Contact sales"
-  }
+    name: 'Business',
+    monthly: 49,
+    text: 'For companies with security needs.',
+    features: ['Everything in Pro', 'SSO and audit logs', '99.9% uptime SLA', 'Dedicated manager'],
+    cta: 'Contact sales',
+  },
 ];
 
-const price = (plan: Plan, period: Period) => (period === 'yearly' ? Math.round(plan.monthly * 0.8) : plan.monthly);
+const price = (plan: Plan, period: Period) =>
+  period === 'yearly' ? Math.round(plan.monthly * 0.8) : plan.monthly;
 
 export function PricingPage() {
   const [period, setPeriod] = useState<Period>('monthly');
@@ -61,10 +48,18 @@ export function PricingPage() {
       <h1>Simple, honest pricing</h1>
       <p className="pricing__intro">Start free, upgrade when you grow. Cancel any time.</p>
       <div className="switch" role="group" aria-label="Billing period">
-        <button type="button" aria-pressed={period === 'monthly'} onClick={() => setPeriod('monthly')}>
+        <button
+          type="button"
+          aria-pressed={period === 'monthly'}
+          onClick={() => setPeriod('monthly')}
+        >
           Monthly
         </button>
-        <button type="button" aria-pressed={period === 'yearly'} onClick={() => setPeriod('yearly')}>
+        <button
+          type="button"
+          aria-pressed={period === 'yearly'}
+          onClick={() => setPeriod('yearly')}
+        >
           Yearly <small>-20%</small>
         </button>
       </div>

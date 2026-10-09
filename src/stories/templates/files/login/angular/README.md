@@ -1,14 +1,13 @@
 # Login page (Angular)
 
-A standalone component for Angular 17+ (signals and the built-in control flow).
+A ready-to-run Angular 21 project (standalone components, signals, zoneless).
 
-1. Copy the three `login-page.component.*` files into your app, e.g. `src/app/login-page/`.
-2. Use it in a route or a template:
-
-```ts
-import { LoginPageComponent } from './login-page/login-page.component';
-
-export const routes: Routes = [{ path: 'login', component: LoginPageComponent }];
+```bash
+npm install
+npm start
 ```
 
-Change `--brand` and `--brand-2` at the top of the CSS to match your brand.
+Then open http://localhost:4200. The page is in `src/app/login-page/`; `npm run build` builds it into `dist/`.
+
+To use the page in an app of your own, copy the `src/app/login-page/` folder and add `LoginPageComponent` to a route or a template.
+Change `--brand` and `--brand-2` at the top of its CSS to match your brand.
