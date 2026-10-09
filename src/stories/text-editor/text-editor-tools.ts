@@ -172,6 +172,7 @@ const GROUPS: ToolItem[][] = [
 const ACTIONS = new Set<TextEditorTool>(['clean', 'undo', 'redo', 'divider', 'indent', 'outdent']);
 const SELECTS = new Set<TextEditorTool>(['heading', 'font', 'size']);
 export const MENUS = new Set<TextEditorTool>([
+  ...SELECTS,
   'color',
   'highlight',
   'align',
@@ -199,10 +200,15 @@ export function toolbarItems(tools: readonly TextEditorTool[]) {
         // Toggles report aria-pressed; menus and bars say what they open
         pressable:
           !ACTIONS.has(item.tool) &&
-          !SELECTS.has(item.tool) &&
           !MENUS.has(item.tool) &&
           !BARS.has(item.tool),
-        popup: MENUS.has(item.tool) ? 'menu' : BARS.has(item.tool) ? 'dialog' : null,
+        popup: SELECTS.has(item.tool)
+          ? 'listbox'
+          : MENUS.has(item.tool)
+            ? 'menu'
+            : BARS.has(item.tool)
+              ? 'dialog'
+              : null,
       })),
     );
 }

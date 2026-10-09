@@ -182,11 +182,7 @@ describe('TextEditorComponent', () => {
       fixture.componentRef.setInput('value', '<p>Big text</p>');
       const quill = await ready(fixture, () => editor);
       quill.setSelection(0, 3);
-      const select = fixture.nativeElement.querySelector(
-        'select[aria-label="Font size"]',
-      ) as HTMLSelectElement;
-      select.value = '24px';
-      select.dispatchEvent(new Event('change'));
+      pick('Font size', '24');
       expect(editor.value()).toBe('<p><span style="font-size: 24px;">Big</span> text</p>');
     });
 
@@ -194,11 +190,7 @@ describe('TextEditorComponent', () => {
       fixture.componentRef.setInput('value', '<p>Serif text</p>');
       const quill = await ready(fixture, () => editor);
       quill.setSelection(0, 5);
-      const select = fixture.nativeElement.querySelector(
-        'select[aria-label="Font"]',
-      ) as HTMLSelectElement;
-      select.value = 'Georgia, serif';
-      select.dispatchEvent(new Event('change'));
+      pick('Font', 'Serif');
       expect(editor.value()).toBe(
         '<p><span style="font-family: Georgia, serif;">Serif</span> text</p>',
       );

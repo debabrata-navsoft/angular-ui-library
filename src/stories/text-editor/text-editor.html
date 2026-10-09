@@ -21,42 +21,28 @@
           @if (item.divider) {
             <span class="te__divider" aria-hidden="true"></span>
           }
-          @if (item.select) {
-            <select
-              class="te__select"
-              data-tool
-              [attr.aria-label]="item.label"
-              [title]="item.label"
-              [disabled]="isDisabled()"
-              (change)="setFormat(item.format, $any($event.target).value)"
-            >
-              @for (option of options[item.tool]; track option.value) {
-                <option [value]="option.value" [selected]="option.value === selected(item.format)">
-                  {{ option.label }}
-                </option>
-              }
-            </select>
-          } @else {
-            <button
-              #button
-              type="button"
-              class="te__tool"
-              data-tool
-              [class.te__tool--active]="isActive(item)"
-              [attr.aria-label]="item.label"
-              [attr.aria-pressed]="item.pressable ? isActive(item) : null"
-              [attr.aria-haspopup]="item.popup"
-              [attr.aria-expanded]="item.menu ? menu()?.tool === item.tool : null"
-              [attr.aria-keyshortcuts]="item.keys?.replace('Ctrl', 'Control') ?? null"
-              [title]="item.title"
-              [disabled]="isDisabled() || isIdle(item)"
-              (mousedown)="$event.preventDefault()"
-              (click)="run(item, button)"
-            >
+          <button
+            #button
+            type="button"
+            [class]="item.select ? 'te__select' : 'te__tool'"
+            data-tool
+            [class.te__tool--active]="!item.select && isActive(item)"
+            [attr.aria-label]="item.label"
+            [attr.aria-pressed]="item.pressable ? isActive(item) : null"
+            [attr.aria-haspopup]="item.popup"
+            [attr.aria-expanded]="item.menu ? menu()?.tool === item.tool : null"
+            [attr.aria-keyshortcuts]="item.keys?.replace('Ctrl', 'Control') ?? null"
+            [title]="item.title"
+            [disabled]="isDisabled() || isIdle(item)"
+            (mousedown)="$event.preventDefault()"
+            (click)="run(item, button)"
+          >
+            @if (item.select) {
+              <span class="te__select-value">{{ optionLabel(item.tool, item.format) }}</span>
+              <np-icon name="chevron-down" size="14" />
+            } @else {
               <np-icon
-                [name]="
-                  item.tool === 'align' ? 'align-' + (selected('align') || 'left') : item.icon
-                "
+                [name]="item.tool === 'align' ? 'align-' + (selected('align') || 'left') : item.icon"
                 size="18"
               />
               @if (item.tool === 'color' || item.tool === 'highlight') {
@@ -68,8 +54,8 @@
                   "
                 ></span>
               }
-            </button>
-          }
+            }
+          </button>
         }
         <ng-content select="[editorToolbarEnd]" />
       </div>
@@ -249,7 +235,25 @@
     [attr.aria-label]="m.label"
     (toggle)="$any($event).newState === 'closed' && closeMenu()"
   >
-    @switch (m.tool) {
+    @switch (options[m.tool] ? 'select' : m.tool) {
+      @case ('select') {
+        <div class="te__options" role="listbox" [attr.aria-label]="m.label">
+          @for (option of options[m.tool]; track option.value) {
+            <button
+              type="button"
+              class="te__menu-item"
+              role="option"
+              [class.te__menu-item--active]="selected(m.format) === option.value"
+              [attr.aria-selected]="selected(m.format) === option.value"
+              [attr.data-h]="(m.tool === 'heading' && option.value) || null"
+              [style.font-family]="m.tool === 'font' ? option.value : null"
+              (click)="setFormat(m.format, option.value)"
+            >
+              {{ option.label }}
+            </button>
+          }
+        </div>
+      }
       @case ('align') {
         @for (a of alignments; track a.value) {
           <button

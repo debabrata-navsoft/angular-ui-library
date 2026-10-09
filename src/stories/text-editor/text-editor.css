@@ -141,20 +141,35 @@
     box-shadow: 0 0 0 1px #fff;
   }
 
+  /* Drop-downs (text style, font, size): the value and a chevron; the options open in a menu */
   .te__select {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     height: 32px;
-    padding: 0 8px;
+    padding: 0 8px 0 10px;
     border: 1px solid var(--ui-border);
     border-radius: var(--ui-radius-sm);
     background: var(--ui-surface);
     color: var(--ui-text);
     font: inherit;
     font-size: 13px;
+    white-space: nowrap;
     cursor: pointer;
+    transition:
+      border-color var(--ui-ease),
+      background var(--ui-ease);
   }
 
-  .te__select:hover:not(:disabled) {
+  .te__select:hover:not(:disabled),
+  .te__select[aria-expanded='true'] {
     border-color: var(--ui-primary);
+    background: var(--ui-primary-soft);
+  }
+
+  .te__select-value {
+    min-width: 52px;
+    text-align: left;
   }
 
   /* The bar under the toolbar: a link or image address, or find & replace */
@@ -309,6 +324,24 @@
   .te__menu-item--active {
     color: var(--ui-primary);
     font-weight: 600;
+  }
+
+  .te__options {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .te__menu-item[data-h] {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .te__menu-item[data-h='1'] {
+    font-size: 20px;
+  }
+
+  .te__menu-item[data-h='3'] {
+    font-size: 15px;
   }
 
   .te__menu-title {

@@ -202,10 +202,11 @@ export class TextEditorComponent implements ControlValueAccessor {
   protected readonly formats = signal<Record<string, unknown>>({});
   /** Whether there's something to undo / redo */
   protected readonly history = signal({ undo: false, redo: false });
-  /** The open toolbar menu (colors, alignment, spacing, table, emoji, symbols, case) and its button */
+  /** The open toolbar menu (drop-downs, colors, alignment, spacing, table, emoji, symbols, case) and its button */
   protected readonly menu = signal<{
     tool: TextEditorTool;
     label: string;
+    format: string;
     button: HTMLElement;
   } | null>(null);
   /** The table size picker: rows × columns under the pointer */
@@ -342,7 +343,8 @@ export class TextEditorComponent implements ControlValueAccessor {
       el.showPopover?.();
       const { top, left } = anchorPosition(button, el);
       Object.assign(el.style, { top: `${top}px`, left: `${left}px` });
-      el.querySelector('button')?.focus();
+      // Drop-downs start on their current option
+      (el.querySelector<HTMLElement>('.te__menu-item--active') ?? el.querySelector('button'))?.focus();
     });
 
     effect(() => this.bar() && this.barInput()?.nativeElement.focus());
@@ -415,6 +417,12 @@ export class TextEditorComponent implements ControlValueAccessor {
     return String(this.formats()[format] ?? '');
   }
 
+  /** The label of a drop-down's option at the cursor */
+  protected optionLabel(tool: string, format: string): string {
+    const value = this.selected(format);
+    return this.options[tool].find((o) => o.value === value)?.label ?? value;
+  }
+
   /** The Quill instance, unless the editor is disabled or read-only */
   private editable(): Quill | null {
     return this.isDisabled() || this.readonly() ? null : this.quill();
@@ -430,7 +438,8 @@ export class TextEditorComponent implements ControlValueAccessor {
 
   protected run(item: ToolItem, button: HTMLElement) {
     const { tool } = item;
-    if (MENUS.has(tool)) return this.menu.set({ tool, label: item.label, button });
+    if (MENUS.has(tool))
+      return this.menu.set({ tool, label: item.label, format: item.format, button });
     if (BARS.has(tool)) return this.openBar(tool as TextEditorBar);
     if (tool === 'undo' || tool === 'redo') return this.edit((quill) => quill.history[tool]());
     this.edit((quill, range) => {
