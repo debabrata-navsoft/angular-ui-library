@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
 import './globals.css';
 
-export const metadata: Metadata = { title: 'Login page' };
+export const metadata: Metadata = { title: 'Sign in', icons: { icon: '/logo.svg' } };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>{children}</body>

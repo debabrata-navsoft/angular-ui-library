@@ -14,8 +14,8 @@ import {
   totals,
   updateQty,
   visibleProducts,
-} from './shop-data';
-import type { CartLine, Collection, Product, SortKey } from './shop-data';
+} from '@/lib/shop-data';
+import type { CartLine, Collection, Product, SortKey } from '@/lib/shop-data';
 import './shop.css';
 
 /** Shopora: products, filters, sorting and a cart drawer. Free shipping over $100, otherwise $9. Replace checkout() with your payment flow. */

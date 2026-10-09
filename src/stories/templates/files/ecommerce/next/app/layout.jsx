@@ -1,6 +1,6 @@
 import './globals.css';
 
-export const metadata = { title: 'E-commerce store' };
+export const metadata = { title: 'Shopora: online store', icons: { icon: '/logo.svg' } };
 
 export default function RootLayout({ children }) {
   return (

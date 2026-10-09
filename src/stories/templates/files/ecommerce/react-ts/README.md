@@ -1,16 +1,11 @@
-# E-commerce store (React + TypeScript)
-
-A ready-to-run React + TypeScript + Vite project: a full store page with search, category filters, sorting, product cards
-and a cart drawer.
+# Shopora: online store (React + TypeScript + Vite)
 
 ```bash
 npm install
 npm run dev
 ```
 
-- The page is `src/ShopPage.tsx`, its styles `src/shop.css`.
-- Products, categories and the cart math are in `src/shop-data.ts`: replace `PRODUCTS` with your catalog
-  and `checkout()` with your payment flow.
-- Change `--brand` and `--brand-2` at the top of the CSS to match your brand.
+Then open http://localhost:5173. The page is `src/components/ShopPage.tsx`; `npm run build` builds it into `dist/`.
 
-Check the types with `npm run typecheck`.
+Change `--brand` and `--brand-2` at the top of the page's CSS to match your brand. The logo (also the favicon) is in
+`public/`.

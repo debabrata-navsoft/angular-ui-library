@@ -81,7 +81,8 @@ src/stories/         One folder per top-level sidebar section, plus shared utils
                      template-frame (the html/ version in a sandboxed iframe, CSS/JS inlined by previewDocument()),
                      templates-preview (Welcome's card), templates-data.ts (import.meta.glob of files/)
     files/             One folder per template: template.json + html/ react/ react-ts/ next/ next-ts/ vue/ vue-ts/ angular/,
-                       each a complete runnable project without node_modules (Angular CLI, Vite, Next.js App Router) (folderOf();
+                       each laid out like a freshly scaffolded project without node_modules (ng new, create-vite,
+                       create-next-app; public/ logo + favicon, .gitignore etc. are globbed by name) (folderOf();
                        see files/README.md);
                        excluded from tsconfig.app.json and .storybook/tsconfig.json, read as ?raw text
   utils/             Shared TypeScript helpers (no components):

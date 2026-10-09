@@ -14,7 +14,7 @@ import {
   totals,
   updateQty,
   visibleProducts,
-} from './shop-data';
+} from '@/lib/shop-data';
 
 import './shop.css';
 

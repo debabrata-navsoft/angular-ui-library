@@ -62,7 +62,12 @@ const metas = import.meta.glob<TemplateMeta>('./files/*/template.json', {
   import: 'default',
 });
 const texts = import.meta.glob<string>(
-  './files/*/*/**/*.{html,css,scss,js,jsx,mjs,ts,tsx,vue,json,md,txt,svg,yml,yaml}',
+  [
+    './files/*/*/**/*.{html,css,scss,js,jsx,mjs,ts,tsx,vue,json,md,txt,svg,yml,yaml}',
+    // Dot files of a real project (glob patterns skip them unless named)
+    './files/*/*/**/.{gitignore,editorconfig}',
+    './files/*/*/.vscode/*.json',
+  ],
   { query: '?raw', import: 'default' },
 );
 const binaries = import.meta.glob<string>(

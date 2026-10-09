@@ -1,13 +1,11 @@
-# Pricing page (React, TypeScript)
-
-A ready-to-run React + TypeScript + Vite project.
+# Pricing (React + TypeScript + Vite)
 
 ```bash
 npm install
 npm run dev
 ```
 
-The page is in `src/PricingPage.tsx` and its styles in `src/pricing.css`. Edit the plans in the `PLANS` list, and change
-`--brand` and `--brand-2` at the top of the CSS to match your brand.
+Then open http://localhost:5173. The page is `src/components/PricingPage.tsx`; `npm run build` builds it into `dist/`.
 
-Check the types with `npm run typecheck`.
+Change `--brand` and `--brand-2` at the top of the page's CSS to match your brand. The logo (also the favicon) is in
+`public/`.

@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
-import ShopPage from './ShopPage.vue';
+import './style.css';
+import App from './App.vue';
 
-createApp(ShopPage).mount('#app');
+createApp(App).mount('#app');

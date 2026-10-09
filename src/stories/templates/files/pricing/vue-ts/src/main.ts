@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
-import PricingPage from './PricingPage.vue';
+import './style.css';
+import App from './App.vue';
 
-createApp(PricingPage).mount('#app');
+createApp(App).mount('#app');

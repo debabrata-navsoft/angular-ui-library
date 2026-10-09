@@ -1,6 +1,6 @@
 import './globals.css';
 
-export const metadata = { title: 'Pricing page' };
+export const metadata = { title: 'Pricing', icons: { icon: '/logo.svg' } };
 
 export default function RootLayout({ children }) {
   return (
