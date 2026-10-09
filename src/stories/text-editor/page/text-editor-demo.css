@@ -293,6 +293,12 @@
   height: auto;
 }
 
+/* The preview is a picture (inert): its toolbar stays one row, cut off at the edge */
+:host(.demo--preview) .doc ::ng-deep .te__toolbar {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
 /* preview (Welcome): a shorter, read-only picture of the document editor that fades out */
 /* :host(.demo--preview) .doc {
   position: relative;
